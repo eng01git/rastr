@@ -12,7 +12,7 @@ import datetime
 from datetime import date, datetime, time
 import pytz
 from io import BytesIO
-
+from openpyxl import load_workbook, Workbook
 from google.cloud import firestore
 from google.oauth2 import service_account
 
@@ -24,15 +24,6 @@ st.set_page_config(
     page_title="Rastreabilidade",
     layout="wide",
 )
-
-from openpyxl import load_workbook, Workbook
-wb = load_workbook('etiqueta1.xlsx')
-ws = wb.active
-ws['D10'] = 'Teste'
-ws['C14'] = 'será'
-wb.save('teste.xlsx')
-
-
 
 
 ######################################################################################################
@@ -51,17 +42,19 @@ db = firestore.Client(credentials=creds, project="lid-rastr")
 
 tz = pytz.timezone('America/Bahia')
 
-###########################################################################################################################################
-#####                    			funcoes                                                                            #########
-###########################################################################################################################################
+#######################################################################################################################
+#                    			                  funcoes                                                             #
+#######################################################################################################################
+
 
 # Define cores para os valores validos ou invalidos
 def color(val):
     if val == 'invalido':
-        color = 'red'
+        cor = 'red'
     else:
-        color = 'white'
-    return 'background-color: %s' % color
+        cor = 'white'
+    return 'background-color: %s' % cor
+
 
 # Gera arquivo excel
 def to_excel(df):
@@ -72,6 +65,7 @@ def to_excel(df):
     processed_data = output.getvalue()
     return processed_data
 
+
 # Gera o link para o download do excel
 def get_table_download_link(df):
     """Generates a link allowing the data in a given panda dataframe to be downloaded
@@ -80,23 +74,67 @@ def get_table_download_link(df):
     """
     val = to_excel(df)
     b64 = base64.b64encode(val)  # val looks like b'...'
-    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="dados.xlsx">Download dos dados em Excel</a>' # decode b'abc' => abc
+    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="dados.xlsx">Download dos dados em Excel</a>'  # decode b'abc' => abc
+
 
 # visualizar pdf
 def show_pdf(file_path):
     with open(file_path,"rb") as f:
-          base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
     st.markdown(pdf_display, unsafe_allow_html=True)
 
-#def download_excel(file)
-wb2 = load_workbook('teste.xlsx')
-stream = BytesIO()
-wb2.save(stream)
-towrite =  stream.getvalue()
-b64 = base64.b64encode(towrite).decode()  # some strings
-linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download excel file</a>'
-st.markdown(linko, unsafe_allow_html=True)
+
+def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
+
+    # carrega arquivo excel base para etiqueta
+    wb = load_workbook('teste2.xlsx')
+
+    # seleciona a planilha
+    ws = wb.active
+
+    # converte string para datetime
+    data['data_estoque'] = pd.to_datetime(data['data_estoque'])
+
+    # sem selante
+    if tipo == 0:
+        # Preenchimento dos valores
+        ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
+        ws['B7'] = 'Sem selante'  # 'com/sem selante'
+        ws['A9'] = 'definir codigo produto'  # 'codigo produto'
+        ws['B13'] = str(data['numero_OT'])  # numero da bobina
+    else:
+        # Preenchimento dos valores
+        ws['A7'] = str(data['codigo_SAP'])  # 'tipo produto'
+        ws['B7'] = 'Com selante'  # 'com/sem selante'
+        ws['A9'] = 'definir codigo produto'  # 'codigo produto'
+        ws['B13'] = str(data['numero_lote'])  # numero da bobina
+
+    # pega a hora que o palete foi para o estoque
+    horario = datetime.time(data['data_estoque'])
+
+    # Adequa os valores dos turnos
+    if (horario >= time(23, 0, 0)) and (horario < time(7, 0, 0)):
+        ws['B11'] = 'A'  # 'turno'
+    elif (horario >= time(7, 0, 0)) and (horario < time(15, 0, 0)):
+        ws['B11'] = 'B'  # 'turno'
+    else:
+        ws['B11'] = 'C'  # 'turno'
+
+    ws['A11'] = data['data_estoque']  # 'data'
+    ws['C11'] = data['data_estoque']  # 'hora'
+    ws['C9'] = data['numero_palete']  # numero etiqueta
+
+    wb.save('teste.xlsx')
+    stream = BytesIO()
+    wb.save(stream)
+    towrite = stream.getvalue()
+    b64 = base64.b64encode(towrite).decode()  # some strings
+
+    # link para download e nome do arquivo
+    linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a>'
+    st.markdown(linko, unsafe_allow_html=True)
+
 
 # leitura de dados do banco
 @st.cache(allow_output_mutation=True)
@@ -693,7 +731,6 @@ with col2:
         st.error('Ha paletes demais na reserva')
 
     fifo_in_show = df_ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
-    #st.write(fifo_in_show.head())
     gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_in_show, 0, 0, True)
     response = AgGrid(
         fifo_in_show,
@@ -708,6 +745,8 @@ with col2:
 
     if fifo_in_show.shape[0] > 0:
         st.info('Proximo palete: ' + str(fifo_in_show.iloc[0, 0]))
+
+    download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
 
 # consome paletes
 
@@ -943,6 +982,8 @@ with col4:
 
     if fifo_s_in_show.shape[0] > 0:
         st.success('Proximo palete: ' + str(fifo_s_in_show.iloc[0, 0]))
+
+    download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
 
 # consome paletes
 
