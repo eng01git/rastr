@@ -581,7 +581,10 @@ df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
 numero_bobina = st1.selectbox('Selecione a próxima bobina:', list(df_bobinas_disp['numero_OT']))
 
 # botao para teste
-st.button('Reset')
+reset = st.button('Reset')
+
+if reset:
+    caching.clear_cache()
 
 # parte do principio que nenhuma bobina foi selecionada
 selecionar_bobina = False
