@@ -6,4 +6,3 @@ openpyxl
 xlsxwriter
 streamlit-aggrid
 pytz
-aggrid
