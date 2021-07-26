@@ -3,17 +3,15 @@ from streamlit import caching
 import pandas as pd
 from io import StringIO
 import numpy as np
-from itertools import cycle
 from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode, JsCode
-import streamlit.components.v1 as components
 import base64
 import json
 import smtplib
 import time
 import datetime
-import time
 from datetime import date, datetime, time
 import pytz
+from io import BytesIO
 
 from google.cloud import firestore
 from google.oauth2 import service_account
@@ -26,6 +24,16 @@ st.set_page_config(
     page_title="Rastreabilidade",
     layout="wide",
 )
+
+from openpyxl import load_workbook, Workbook
+wb = load_workbook('etiqueta1.xlsx')
+ws = wb.active
+ws['D10'] = 'Teste'
+ws['C14'] = 'será'
+wb.save('teste.xlsx')
+
+
+
 
 ######################################################################################################
 # Configurando acesso ao firebase
@@ -54,6 +62,41 @@ def color(val):
     else:
         color = 'white'
     return 'background-color: %s' % color
+
+# Gera arquivo excel
+def to_excel(df):
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='Sheet1')
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
+
+# Gera o link para o download do excel
+def get_table_download_link(df):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded
+    in:  dataframe
+    out: href string
+    """
+    val = to_excel(df)
+    b64 = base64.b64encode(val)  # val looks like b'...'
+    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="dados.xlsx">Download dos dados em Excel</a>' # decode b'abc' => abc
+
+# visualizar pdf
+def show_pdf(file_path):
+    with open(file_path,"rb") as f:
+          base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
+    st.markdown(pdf_display, unsafe_allow_html=True)
+
+#def download_excel(file)
+wb2 = load_workbook('teste.xlsx')
+stream = BytesIO()
+wb2.save(stream)
+towrite =  stream.getvalue()
+b64 = base64.b64encode(towrite).decode()  # some strings
+linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download excel file</a>'
+st.markdown(linko, unsafe_allow_html=True)
 
 # leitura de dados do banco
 @st.cache(allow_output_mutation=True)
@@ -87,6 +130,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 
         df['data'] = pd.to_datetime(df['data'])
 
+
         # Ordena os dados pela data
         df = df.sort_values(by=['data'], ascending=False)
 
@@ -102,6 +146,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
         # Ordena as colunas
         df = df[colunas]
         df2 = df2[colunas_pal]
+        df2['numero_OT'] = df2['numero_OT'].astype('str')
 
     # selante
     if (tipo == 1) and (df.shape[0] > 0):
@@ -124,6 +169,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
         # Ordena as colunas
         df = df[colunas]
         df2 = df2[colunas_pal]
+        df2['numero_lote'] = df2['numero_lote'].astype('str')
 
     return df, df2
 
@@ -145,59 +191,62 @@ def adicionar_bobina():
         submitted = s6.form_submit_button('Adicionar bobina ao sistema')
 
     if submitted:
+        # verifica se ja existe bobina com o numero de lote inserido
+        if df_pal_sem[df_pal_sem['numero_OT'] == (dic['numero_OT'])].shape[0] == 0:
+            # Transforma dados do formulário em um dicionário
+            keys_values = dic.items()
+            new_d = {str(key): str(value) for key, value in keys_values}
 
-        # Transforma dados do formulário em um dicionário
-        keys_values = dic.items()
-        new_d = {str(key): str(value) for key, value in keys_values}
+            # Verifica campos não preenchidos e os modifica
+            for key, value in new_d.items():
+                if (value == '') or value == '[]':
+                    new_d[key] = '-'
 
-        # Verifica campos não preenchidos e os modifica
-        for key, value in new_d.items():
-            if (value == '') or value == '[]':
-                new_d[key] = '-'
+            # define a quantidade de paletes gerados pela bobina
+            new_d['paletes_gerados'] = int(int(new_d['peso_bobina']) * 412 / 187200)
 
-        # define a quantidade de paletes gerados pela bobina
-        new_d['paletes_gerados'] = int(int(new_d['peso_bobina']) * 412 / 187200)
+            # Define a quantidade de paletes que podem ser gerados pela bobina
+            qtd_paletes = int(new_d['paletes_gerados'])
 
-        # Define a quantidade de paletes que podem ser gerados pela bobina
-        qtd_paletes = int(new_d['paletes_gerados'])
+            # cria dataframe e preenche com os dados da bobina
+            df_paletes_sem = pd.DataFrame(columns=col_pal_sem, index=list(range(qtd_paletes)))
+            df_paletes_sem['numero_OT'] = str(new_d['numero_OT'])
+            df_paletes_sem['tipo_tampa'] = str(new_d['tipo_bobina'])
+            df_paletes_sem['data_gerado'] = str(new_d['data_entrada'])
+            df_paletes_sem['data_estoque'] = '-'
+            df_paletes_sem['data_consumo'] = '-'
+            df_paletes_sem['codigo_tampa_SAP'] = '-'
+            df_paletes_sem['numero_palete'] = '-'
 
-        # cria dataframe e preenche com os dados da bobina
-        df_paletes_sem = pd.DataFrame(columns=col_pal_sem, index=list(range(qtd_paletes)))
-        df_paletes_sem['numero_OT'] = str(new_d['numero_OT'])
-        df_paletes_sem['tipo_tampa'] = str(new_d['tipo_bobina'])
-        df_paletes_sem['data_gerado'] = str(new_d['data_entrada'])
-        df_paletes_sem['data_estoque'] = '-'
-        df_paletes_sem['data_consumo'] = '-'
-        df_paletes_sem['codigo_tampa_SAP'] = '-'
-        df_paletes_sem['numero_palete'] = '-'
+            # for para iterar sobre todos os paletes e salvar
+            for index, row in df_paletes_sem.iterrows():
+                if index < 10:
+                    index_str = '0' + str(index)
+                else:
+                    index_str = str(index)
+                row['documento'] = index_str
 
-        # for para iterar sobre todos os paletes e salvar
-        for index, row in df_paletes_sem.iterrows():
-            if index < 10:
-                index_str = '0' + str(index)
-            else:
-                index_str = str(index)
-            row['documento'] = index_str
+            new_d['Paletes'] = df_paletes_sem.to_csv()
 
-        new_d['Paletes'] = df_paletes_sem.to_csv()
+            rerun = False
+            # Armazena no banco
+            try:
+                doc_ref = db.collection("Bobina").document(new_d['numero_OT'])
+                doc_ref.set(new_d)
+                st.success('Bobina adicionada com sucesso!')
 
-        rerun = False
-        # Armazena no banco
-        try:
-            doc_ref = db.collection("Bobina").document(new_d['numero_OT'])
-            doc_ref.set(new_d)
-            st.success('Bobina adicionada com sucesso!')
+                # Limpa cache
+                caching.clear_cache()
 
-            # Limpa cache
-            caching.clear_cache()
+                # flag para rodar novamente o script
+                rerun = True
+            except:
+                st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
 
-            # flag para rodar novamente o script
-            rerun = True
-        except:
-            st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
-
-        if rerun:
-            st.experimental_rerun()
+            if rerun:
+                st.experimental_rerun()
+        else:
+            st.error('Já existe bobina com o número do lote informado')
 
 def adicionar_selante():
     # Formulario para inclusao de selante
@@ -216,60 +265,62 @@ def adicionar_selante():
         submitted = s5.form_submit_button('Adicionar selante ao sistema')
 
     if submitted:
+        # verifica se ja existe selante com o numero de lote inserido
+        if df_pal_com[df_pal_com['numero_lote'] == (dic['numero_lote'])].shape[0] == 0:
+            # Transforma dados do formulário em um dicionário
+            keys_values = dic.items()
+            new_d = {str(key): str(value) for key, value in keys_values}
 
-        # Transforma dados do formulário em um dicionário
-        keys_values = dic.items()
-        new_d = {str(key): str(value) for key, value in keys_values}
+            # Verifica campos não preenchidos e os modifica
+            for key, value in new_d.items():
+                if (value == '') or value == '[]':
+                    new_d[key] = '-'
 
-        # Verifica campos não preenchidos e os modifica
-        for key, value in new_d.items():
-            if (value == '') or value == '[]':
-                new_d[key] = '-'
+            # define a quantidade de paletes gerados pelo selante
+            new_d['paletes_gerados'] = int(int(new_d['peso_vedante']) * 2857 / 187200)
 
-        # define a quantidade de paletes gerados pelo selante
-        new_d['paletes_gerados'] = int(int(new_d['peso_vedante']) * 2857 / 187200)
+            # Define a quantidade de paletes que podem ser gerados pelo selante
+            qtd_paletes = int(new_d['paletes_gerados'])
 
-        # Define a quantidade de paletes que podem ser gerados pela bobina
-        qtd_paletes = int(new_d['paletes_gerados'])
+            # cria dataframe e preenche com os dados da selante
+            df_paletes_selante = pd.DataFrame(columns=col_pal_sel, index=list(range(qtd_paletes)))
+            df_paletes_selante['numero_lote'] = str(new_d['numero_lote'])
+            df_paletes_selante['codigo_SAP'] = str(new_d['codigo_SAP'])
+            df_paletes_selante['data_gerado'] = str(new_d['data_entrada'])
+            df_paletes_selante['data_estoque'] = '-'
+            df_paletes_selante['data_consumo'] = '-'
+            df_paletes_selante['lote_semi'] = '-'
+            df_paletes_selante['numero_palete'] = '-'
 
-        # cria dataframe e preenche com os dados da bobina
-        df_paletes_selante = pd.DataFrame(columns=col_pal_sel, index=list(range(qtd_paletes)))
-        df_paletes_selante['numero_lote'] = str(new_d['numero_lote'])
-        df_paletes_selante['codigo_SAP'] = str(new_d['codigo_SAP'])
-        df_paletes_selante['data_gerado'] = str(new_d['data_entrada'])
-        df_paletes_selante['data_estoque'] = '-'
-        df_paletes_selante['data_consumo'] = '-'
-        df_paletes_selante['lote_semi'] = '-'
-        df_paletes_selante['numero_palete'] = '-'
+            # for para iterar sobre todos os paletes e salvar
+            for index, row in df_paletes_selante.iterrows():
+                if index < 10:
+                    index_str = '0' + str(index)
+                else:
+                    index_str = str(index)
+                row['documento'] = index_str
 
-        # for para iterar sobre todos os paletes e salvar
-        for index, row in df_paletes_selante.iterrows():
-            if index < 10:
-                index_str = '0' + str(index)
-            else:
-                index_str = str(index)
-            row['documento'] = index_str
+            new_d['Paletes'] = df_paletes_selante.to_csv()
 
-        new_d['Paletes'] = df_paletes_selante.to_csv()
+            rerun = False
+            # Armazena no banco
+            try:
+                doc_ref = db.collection("Selante").document(new_d['numero_lote'])
+                doc_ref.set(new_d)
+                st.success('Selante adicionada com sucesso!')
 
-        rerun = False
-        # Armazena no banco
-        try:
-            doc_ref = db.collection("Selante").document(new_d['numero_lote'])
-            doc_ref.set(new_d)
-            st.success('Bobina adicionada com sucesso!')
+                # Limpa cache
+                caching.clear_cache()
 
-            # Limpa cache
-            caching.clear_cache()
+                # flag para rodar novamente o script
+                rerun = True
+            except:
+                st.error('Falha ao adicionar selante, tente novamente ou entre em contato com suporte!')
 
-            # flag para rodar novamente o script
-            rerun = True
-        except:
-            st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
-
-        if rerun:
-            st.experimental_rerun()
-
+            if rerun:
+                st.experimental_rerun()
+        else:
+            st.error('Já existe selante com o número do lote informado')
 ###########################################################################################################################################
 #####                    			cofiguracoes aggrid							                #######
 ###########################################################################################################################################
@@ -511,7 +562,6 @@ if selecionar_bobina:
 
     #verifica se ha bobina em uso
     bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
-    #st.write(bobina_em_uso)
 
     if bobina_em_uso.shape[0] > 0:
 
@@ -564,7 +614,7 @@ if selecionar_bobina:
 
     # Filtra paletes da bobina em uso e atualiza valores
     df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-    st.write(df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina])
+    #st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina])
 
     st.write(df_pal_sem['numero_palete'])
 
@@ -611,7 +661,6 @@ with col2:
             numero_palete = df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-'), 'numero_palete'].min()
 
             df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-            #st.write(df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete])
 
             # prepara dados para escrever no banco
             dic_fifo_in = {}
@@ -706,7 +755,6 @@ with col2:
         st.error('Nao ha palete sem selante para consumir')
 
     fifo_out_show = df_ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
-    #st.write(fifo_out_show.head())
     gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_out_show, 0, 0, True)
     response = AgGrid(
         fifo_out_show,
