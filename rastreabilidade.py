@@ -51,6 +51,14 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	#try:
 	
+	# tratamento da planilha de tampas prata
+	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
+	data.dropna(subset=['remove'], inplace=True)
+	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
+	data.reset_index(drop=True, inplace=True)
+	data.drop([0], inplace=True)
+	
 	dicionario_colunas = {
 		data.columns[0]: "numero_OT", 
 		data.columns[1]: "data", 
@@ -62,14 +70,6 @@ def upload_excel(uploaded_file):
 		data.columns[7]: "paletes_gerados", 
 		data.columns[8]: "status"		
 	}
-	
-	# tratamento da planilha de tampas prata
-	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
-	data.dropna(subset=['remove'], inplace=True)
-	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
-	data.reset_index(drop=True, inplace=True)
-	data.drop([0], inplace=True)
 
 	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
 	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
@@ -91,9 +91,21 @@ def upload_excel(uploaded_file):
 	data2.reset_index(drop=True, inplace=True)
 	data2.drop([0], inplace=True)
 	
+	dicionario_colunas2 = {
+		data2.columns[0]: "numero_OT", 
+		data2.columns[1]: "data", 
+		data2.columns[2]: "tipo_bobina", 
+		data2.columns[3]: "codigo_bobina", 
+		data2.columns[4]: "peso_bobina", 
+		data2.columns[5]: "codigo_SAP",
+		data2.columns[6]: "data_entrada", 
+		data2.columns[7]: "paletes_gerados", 
+		data2.columns[8]: "status"		
+	}
+	
 	data2 = data2.loc[data2['STATUS'].str.lower() == 'armazenada']
 	data2 = data2.iloc[:,[2,6,1,0,4,3,14,15,16]]
-	data2.rename(columns=dicionario_colunas, inplace=True)
+	data2.rename(columns=dicionario_colunas2, inplace=True)
 	
 	data2.codigo_SAP = data.codigo_bobina
 	data2.tipo_bobina = 'Tampa Prata'
