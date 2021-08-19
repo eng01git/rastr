@@ -51,12 +51,12 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-		data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
+		#data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 
 		st.write(type(data))
-		st.write(type(data2))
+		#st.write(type(data2))
 		st.write(data.head())
-		st.write(data2.head())
+		#st.write(data2.head())
 		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
 		#data = data[(data['Tempo'] > 30.0)]
 		#data = data[data['Definição do Evento'].isin(tipos)]
