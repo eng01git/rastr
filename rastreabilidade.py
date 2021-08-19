@@ -87,10 +87,10 @@ def upload_excel(uploaded_file):
 			
 		# Limpa cache
 		#caching.clear_cache()		
-		#return to_include
-	#except:
+		return data
+	except:
 		#st.error('Arquivo não compatível com exportação do MES')
-		#return None
+		return None
 
 
 # Define cores para os valores validos ou invalidos
