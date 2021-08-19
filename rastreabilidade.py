@@ -49,13 +49,13 @@ tz = pytz.timezone('America/Bahia')
 
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
-	try:
-		data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-		#data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
+	#try:
+	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+	#data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 
-		st.write(type(data))
-		#st.write(type(data2))
-		st.write(data.head())
+	st.write(type(data))
+	#st.write(type(data2))
+	st.write(data.head())
 		#st.write(data2.head())
 		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
 		#data = data[(data['Tempo'] > 30.0)]
@@ -92,11 +92,11 @@ def upload_excel(uploaded_file):
 			
 		# Limpa cache
 		#caching.clear_cache()		
-		return data
-	except:
+		#return data
+	#except:
 		#st.error('Arquivo não compatível com exportação do MES')
-		st.error('deu ruim')
-		return None
+		#st.error('deu ruim')
+	return None
 
 
 # Define cores para os valores validos ou invalidos
