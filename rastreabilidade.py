@@ -116,9 +116,12 @@ def upload_excel(uploaded_file):
 	tratado_ta = trata_dados(df_ta, 4)
 	st.write(tratado_ta.head(10))
 	
+	data = df_tp.append(df_gd, ignore_index=True)
+	data = data.append(df_br, ignore_index=True)
+	data = data.append(df_ta, ignore_index=True)
 	
-	
-		#return data
+	st.write(data)
+		#dreturn data
 	#except:
 		#st.error('Arquivo não compatível com exportação do MES')
 		#st.error('deu ruim')
