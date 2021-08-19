@@ -53,7 +53,7 @@ def upload_excel(uploaded_file):
 	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
 	data.dropna(subset=['remove'], inplace=True)
-	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
+	data.rename(columns=data.iloc[0].strip(), inplace = True)
 	data.reset_index(drop=True, inplace=True)
 	data.drop([0], inplace=True)
 	st.write(data.head(10))
