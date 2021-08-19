@@ -75,6 +75,9 @@ def upload_excel(uploaded_file):
 		data.columns[8]: "status"		
 	}
 	
+	data.data_entrada = '-'
+	data.paletes_gerados = int(int(data['peso_bobina']) * 412 / 187200)
+	
 	data.rename(columns=dicionario_colunas, inplace=True)
 	
 	data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
