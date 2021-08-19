@@ -96,21 +96,25 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		# tratamento da planilha de tampas prata
+		st.subheader('Bobina Tampa Prata')
 		df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 		tratado_tp = trata_dados(df_tp, 1)
 		st.write(tratado_tp.head(10))
 
 		# tratamento da planilha de tampass gold
+		st.subheader('Bobina Tampa Dourada')
 		df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 		tratado_gd = trata_dados(df_gd, 2)
 		st.write(tratado_gd.head(10))
 
 		# tratamento da palnilha de tampas brancas
+		st.subheader('Bobina Tampa Branca')
 		df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
 		tratado_br = trata_dados(df_br, 3)
 		st.write(tratado_br.head(10))
 
 		# tratamento da planilha de tampas de lacre azul
+		st.subheader('Bobina Tampa Lacre Azul')
 		df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
 		tratado_ta = trata_dados(df_ta, 4)
 		st.write(tratado_ta.head(10))
