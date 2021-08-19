@@ -61,7 +61,7 @@ def upload_excel(uploaded_file):
 	data.rename(columns={data.columns[17]: "observacao" }, inplace = True)
 	st.write(data.observacao)
 	st.write(data.observacao.str.len())
-	data = data.loc[(data['STATUS'].str.lower() == 'armazenada') & (data['observacao'] == np.nan)]
+	data = data.loc[(data['STATUS'].str.lower() == 'armazenada') & (pd.isna(data['observacao']))]
 	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	
 	dicionario_colunas = {
