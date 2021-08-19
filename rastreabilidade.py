@@ -95,6 +95,7 @@ def upload_excel(uploaded_file):
 		return data
 	except:
 		#st.error('Arquivo não compatível com exportação do MES')
+		st.error('deu ruim')
 		return None
 
 
