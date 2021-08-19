@@ -123,7 +123,7 @@ def upload_excel(uploaded_file):
 		dados = dados.append(tratado_br, ignore_index=True)
 		dados = dados.append(tratado_ta, ignore_index=True)
 		
-		st.subehader('Bobinas Filtradas')
+		st.subheader('Bobinas Filtradas')
 		st.write(dados)
 		return dados
 	except:
