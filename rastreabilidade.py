@@ -49,30 +49,30 @@ tz = pytz.timezone('America/Bahia')
 
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
-	try:
-		data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-		data.rename(columns={data.columns[0]: "remove" }, inplace = True)
-		data.dropna(subset=['remove'], inplace=True)
-		data.rename(columns=data.iloc[0], inplace = True)
-		data.reset_index(drop=True, inplace=True)
-		data.drop([0], inplace=True)
-		
-		st.write(data.loc[data['STATUS'].str.lower == 'armazenada'])
-		#data = data.iloc[:,[2,6,1,0,4,0,16,16]]
-		
-		#st.write(data.isnull().sum(axis=1))
-		
-		
-		data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
-		data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
-		data2.dropna(subset=['remove'], inplace=True)
-		data2.rename(columns=data2.iloc[0], inplace = True)
-		data2.reset_index(drop=True, inplace=True)
-		data2.drop([0], inplace=True)
-		#st.write(data2.isnull().sum(axis=1))
+	#try:
+	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
+	data.dropna(subset=['remove'], inplace=True)
+	data.rename(columns=data.iloc[0], inplace = True)
+	data.reset_index(drop=True, inplace=True)
+	data.drop([0], inplace=True)
 
-		st.write(data.head(10))
-		st.write(data2.head(10))
+	st.write(data.loc[data['STATUS'].str.lower == 'armazenada'])
+	#data = data.iloc[:,[2,6,1,0,4,0,16,16]]
+
+	#st.write(data.isnull().sum(axis=1))
+
+
+	data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
+	data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
+	data2.dropna(subset=['remove'], inplace=True)
+	data2.rename(columns=data2.iloc[0], inplace = True)
+	data2.reset_index(drop=True, inplace=True)
+	data2.drop([0], inplace=True)
+	#st.write(data2.isnull().sum(axis=1))
+
+	st.write(data.head(10))
+	st.write(data2.head(10))
 		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
 		#data = data[(data['Tempo'] > 30.0)]
 		#data = data[data['Definição do Evento'].isin(tipos)]
@@ -108,11 +108,11 @@ def upload_excel(uploaded_file):
 			
 		# Limpa cache
 		#caching.clear_cache()		
-		return data
-	except:
+		#return data
+	#except:
 		#st.error('Arquivo não compatível com exportação do MES')
-		st.error('deu ruim')
-		return None
+		#st.error('deu ruim')
+	return None
 
 
 # Define cores para os valores validos ou invalidos
