@@ -51,10 +51,12 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+		st.write(data.isnull().sum(axis=1))
+		
+		
 		data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
+		st.write(data2.isnull().sum(axis=1))
 
-	#st.write(type(data))
-	#st.write(type(data2))
 		st.write(data.head(10))
 		st.write(data2.head(10))
 		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
