@@ -54,6 +54,9 @@ def upload_excel(uploaded_file):
 		data.rename(columns={data.columns[0]: "remove" }, inplace = True)
 		data.dropna(subset=['remove'], inplace=True)
 		data.rename(columns=data.iloc[0], inplace = True)
+		data.reset_index(drop=True, inplace=True)
+		data.drop([0], inplace=True)
+		
 		#st.write(data.isnull().sum(axis=1))
 		
 		
@@ -61,6 +64,8 @@ def upload_excel(uploaded_file):
 		data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
 		data2.dropna(subset=['remove'], inplace=True)
 		data2.rename(columns=data2.iloc[0], inplace = True)
+		data2.reset_index(drop=True, inplace=True)
+		data2.drop([0], inplace=True)
 		#st.write(data2.isnull().sum(axis=1))
 
 		st.write(data.head(10))
