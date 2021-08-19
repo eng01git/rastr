@@ -550,7 +550,7 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 
 uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 if uploaded_file is not None:
-	up_mes = upload_excel(uploaded_file, tipos)
+	up_mes = upload_excel(uploaded_file)
 
 # define imagem e barra lateral
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
