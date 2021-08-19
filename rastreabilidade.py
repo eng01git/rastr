@@ -117,8 +117,8 @@ def upload_excel(uploaded_file):
 	st.write(tratado_ta.head(10))
 	
 	dados = df_tp.append(df_gd, ignore_index=True)
-	dados = data.append(df_br, ignore_index=True)
-	dados = data.append(df_ta, ignore_index=True)
+	dados = dados.append(df_br, ignore_index=True)
+	dados = dados.append(df_ta, ignore_index=True)
 	
 	st.write(dados)
 		#dreturn data
