@@ -266,7 +266,7 @@ def adicionar_bobina():
         dic['data'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
         s1, s2, s3, s4, s5, s6 = st.beta_columns([2, 2, 2, 2, 2, 1])
         dic['numero_OT'] = s1.text_input('Número OT')
-        dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', tipos_bobinas.keys())
+        dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
         dic['codigo_bobina'] = s3.text_input('Codigo da bobina')
         dic['peso_bobina'] = s4.number_input('Peso da bobina', step=100, format='%i', value=9000, max_value=18000)
         dic['codigo_SAP'] = s5.text_input('Código SAP')
