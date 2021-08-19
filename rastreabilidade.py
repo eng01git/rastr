@@ -53,7 +53,7 @@ def upload_excel(uploaded_file):
 	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 	#data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 
-	st.write(type(data))
+	#st.write(type(data))
 	#st.write(type(data2))
 	st.write(data.head())
 		#st.write(data2.head())
