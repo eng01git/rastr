@@ -74,11 +74,10 @@ def upload_excel(uploaded_file):
 		data.columns[7]: "paletes_gerados", 
 		data.columns[8]: "status"		
 	}
+	data.rename(columns=dicionario_colunas, inplace=True)
 	
 	data.data_entrada = '-'
-	data.paletes_gerados = int(int(data['peso_bobina']) * 412 / 187200)
-	
-	data.rename(columns=dicionario_colunas, inplace=True)
+	data.paletes_gerados = int(int(data['peso_bobina']) * 412 / 187200)	
 	
 	data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 	data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
