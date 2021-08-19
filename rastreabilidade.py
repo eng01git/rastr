@@ -47,7 +47,7 @@ tz = pytz.timezone('America/Bahia')
 #######################################################################################################################
 
 
-def trata_dados(data):
+def trata_dados(data, tipo):
 	
 	# tratamento da planilha de tampas prata
 	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
@@ -74,12 +74,21 @@ def trata_dados(data):
 	data.rename(columns=dicionario_colunas, inplace=True)
 	
 	data.codigo_SAP = data.codigo_bobina
-	data.tipo_bobina = 'Tampa Prata'
+	
+	# define o tipo de tampa de acordo com o parametro tipo
+	if tipo == 1:
+		data.tipo_bobina = 'Tampa Prata'
+	elif tipo == 2:
+		data.tipo_bobina = 'Tampa Dourada'
+	elif tipo == 3:
+		data.tipo_bobina = 'Tampa Branca'
+	elif tipo == 4:
+		data.tipo_bobina = 'Tampa Lacre Azul'
+		
 	data.data_entrada = '-'
 	data.paletes_gerados = (data['peso_bobina']) * 412 / 187200
 	data.paletes_gerados = data.paletes_gerados.astype('int')
 	data.status = 'Disponível'
-	
 	return data
 
 
@@ -89,12 +98,25 @@ def upload_excel(uploaded_file):
 	
 	# tratamento da planilha de tampas prata
 	df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-	tratado_tp = trata_dados(df_tp)
+	tratado_tp = trata_dados(df_tp, 1)
 	st.write(tratado_tp.head(10))
 	
+	# tratamento da planilha de tampass gold
 	df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
-	tratado_gd = trata_dados(df_gd)
+	tratado_gd = trata_dados(df_gd, 2)
 	st.write(tratado_gd.head(10))
+	
+	# tratamento da palnilha de tampas brancas
+	df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
+	tratado_br = trata_dados(df_br, 3)
+	st.write(tratado_br.head(10))
+	
+	# tratamento da planilha de tampas de lacre azul
+	df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
+	tratado_ta = trata_dados(df_ta, 4)
+	st.write(tratado_ta.head(10))
+	
+	
 	
 		#return data
 	#except:
