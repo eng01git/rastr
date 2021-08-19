@@ -51,13 +51,15 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-		data.rename(columns={0: 'teste'})
-		st.write(data.columns)
-		st.write(data.isnull().sum(axis=1))
+		data.rename(columns={data.columns[0]: "remove" }, inplace = True)
+		data.dropna(subset=['remove'], inplace=True)
+		#st.write(data.isnull().sum(axis=1))
 		
 		
 		data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
-		st.write(data2.isnull().sum(axis=1))
+		data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
+		data2.dropna(subset=['remove'], inplace=True)
+		#st.write(data2.isnull().sum(axis=1))
 
 		st.write(data.head(10))
 		st.write(data2.head(10))
