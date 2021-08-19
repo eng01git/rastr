@@ -122,7 +122,8 @@ def upload_excel(uploaded_file):
 		dados = tratado_tp.append(tratado_gd, ignore_index=True)
 		dados = dados.append(tratado_br, ignore_index=True)
 		dados = dados.append(tratado_ta, ignore_index=True)
-
+		
+		st.subehader('Bobinas Filtradas')
 		st.write(dados)
 		return dados
 	except:
