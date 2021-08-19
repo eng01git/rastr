@@ -51,7 +51,7 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-		data.rename(columns={"": 'teste'})
+		data.rename(columns={0: 'teste'})
 		st.write(data.isnull().sum(axis=1))
 		
 		
