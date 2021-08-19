@@ -60,7 +60,7 @@ def upload_excel(uploaded_file):
 	data.drop([0], inplace=True)
 
 	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
-	data = data.iloc[:,[2,6,1,0,4,0,14,15,16]]
+	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	st.write(data.head(10))
 	
 	dicionario_colunas = {
@@ -76,6 +76,7 @@ def upload_excel(uploaded_file):
 	}
 	data.rename(columns=dicionario_colunas, inplace=True)
 	
+	data.codigo_SAP = data.codigo_bobina
 	data.tipo_bobina = data.tipo_bobina.str.lower().str.split('; ')
 	data.data_entrada = '-'
 	data.paletes_gerados = (data['peso_bobina']) * 412 / 187200
