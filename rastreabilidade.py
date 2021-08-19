@@ -51,18 +51,6 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	#try:
 	
-	# tratamento da planilha de tampas prata
-	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
-	data.dropna(subset=['remove'], inplace=True)
-	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
-	data.reset_index(drop=True, inplace=True)
-	data.drop([0], inplace=True)
-
-	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
-	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
-	st.write(data.head(10))
-	
 	dicionario_colunas = {
 		data.columns[0]: "numero_OT", 
 		data.columns[1]: "data", 
@@ -74,61 +62,47 @@ def upload_excel(uploaded_file):
 		data.columns[7]: "paletes_gerados", 
 		data.columns[8]: "status"		
 	}
+	
+	# tratamento da planilha de tampas prata
+	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
+	data.dropna(subset=['remove'], inplace=True)
+	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
+	data.reset_index(drop=True, inplace=True)
+	data.drop([0], inplace=True)
+
+	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
+	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	data.rename(columns=dicionario_colunas, inplace=True)
 	
 	data.codigo_SAP = data.codigo_bobina
-	data.tipo_bobina = data.tipo_bobina.str.lower().str.split('; ')
-	data.tipo_bobina = data.tipo_bobina[1]
+	data.tipo_bobina = 'Tampa Prata'
 	data.data_entrada = '-'
 	data.paletes_gerados = (data['peso_bobina']) * 412 / 187200
 	data.paletes_gerados = data.paletes_gerados.astype('int')
 	data.status = 'Disponível'
 	
+	st.write(data.head(10))
+	
 	data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 	data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
 	data2.dropna(subset=['remove'], inplace=True)
-	data2.rename(columns=data2.iloc[0], inplace = True)
+	data2.rename(columns=data2.iloc[0].str.strip(), inplace = True)
 	data2.reset_index(drop=True, inplace=True)
 	data2.drop([0], inplace=True)
-	#st.write(data2.isnull().sum(axis=1))
-
-	st.write(data.head(10))
-	#st.write(data2.head(10))
-		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
-		#data = data[(data['Tempo'] > 30.0)]
-		#data = data[data['Definição do Evento'].isin(tipos)]
-
-		# Ajuste da variável de data
-		#data['Data'] = data['Data'].dt.date
-
-		# Criação do nome do documento
-		#data['documento'] = data['Linha'].astype(str) + data['Equipamento'].astype(str) + data['Data'].astype(str) + data['Hora'].astype(str)
-
-		# Cria dicionário vazio
-		#dicionario = {}
-
-		# Define o caminho da coleção do firebase
-		#posts_ref = db.collection("MES_data")
-
-		# Busca todos os documentos presentes na coleção e salva num dicionário
-		#for doc in posts_ref.stream():
-		#	dic_auxiliar = doc.to_dict()
-		#	dicionario[dic_auxiliar['documento']] = dic_auxiliar
-
-		# Filtra os valores presentes no arquivo e não presentes na base dados
-		#to_include = data[~data['documento'].isin(dicionario.keys())]
-
-		# Se houver variáveis a serem incluídas e faz a inclusão
-		#if to_include.shape[0] > 0 :
-		#	batch = db.batch()
-		#	for index, row in to_include.iterrows():
-		#		ref = db.collection('MES_data').document(row['documento'])
-		#		row_string = row.astype(str)
-		#		batch.set(ref, row_string.to_dict())
-		#	batch.commit()	
-			
-		# Limpa cache
-		#caching.clear_cache()		
+	
+	data2 = data2.loc[data2['STATUS'].str.lower() == 'armazenada']
+	data2 = data2.iloc[:,[2,6,1,0,4,3,14,15,16]]
+	data2.rename(columns=dicionario_colunas, inplace=True)
+	
+	data2.codigo_SAP = data.codigo_bobina
+	data2.tipo_bobina = 'Tampa Prata'
+	data2.data_entrada = '-'
+	data2.paletes_gerados = (data2['peso_bobina']) * 412 / 187200
+	data2.paletes_gerados = data2.paletes_gerados.astype('int')
+	data2.status = 'Disponível'
+	st.write(data2.head(10))
+	
 		#return data
 	#except:
 		#st.error('Arquivo não compatível com exportação do MES')
