@@ -56,8 +56,6 @@ def trata_dados(data):
 	data.reset_index(drop=True, inplace=True)
 	data.drop([0], inplace=True)
 	data.rename(columns={data.columns[17]: "observacao" }, inplace = True)
-	st.write(data.observacao)
-	st.write(data.observacao.str.len())
 	data = data.loc[(data['STATUS'].str.lower() == 'armazenada') & (pd.isna(data['observacao']))]
 	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	
@@ -94,37 +92,9 @@ def upload_excel(uploaded_file):
 	tratado_tp = trata_dados(df_tp)
 	st.write(tratado_tp.head(10))
 	
-	data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
-	data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
-	data2.dropna(subset=['remove'], inplace=True)
-	data2.rename(columns=data2.iloc[0].str.strip(), inplace = True)
-	data2.reset_index(drop=True, inplace=True)
-	data2.drop([0], inplace=True)
-	data2.rename(columns={data2.columns[17]: "observacao" }, inplace = True)
-	data2 = data2.loc[(data2['STATUS'].str.lower() == 'armazenada') & (pd.isna(data2['observacao']))]
-	data2 = data2.iloc[:,[2,6,1,0,4,3,14,15,16]]
-	
-	dicionario_colunas2 = {
-		data2.columns[0]: "numero_OT", 
-		data2.columns[1]: "data", 
-		data2.columns[2]: "tipo_bobina", 
-		data2.columns[3]: "codigo_bobina", 
-		data2.columns[4]: "peso_bobina", 
-		data2.columns[5]: "codigo_SAP",
-		data2.columns[6]: "data_entrada", 
-		data2.columns[7]: "paletes_gerados", 
-		data2.columns[8]: "status"		
-	}
-
-	data2.rename(columns=dicionario_colunas2, inplace=True)
-	
-	data2.codigo_SAP = data2.codigo_bobina
-	data2.tipo_bobina = 'Tampa Dourada'
-	data2.data_entrada = '-'
-	data2.paletes_gerados = (data2['peso_bobina']) * 412 / 187200
-	data2.paletes_gerados = data2.paletes_gerados.astype('int')
-	data2.status = 'Disponível'
-	st.write(data2.head(10))
+	df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
+	tratado_gd = trata_dados(df_gd)
+	st.write(tratado_gd.head(10))
 	
 		#return data
 	#except:
