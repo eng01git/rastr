@@ -76,6 +76,7 @@ def upload_excel(uploaded_file):
 	}
 	data.rename(columns=dicionario_colunas, inplace=True)
 	
+	data.tipo_bobina = data.tipo_bobina.str.lower().str.split(';')[1]
 	data.data_entrada = '-'
 	data.paletes_gerados = (data['peso_bobina']) * 412 / 187200
 	data.paletes_gerados = data.paletes_gerados.astype('int')
