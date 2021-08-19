@@ -78,6 +78,7 @@ def upload_excel(uploaded_file):
 	
 	data.codigo_SAP = data.codigo_bobina
 	data.tipo_bobina = data.tipo_bobina.str.lower().str.split('; ')
+	data.tipo_bobina = data.tipo_bobina[1]
 	data.data_entrada = '-'
 	data.paletes_gerados = (data['peso_bobina']) * 412 / 187200
 	data.paletes_gerados = data.paletes_gerados.astype('int')
