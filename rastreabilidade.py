@@ -50,6 +50,8 @@ tz = pytz.timezone('America/Bahia')
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	#try:
+	
+	# tratamento da planilha de tampas prata
 	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
 	data.dropna(subset=['remove'], inplace=True)
@@ -58,12 +60,22 @@ def upload_excel(uploaded_file):
 	data.drop([0], inplace=True)
 
 	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
-	data = data.iloc[:,[2,6,1,0,4,0,16,16]]
+	data = data.iloc[:,[2,6,1,0,4,0,16,16,16]]
 
-	st.write(data.columns)
-	#st.write(data.isnull().sum(axis=1))
-
-
+	dicionario_colunas = {
+		data.columns[0]: "numero_OT", 
+		data.columns[1]: "data", 
+		data.columns[2]: "tipo_bobina", 
+		data.columns[3]: "codigo_bobina", 
+		data.columns[4]: "peso_bobina", 
+		data.columns[5]: "codigo_SAP",
+		data.columns[6]: "data_entrada", 
+		data.columns[7]: "paletes_gerados", 
+		data.columns[8]: "status"		
+	}
+	
+	data.rename(columns=dicionario_colunas, inplace=True)
+	
 	data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 	data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
 	data2.dropna(subset=['remove'], inplace=True)
