@@ -47,12 +47,9 @@ tz = pytz.timezone('America/Bahia')
 #######################################################################################################################
 
 
-def upload_excel(uploaded_file):
-	# Leitura dos dados do arquivo excel
-	#try:
+def trata_dados(data):
 	
 	# tratamento da planilha de tampas prata
-	data = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
 	data.dropna(subset=['remove'], inplace=True)
 	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
@@ -85,7 +82,17 @@ def upload_excel(uploaded_file):
 	data.paletes_gerados = data.paletes_gerados.astype('int')
 	data.status = 'Disponível'
 	
-	st.write(data.head(10))
+	return data
+
+
+def upload_excel(uploaded_file):
+	# Leitura dos dados do arquivo excel
+	#try:
+	
+	# tratamento da planilha de tampas prata
+	df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+	tratado_tp = trata_dados(df_tp)
+	st.write(tratado_tp.head(10))
 	
 	data2 = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 	data2.rename(columns={data2.columns[0]: "remove" }, inplace = True)
