@@ -47,6 +47,52 @@ tz = pytz.timezone('America/Bahia')
 #######################################################################################################################
 
 
+def upload_excel(uploaded_file):
+	# Leitura dos dados do arquivo excel
+	try:
+		data = pd.read_excel(uploaded_file, sheet_name=['Bobina Tampa Prata', 'Bobina Tampa Gold'])
+		st.write(data)
+		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
+		#data = data[(data['Tempo'] > 30.0)]
+		#data = data[data['Definição do Evento'].isin(tipos)]
+
+		# Ajuste da variável de data
+		#data['Data'] = data['Data'].dt.date
+
+		# Criação do nome do documento
+		#data['documento'] = data['Linha'].astype(str) + data['Equipamento'].astype(str) + data['Data'].astype(str) + data['Hora'].astype(str)
+
+		# Cria dicionário vazio
+		#dicionario = {}
+
+		# Define o caminho da coleção do firebase
+		#posts_ref = db.collection("MES_data")
+
+		# Busca todos os documentos presentes na coleção e salva num dicionário
+		#for doc in posts_ref.stream():
+		#	dic_auxiliar = doc.to_dict()
+		#	dicionario[dic_auxiliar['documento']] = dic_auxiliar
+
+		# Filtra os valores presentes no arquivo e não presentes na base dados
+		#to_include = data[~data['documento'].isin(dicionario.keys())]
+
+		# Se houver variáveis a serem incluídas e faz a inclusão
+		#if to_include.shape[0] > 0 :
+		#	batch = db.batch()
+		#	for index, row in to_include.iterrows():
+		#		ref = db.collection('MES_data').document(row['documento'])
+		#		row_string = row.astype(str)
+		#		batch.set(ref, row_string.to_dict())
+		#	batch.commit()	
+			
+		# Limpa cache
+		#caching.clear_cache()		
+		#return to_include
+	#except:
+		#st.error('Arquivo não compatível com exportação do MES')
+		#return None
+
+
 # Define cores para os valores validos ou invalidos
 def color(val):
     if val == 'invalido':
@@ -168,7 +214,6 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 
         df['data'] = pd.to_datetime(df['data'])
 
-
         # Ordena os dados pela data
         df = df.sort_values(by=['data'], ascending=False)
 
@@ -221,9 +266,9 @@ def adicionar_bobina():
         dic['data'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
         s1, s2, s3, s4, s5, s6 = st.beta_columns([2, 2, 2, 2, 2, 1])
         dic['numero_OT'] = s1.text_input('Número OT')
-        dic['tipo_bobina'] = s2.text_input('Tipo da bobina')
+        dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', tipos_bobinas.keys())
         dic['codigo_bobina'] = s3.text_input('Codigo da bobina')
-        dic['peso_bobina'] = s4.number_input('Peso da bobina', step=1, format='%i', value=9000)
+        dic['peso_bobina'] = s4.number_input('Peso da bobina', step=100, format='%i', value=9000, max_value=18000)
         dic['codigo_SAP'] = s5.text_input('Código SAP')
         dic['data_entrada'] = ''
         submitted = s6.form_submit_button('Adicionar bobina ao sistema')
@@ -297,7 +342,7 @@ def adicionar_selante():
         s1, s2, s3, s4, s5 = st.beta_columns([2, 2, 2, 2, 1])
         dic['numero_lote'] = s1.text_input('Número do lote')
         dic['codigo_SAP'] = s2.text_input('Codigo SAP')
-        dic['peso_vedante'] = s3.number_input('Peso do vedante', step=1, format='%i', value=5000)
+        dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
         dic['lote_interno'] = s4.text_input('Lote interno')
         dic['data_entrada'] = ''
         submitted = s5.form_submit_button('Adicionar selante ao sistema')
@@ -474,6 +519,19 @@ col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'dat
                'status']
 col_pal_sel = ['numero_lote', 'documento', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
 
+tipos_tampas = {'Tampa Prata Sem Selante': 40009011,
+		'Tampa Prata Com Selante': 40009012,
+		'Tampa Dourada Sem Selante': 40009013,
+		'Tampa Dourada Com Selante': 40009014,
+		'Tampa Branca Sem Selante': 40009439,
+		'Tampa Branca Com Selante': 40009438}
+
+tipos_bobinas = {'Bobina Tampa Prata': 50490760,
+		'Bobina Tampa Ouro': 50490599,
+		'Bobina Tampa Branca': 50427252}
+
+tipos_selantes = {'Selante': 50491194}
+
 # leitura e exibicao dos dados das bobinas
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
@@ -489,6 +547,10 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 #######################
 # organizacao da tela #
 #######################
+
+uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
+if uploaded_file is not None:
+	up_mes = upload_excel(uploaded_file, tipos)
 
 # define imagem e barra lateral
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
