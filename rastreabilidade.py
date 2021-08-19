@@ -56,6 +56,7 @@ def upload_excel(uploaded_file):
 	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
 	data.reset_index(drop=True, inplace=True)
 	data.drop([0], inplace=True)
+	st.write(data.head(10))
 
 	st.write(data.loc[data['STATUS'].str.lower == 'armazenada'])
 	#data = data.iloc[:,[2,6,1,0,4,0,16,16]]
@@ -72,7 +73,7 @@ def upload_excel(uploaded_file):
 	#st.write(data2.isnull().sum(axis=1))
 
 	st.write(data.head(10))
-	st.write(data2.head(10))
+	#st.write(data2.head(10))
 		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
 		#data = data[(data['Tempo'] > 30.0)]
 		#data = data[data['Definição do Evento'].isin(tipos)]
