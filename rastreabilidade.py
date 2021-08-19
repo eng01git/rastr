@@ -131,6 +131,11 @@ def upload_excel(uploaded_file):
 	return None
 
 
+def insert_excel(df):
+	pass
+
+
+
 # Define cores para os valores validos ou invalidos
 def color(val):
     if val == 'invalido':
