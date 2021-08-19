@@ -58,6 +58,8 @@ def upload_excel(uploaded_file):
 	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
 	data.reset_index(drop=True, inplace=True)
 	data.drop([0], inplace=True)
+	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
+	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	
 	dicionario_colunas = {
 		data.columns[0]: "numero_OT", 
@@ -70,9 +72,7 @@ def upload_excel(uploaded_file):
 		data.columns[7]: "paletes_gerados", 
 		data.columns[8]: "status"		
 	}
-
-	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
-	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
+	
 	data.rename(columns=dicionario_colunas, inplace=True)
 	
 	data.codigo_SAP = data.codigo_bobina
@@ -90,6 +90,8 @@ def upload_excel(uploaded_file):
 	data2.rename(columns=data2.iloc[0].str.strip(), inplace = True)
 	data2.reset_index(drop=True, inplace=True)
 	data2.drop([0], inplace=True)
+	data2 = data2.loc[data2['STATUS'].str.lower() == 'armazenada']
+	data2 = data2.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	
 	dicionario_colunas2 = {
 		data2.columns[0]: "numero_OT", 
@@ -102,12 +104,10 @@ def upload_excel(uploaded_file):
 		data2.columns[7]: "paletes_gerados", 
 		data2.columns[8]: "status"		
 	}
-	
-	data2 = data2.loc[data2['STATUS'].str.lower() == 'armazenada']
-	data2 = data2.iloc[:,[2,6,1,0,4,3,14,15,16]]
+
 	data2.rename(columns=dicionario_colunas2, inplace=True)
 	
-	data2.codigo_SAP = data.codigo_bobina
+	data2.codigo_SAP = data2.codigo_bobina
 	data2.tipo_bobina = 'Tampa Prata'
 	data2.data_entrada = '-'
 	data2.paletes_gerados = (data2['peso_bobina']) * 412 / 187200
