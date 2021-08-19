@@ -58,7 +58,8 @@ def upload_excel(uploaded_file):
 	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
 	data.reset_index(drop=True, inplace=True)
 	data.drop([0], inplace=True)
-	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
+	data.rename(columns={data.columns[17]: "observacao" }, inplace = True)
+	data = data.loc[data['STATUS'].str.lower() == 'armazenada' & data['observacao'].str.len() == 0]
 	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	
 	dicionario_colunas = {
@@ -90,7 +91,8 @@ def upload_excel(uploaded_file):
 	data2.rename(columns=data2.iloc[0].str.strip(), inplace = True)
 	data2.reset_index(drop=True, inplace=True)
 	data2.drop([0], inplace=True)
-	data2 = data2.loc[data2['STATUS'].str.lower() == 'armazenada']
+	data2.rename(columns={data2.columns[17]: "observacao" }, inplace = True)
+	data2 = data2.loc[data2['STATUS'].str.lower() == 'armazenada' & data2['observacao'].str.len() == 0]
 	data2 = data2.iloc[:,[2,6,1,0,4,3,14,15,16]]
 	
 	dicionario_colunas2 = {
@@ -108,7 +110,7 @@ def upload_excel(uploaded_file):
 	data2.rename(columns=dicionario_colunas2, inplace=True)
 	
 	data2.codigo_SAP = data2.codigo_bobina
-	data2.tipo_bobina = 'Tampa Prata'
+	data2.tipo_bobina = 'Tampa Dourada'
 	data2.data_entrada = '-'
 	data2.paletes_gerados = (data2['peso_bobina']) * 412 / 187200
 	data2.paletes_gerados = data2.paletes_gerados.astype('int')
