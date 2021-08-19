@@ -56,10 +56,9 @@ def upload_excel(uploaded_file):
 	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
 	data.reset_index(drop=True, inplace=True)
 	data.drop([0], inplace=True)
-	st.write(data.head(10))
 
-	st.write(data.loc[data['STATUS'].str.lower() == 'armazenada'])
-	#data = data.iloc[:,[2,6,1,0,4,0,16,16]]
+	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
+	data = data.iloc[:,[2,6,1,0,4,0,16,16]]
 
 	#st.write(data.isnull().sum(axis=1))
 
