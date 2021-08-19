@@ -60,8 +60,9 @@ def upload_excel(uploaded_file):
 	data.drop([0], inplace=True)
 
 	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
-	data = data.iloc[:,[2,6,1,0,4,0,16,16,16]]
-
+	data = data.iloc[:,[2,6,1,0,4,0,14,15,16]]
+	st.write(data.head(10))
+	
 	dicionario_colunas = {
 		data.columns[0]: "numero_OT", 
 		data.columns[1]: "data", 
