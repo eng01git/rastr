@@ -60,6 +60,7 @@ def upload_excel(uploaded_file):
 	data = data.loc[data['STATUS'].str.lower() == 'armazenada']
 	data = data.iloc[:,[2,6,1,0,4,0,16,16]]
 
+	st.write(data.columns)
 	#st.write(data.isnull().sum(axis=1))
 
 
