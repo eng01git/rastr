@@ -15,9 +15,9 @@ from io import BytesIO
 from openpyxl import load_workbook, Workbook
 from google.cloud import firestore
 from google.oauth2 import service_account
-from load_css import local_css
+#from load_css import local_css
 
-local_css("style.css")
+#local_css("style.css")
 
 ######################################################################################################
 # Configurações da página
