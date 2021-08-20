@@ -650,11 +650,11 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 # organizacao da tela #
 #######################
 
-uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
-if uploaded_file is not None:
-	data_excel = upload_excel(uploaded_file)
-	df_excel = insert_excel(data_excel)
-	df_bobinas = df_bobinas.append(df_excel)
+#uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
+#if uploaded_file is not None:
+#	data_excel = upload_excel(uploaded_file)
+#	df_excel = insert_excel(data_excel)
+#	df_bobinas = df_bobinas.append(df_excel)
 	
 # define imagem e barra lateral
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
@@ -671,7 +671,6 @@ with st.beta_expander('Bobinas'):
         data_excel = upload_excel(uploaded_file)
         df_excel = insert_excel(data_excel)
         df_bobinas = df_bobinas.append(df_excel)
-
 
     adicionar_bobina()
 
