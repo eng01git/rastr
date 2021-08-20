@@ -736,6 +736,7 @@ with st.beta_expander('Paletes com selante'):
 
 # Verifica bobinas disponiveis
 df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
+df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 # cria selectbox para selecionar bobinas
 numero_bobina = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' ' + df_bobinas_disp['data'].astype(str))))
