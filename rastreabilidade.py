@@ -171,7 +171,7 @@ def insert_excel(df):
 				rows['documento'] = index_str
 
 			row['Paletes'] = df_paletes_sem.to_csv()
-			ref = db.collection('lid-rastr').document(row['numero_OT'])
+			ref = db.collection('Bobinas').document(row['numero_OT'])
 			row_string = row.astype(str)
 			batch.set(ref, row_string.to_dict())
 			
@@ -180,7 +180,7 @@ def insert_excel(df):
 		#df_bobinas
 		
 		# Limpa cache
-		#caching.clear_cache()		
+		caching.clear_cache()		
 		return df
 	#except:
 		#st.error('Arquivo não compatível com exportação do MES')
