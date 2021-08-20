@@ -138,7 +138,7 @@ def insert_excel(df):
 	st.write(bobinas_antigas)
 
 	# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
-	df = df[df['numero_OT'].isin(bobinas_antigas)]
+	df = df[~df['numero_OT'].isin(bobinas_antigas)]
 	st.write(df)
 
 		# Ajuste da variável de data
