@@ -670,7 +670,7 @@ with st.beta_expander('Bobinas'):
     if uploaded_file is not None:
         data_excel = upload_excel(uploaded_file)
 	
-	if data_excel != None:
+        if data_excel != None:
             df_excel = insert_excel(data_excel)
             df_bobinas = df_bobinas.append(df_excel)
 
