@@ -133,7 +133,7 @@ def upload_excel(uploaded_file):
 
 def insert_excel(df):
 	#try:
-	#lista de bobinas j[a inclusas no sistema
+	#lista de bobinas ja inclusas no sistema
 	bobinas_antigas = df_bobinas.numero_OT
 	st.write(list(bobinas_antigas))
 	
