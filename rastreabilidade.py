@@ -662,7 +662,7 @@ col2, imagem, col4 = st.beta_columns([3, 10, 3])
 #imagem.write(df_pal_com)
 imagem.image('lid_linha.png')
 
-st.subheader('Inclusao de Bobinas e Selante')
+st.subheader('Bobinas e Selantes')
 
 with st.beta_expander('Bobinas'):
     st.subheader('Inserir Bobinas')
@@ -707,7 +707,7 @@ with st.beta_expander('Selante'):
         enable_enterprise_modules=enable_enterprise_modules)
 
 
-st.subheader('Visulizacao do historico de paletes com e sem selante')
+st.subheader('Histórico de paletes com e sem selante')
 with st.beta_expander('Paletes sem selante'):
 
     gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_sem, 0, 0, True)
