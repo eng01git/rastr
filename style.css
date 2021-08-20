@@ -3,7 +3,7 @@
   color: white;
   padding: 0.5rem;
   margin-bottom: 1rem;
-  align: middle;
+  justify-content: center
 }
 .bold {
   padding-left: 1rem;
