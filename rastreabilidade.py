@@ -124,10 +124,8 @@ def upload_excel(uploaded_file):
 		dados = dados.append(tratado_ta, ignore_index=True)
 		
 		st.subheader('Bobinas Filtradas')
-		if dados.shape[0] > 0:
-			st.write(dados)
-		else:
-			st.info('As bobinas filtradas da planilha já constam no sistema')
+		st.write(dados)
+
 		return dados
 	except:
 		st.error('Arquivo não compatível')
@@ -144,7 +142,11 @@ def insert_excel(df):
 	# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
 	st.subheader('Bobinas a serem inseridas')
 	df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
-	st.write(df)
+	
+	if df.shape[0] > 0:
+		st.write(df)
+	else:
+		st.info('Todas as bobinas filtradas da planilha já estão inseridas no sistema!')
 
 	# Se houver variáveis a serem incluídas e faz a inclusão
 	if df.shape[0] > 0 :
