@@ -739,7 +739,7 @@ df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
 df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 # cria selectbox para selecionar bobinas
-numero_bobina = st1.selectbox('Selecione a próxima bobina:', list(( 'Número OT: ' + df_bobinas_disp['numero_OT'].astype(str) + ': Data: ' + df_bobinas_disp['data'].astype(str) + ' Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
+numero_bobina = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ': _Data_: ' + df_bobinas_disp['data'].astype(str) + ' _Tipo_: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
 
 # botao para teste
 reset = st.button('Reset')
