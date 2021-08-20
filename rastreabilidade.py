@@ -718,6 +718,7 @@ imagem.image('lid_linha.png')
 
 tipo_de_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
 imagem.subheader(tipo_de_bobina.iloc[0])
+imagem.markdown("And here's to you, <span style="background-color:green">Mrs. Robinson</span>, Jesus loves you more than you will know.")
 
 st.subheader('Histórico de paletes com e sem selante')
 with st.beta_expander('Paletes sem selante'):
