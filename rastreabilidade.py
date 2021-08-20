@@ -628,7 +628,7 @@ tipos_tampas = {'Tampa Prata Sem Selante': 40009011,
 		'Tampa Branca Com Selante': 40009438}
 
 tipos_bobinas = {'Tampa Prata': 50490760,
-		'Tampa Ouro': 50490599,
+		'Tampa Dourada': 50490599,
 		'Tampa Branca': 50427252,
 		'Tampa Lacre Azul': 50527602}
 
