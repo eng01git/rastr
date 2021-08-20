@@ -145,7 +145,7 @@ def insert_excel(df):
 
 	# Se houver variáveis a serem incluídas e faz a inclusão
 	if df.shape[0] > 0 :
-		df.
+		
 		batch = db.batch()
 		for index, row in df.iterrows():
 			
