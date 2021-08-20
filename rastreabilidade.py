@@ -170,7 +170,7 @@ def insert_excel(df):
 				   	 index_str = str(index)
 				rows['documento'] = index_str
 
-			new_d['Paletes'] = df_paletes_sem.to_csv()
+			row['Paletes'] = df_paletes_sem.to_csv()
 			ref = db.collection('lid-rastr').document(row['numero_OT'])
 			row_string = row.astype(str)
 			batch.set(ref, row_string.to_dict())
