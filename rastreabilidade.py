@@ -176,12 +176,12 @@ def insert_excel(df):
 			batch.set(ref, row_string.to_dict())
 			
 		batch.commit()	
-		df_bobinas = df_bobinas.append(df, ignore_index=True)
+		#df_bobinas = df_bobinas.append(df, ignore_index=True)
 		#df_bobinas
 		
 		# Limpa cache
 		#caching.clear_cache()		
-		#return to_include
+		return df
 	#except:
 		#st.error('Arquivo não compatível com exportação do MES')
 		#return None
@@ -647,7 +647,8 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 if uploaded_file is not None:
 	data_excel = upload_excel(uploaded_file)
-	insert_excel(data_excel)
+	df_excel = insert_excel(data_excel)
+	df_bobinas = df_bobinas.append(df_excel)
 	
 # define imagem e barra lateral
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
