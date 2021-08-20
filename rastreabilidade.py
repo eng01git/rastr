@@ -132,7 +132,51 @@ def upload_excel(uploaded_file):
 
 
 def insert_excel(df):
-	pass
+	#try:
+	#lista de bobinas j[a inclusas no sistema
+	bobinas_antigas = df_bobinas.numero_OT
+	st.write(bobinas_antigas)
+
+	# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
+	df = df[df['numero_OT'].isin(bobinas_antigas)]
+	st.write(df)
+
+		# Ajuste da variável de data
+		#data['Data'] = data['Data'].dt.date
+
+		# Criação do nome do documento
+		#data['documento'] = data['Linha'].astype(str) + data['Equipamento'].astype(str) + data['Data'].astype(str) + data['Hora'].astype(str)
+
+		# Cria dicionário vazio
+		#dicionario = {}
+
+		# Define o caminho da coleção do firebase
+		#posts_ref = db.collection("MES_data")
+
+		# Busca todos os documentos presentes na coleção e salva num dicionário
+		#for doc in posts_ref.stream():
+		#	dic_auxiliar = doc.to_dict()
+		#	dicionario[dic_auxiliar['documento']] = dic_auxiliar
+
+		# Filtra os valores presentes no arquivo e não presentes na base dados
+		#to_include = data[~data['documento'].isin(dicionario.keys())]
+
+		# Se houver variáveis a serem incluídas e faz a inclusão
+		#if to_include.shape[0] > 0 :
+		#	batch = db.batch()
+		#	for index, row in to_include.iterrows():
+		#		ref = db.collection('MES_data').document(row['documento'])
+		#		row_string = row.astype(str)
+		#		batch.set(ref, row_string.to_dict())
+		#	batch.commit()	
+			
+		# Limpa cache
+		#caching.clear_cache()		
+		#return to_include
+	#except:
+		#st.error('Arquivo não compatível com exportação do MES')
+		#return None
+	#pass
 
 
 
@@ -593,8 +637,9 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 
 uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 if uploaded_file is not None:
-	up_mes = upload_excel(uploaded_file)
-
+	data_excel = upload_excel(uploaded_file)
+	insert_excel(data_excel)
+	
 # define imagem e barra lateral
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
 #imagem.write(df_pal_sem)
