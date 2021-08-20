@@ -176,7 +176,7 @@ def insert_excel(df):
 			batch.set(ref, row_string.to_dict())
 			
 		batch.commit()	
-		
+		df_bobinas = df_bobinas.append(df, ignore_index=True)
 		#df_bobinas
 		
 		# Limpa cache
