@@ -124,7 +124,10 @@ def upload_excel(uploaded_file):
 		dados = dados.append(tratado_ta, ignore_index=True)
 		
 		st.subheader('Bobinas Filtradas')
-		st.write(dados)
+		if dados.shape[0] > 0:
+			st.write(dados)
+		else:
+			st.info('As bobinas filtradas da planilha já constam no sistema')
 		return dados
 	except:
 		st.error('Arquivo não compatível')
