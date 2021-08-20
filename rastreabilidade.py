@@ -143,35 +143,42 @@ def insert_excel(df):
 	df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
 	st.write(df)
 
-		# Ajuste da variável de data
-		#data['Data'] = data['Data'].dt.date
-
-		# Criação do nome do documento
-		#data['documento'] = data['Linha'].astype(str) + data['Equipamento'].astype(str) + data['Data'].astype(str) + data['Hora'].astype(str)
-
-		# Cria dicionário vazio
-		#dicionario = {}
-
-		# Define o caminho da coleção do firebase
-		#posts_ref = db.collection("MES_data")
-
-		# Busca todos os documentos presentes na coleção e salva num dicionário
-		#for doc in posts_ref.stream():
-		#	dic_auxiliar = doc.to_dict()
-		#	dicionario[dic_auxiliar['documento']] = dic_auxiliar
-
-		# Filtra os valores presentes no arquivo e não presentes na base dados
-		#to_include = data[~data['documento'].isin(dicionario.keys())]
-
-		# Se houver variáveis a serem incluídas e faz a inclusão
-		#if to_include.shape[0] > 0 :
-		#	batch = db.batch()
-		#	for index, row in to_include.iterrows():
-		#		ref = db.collection('MES_data').document(row['documento'])
-		#		row_string = row.astype(str)
-		#		batch.set(ref, row_string.to_dict())
-		#	batch.commit()	
+	# Se houver variáveis a serem incluídas e faz a inclusão
+	if df.shape[0] > 0 :
+		df.
+		batch = db.batch()
+		for index, row in df.iterrows():
 			
+			# Define a quantidade de paletes que podem ser gerados pela bobina
+			qtd_paletes = row.paletes_gerados
+
+			# cria dataframe e preenche com os dados da bobina
+			df_paletes_sem = pd.DataFrame(columns=col_pal_sem, index=list(range(qtd_paletes)))
+			df_paletes_sem['numero_OT'] = str(row['numero_OT'])
+			df_paletes_sem['tipo_tampa'] = str(row['tipo_bobina'])
+			df_paletes_sem['data_gerado'] = str(row['data_entrada'])
+			df_paletes_sem['data_estoque'] = '-'
+			df_paletes_sem['data_consumo'] = '-'
+			df_paletes_sem['codigo_tampa_SAP'] = '-'
+			df_paletes_sem['numero_palete'] = '-'
+
+			# for para iterar sobre todos os paletes e salvar
+			for index, rows in df_paletes_sem.iterrows():
+				if index < 10:
+				   	 index_str = '0' + str(index)
+				else:
+				   	 index_str = str(index)
+				rows['documento'] = index_str
+
+			new_d['Paletes'] = df_paletes_sem.to_csv()
+			ref = db.collection('lid-rastr').document(row['numero_OT'])
+			row_string = row.astype(str)
+			batch.set(ref, row_string.to_dict())
+			
+		batch.commit()	
+		
+		#df_bobinas
+		
 		# Limpa cache
 		#caching.clear_cache()		
 		#return to_include
