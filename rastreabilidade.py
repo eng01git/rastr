@@ -716,7 +716,8 @@ with st.beta_expander('Selante'):
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
 imagem.image('lid_linha.png')
 
-imagem.subheader(df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina'])
+tipo_de_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
+imagem.subheader(tipo_de_bobina)
 
 st.subheader('Histórico de paletes com e sem selante')
 with st.beta_expander('Paletes sem selante'):
