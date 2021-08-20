@@ -15,9 +15,8 @@ from io import BytesIO
 from openpyxl import load_workbook, Workbook
 from google.cloud import firestore
 from google.oauth2 import service_account
-#from load_css import local_css
 
-#local_css("style.css")
+
 
 ######################################################################################################
 # Configurações da página
@@ -195,6 +194,12 @@ def insert_excel(df):
 		#return None
 	#pass
 
+	
+def local_css(file_name):
+	with open(file_name) as f:
+		st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
+
+local_css("style.css")	
 
 
 # Define cores para os valores validos ou invalidos
