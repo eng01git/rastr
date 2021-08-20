@@ -99,32 +99,32 @@ def upload_excel(uploaded_file):
 		st.subheader('Bobina Disponíveis: Tampa Prata')
 		df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 		tratado_tp = trata_dados(df_tp, 1)
-		st.write(tratado_tp.head(10))
+		#st.write(tratado_tp.head(10))
 
 		# tratamento da planilha de tampass gold
 		st.subheader('Bobina Disponíveis: Tampa Dourada')
 		df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 		tratado_gd = trata_dados(df_gd, 2)
-		st.write(tratado_gd.head(10))
+		#st.write(tratado_gd.head(10))
 
 		# tratamento da palnilha de tampas brancas
 		st.subheader('Bobina Disponíveis: Tampa Branca')
 		df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
 		tratado_br = trata_dados(df_br, 3)
-		st.write(tratado_br.head(10))
+		#st.write(tratado_br.head(10))
 
 		# tratamento da planilha de tampas de lacre azul
 		st.subheader('Bobina Disponíveis: Tampa Lacre Azul')
 		df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
 		tratado_ta = trata_dados(df_ta, 4)
-		st.write(tratado_ta.head(10))
+		#st.write(tratado_ta.head(10))
 
 		dados = tratado_tp.append(tratado_gd, ignore_index=True)
 		dados = dados.append(tratado_br, ignore_index=True)
 		dados = dados.append(tratado_ta, ignore_index=True)
 		
-		st.subheader('Bobinas Filtradas')
-		st.write(dados)
+		#st.subheader('Bobinas Filtradas')
+		#st.write(dados)
 
 		return dados
 	except:
@@ -657,10 +657,10 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 #	df_bobinas = df_bobinas.append(df_excel)
 	
 # define imagem e barra lateral
-col2, imagem, col4 = st.beta_columns([3, 10, 3])
+#col2, imagem, col4 = st.beta_columns([3, 10, 3])
 #imagem.write(df_pal_sem)
 #imagem.write(df_pal_com)
-imagem.image('lid_linha.png')
+#imagem.image('lid_linha.png')
 
 st.subheader('Bobinas e Selantes')
 
@@ -712,6 +712,9 @@ with st.beta_expander('Selante'):
         allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
         enable_enterprise_modules=enable_enterprise_modules)
 
+# define imagem e barra lateral
+col2, imagem, col4 = st.beta_columns([3, 10, 3])
+imagem.image('lid_linha.png')
 
 st.subheader('Histórico de paletes com e sem selante')
 with st.beta_expander('Paletes sem selante'):
