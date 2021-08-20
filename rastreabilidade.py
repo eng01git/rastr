@@ -135,10 +135,10 @@ def insert_excel(df):
 	#try:
 	#lista de bobinas j[a inclusas no sistema
 	bobinas_antigas = df_bobinas.numero_OT
-	st.write(bobinas_antigas)
+	st.write(list(bobinas_antigas))
 
 	# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
-	df = df[~df['numero_OT'].isin(bobinas_antigas)]
+	df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
 	st.write(df)
 
 		# Ajuste da variável de data
