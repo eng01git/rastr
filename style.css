@@ -3,7 +3,7 @@
   color: white;
   padding: 0.5rem;
   margin-bottom: 1rem;
-  text-align: center;
+  
 }
 .bold {
   padding-left: 1rem;
@@ -17,4 +17,5 @@
 }
 .gray {
   background-color: #9da0a8;
+  text-align: center;
 }
