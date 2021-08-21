@@ -93,6 +93,7 @@ def trata_dados(data, tipo):
 	return data
 
 
+
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
@@ -648,6 +649,9 @@ tipos_selantes = {'Selante': 50491194}
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 
+# define a bobina em uso
+tipo_bobina_uso = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
+
 # dataframes do fifo sem selante
 df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')]
 df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
@@ -710,8 +714,7 @@ with st.beta_expander('Bobinas e selantes'):
 
 # define imagem e barra lateral
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
-tipo_de_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
-imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_de_bobina.iloc[0]), unsafe_allow_html=True)
+imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_bobina_uso.iloc[0]), unsafe_allow_html=True)
 imagem.image('lid_linha.png')
 
 st.subheader('Histórico de paletes com e sem selante')
@@ -927,7 +930,7 @@ with col2:
 
 	download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
 
-# consome paletes
+	# consome paletes
 
 	#col2.write('Ultimos consumidos')
 	if df_ps_fifo_in.shape[0] > 0:
