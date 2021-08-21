@@ -1,3 +1,22 @@
+import streamlit as st
+from streamlit import caching
+import pandas as pd
+from io import StringIO
+import numpy as np
+from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode, JsCode
+import base64
+import json
+import smtplib
+import time
+import datetime
+from datetime import date, datetime, time
+import pytz
+from io import BytesIO
+from openpyxl import load_workbook, Workbook
+from google.cloud import firestore
+from google.oauth2 import service_account
+
+
 def trata_dados(data, tipo):
 
 	# tratamento da planilha de tampas prata
