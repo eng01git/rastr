@@ -947,7 +947,7 @@ with col2:
 		enable_enterprise_modules=enable_enterprise_modules)
 
 	if fifo_in_show.shape[0] > 0:
-		st.info('**Proximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
+		st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
 
 	download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
 
@@ -1186,7 +1186,7 @@ with col4:
 		enable_enterprise_modules=enable_enterprise_modules)
 
 	if fifo_s_in_show.shape[0] > 0:
-		st.success('**Proximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
+		st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
 
 	download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
 
