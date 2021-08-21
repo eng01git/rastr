@@ -676,9 +676,9 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 #imagem.write(df_pal_com)
 #imagem.image('lid_linha.png')
 
-st.subheader('Bobinas e Selantes')
+#st.subheader('Bobinas e Selantes')
 
-with st.beta_expander('Bobinas'):
+with st.beta_expander('Bobinas e selantes'):
 	st.subheader('Inserir Bobinas')
 	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 	if uploaded_file is not None:
@@ -705,7 +705,7 @@ with st.beta_expander('Bobinas'):
 		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 		enable_enterprise_modules=enable_enterprise_modules)
 
-with st.beta_expander('Selante'):
+#with st.beta_expander('Selante'):
 	st.subheader('Inserir Selante')
 	adicionar_selante()
 
