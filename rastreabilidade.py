@@ -664,10 +664,7 @@ else:
 	tipo_bobina_uso = 'Não há bobina em uso'
 
 # dataframes do fifo sem selante
-#st.write(df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')])
-#st.write(tipo_bobina_uso)
 df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')]
-#st.write(df_ps_fifo_in)
 df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
 # dataframes do fifo com selante
@@ -731,508 +728,509 @@ col2, imagem, col4 = st.beta_columns([3, 10, 3])
 imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_bobina_uso), unsafe_allow_html=True)
 imagem.image('lid_linha.png')
 
-st.subheader('Histórico de paletes com e sem selante')
-with st.beta_expander('Paletes sem selante'):
+if df_bobinas.shape[0] > 0:
+	st.subheader('Histórico de paletes com e sem selante')
+	with st.beta_expander('Paletes sem selante'):
 
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_sem, 0, 0, True)
-	response = AgGrid(
-		df_pal_sem,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_sem, 0, 0, True)
+		response = AgGrid(
+			df_pal_sem,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 
-with st.beta_expander('Paletes com selante'):
+	with st.beta_expander('Paletes com selante'):
 
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_com, 0, 0, True)
-	response = AgGrid(
-		df_pal_com,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_com, 0, 0, True)
+		response = AgGrid(
+			df_pal_com,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 
-###########################################
-# Selecionar bobinas disponiveis para uso #
-###########################################
+	###########################################
+	# Selecionar bobinas disponiveis para uso #
+	###########################################
 
-# Verifica bobinas disponiveis
-df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
-df_bobinas_disp.sort_values(by=['data'], inplace=True)
+	# Verifica bobinas disponiveis
+	df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
+	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
-# cria selectbox para selecionar bobinas
-numero_bobina = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
+	# cria selectbox para selecionar bobinas
+	numero_bobina = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
 
-# parte do principio que nenhuma bobina foi selecionada
-selecionar_bobina = False
+	# parte do principio que nenhuma bobina foi selecionada
+	selecionar_bobina = False
 
-# verifica se foi selecionada alguma bobina
-if numero_bobina != None:
-	selecionar_bobina = st1.button('Utilizar a bobina selecionada?')
-else:
-	st1.info('Nao ha bobinas disponiveis')
+	# verifica se foi selecionada alguma bobina
+	if numero_bobina != None:
+		selecionar_bobina = st1.button('Utilizar a bobina selecionada?')
+	else:
+		st1.info('Nao ha bobinas disponiveis')
 
-if selecionar_bobina:
+	if selecionar_bobina:
 
-	###################################
-	# Coloca anterior como finalizada #
-	###################################
+		###################################
+		# Coloca anterior como finalizada #
+		###################################
 
-	#verifica se ha bobina em uso
-	bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
+		#verifica se ha bobina em uso
+		bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
 
-	if bobina_em_uso.shape[0] > 0:
+		if bobina_em_uso.shape[0] > 0:
 
-		# seleciona a bobina em uso
-		val_em_uso = bobina_em_uso.iloc[0,0]
+			# seleciona a bobina em uso
+			val_em_uso = bobina_em_uso.iloc[0,0]
 
-		# modifica bobina selecionada para finalizada
-		df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Finalizada'
-		df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+			# modifica bobina selecionada para finalizada
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Finalizada'
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+
+			# prepara dados para escrever no banco
+			dic_fin = {}
+			dic_fin = df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso].to_dict('records')
+
+			# Transforma dados do formulário em um dicionário
+			keys_values = dic_fin[0].items()
+			new_fin = {str(key): str(value) for key, value in keys_values}
+			documento = new_fin['numero_OT']
+
+			# escreve o dataframe dos paletes na bobina para escrita em banco (nao altera valor, mas escreve para nao perder os dados)
+			new_fin['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == val_em_uso].to_csv()
+
+			# Armazena no banco as alteracoes na bobina
+			try:
+				doc_ref = db.collection("Bobina").document(documento)
+				doc_ref.set(new_fin)
+				st.success('Formulário armazenado com sucesso!')
+			except:
+				st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
+				caching.clear_cache()
+		else:
+			st.info('Nao havia bobina em uso!')
+
+		####################################
+		# Coloca bobina selecionada em uso #
+		####################################
+
+		# modifica bobina selecionada para uso
+		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
+		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
 		# prepara dados para escrever no banco
-		dic_fin = {}
-		dic_fin = df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso].to_dict('records')
+		dic_bobina_uso = {}
+		dic_bobina_uso = df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina].to_dict('records')
 
 		# Transforma dados do formulário em um dicionário
-		keys_values = dic_fin[0].items()
-		new_fin = {str(key): str(value) for key, value in keys_values}
-		documento = new_fin['numero_OT']
+		keys_values = dic_bobina_uso[0].items()
+		new_uso = {str(key): str(value) for key, value in keys_values}
+		documento = new_uso['numero_OT']
 
-		# escreve o dataframe dos paletes na bobina para escrita em banco (nao altera valor, mas escreve para nao perder os dados)
-		new_fin['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == val_em_uso].to_csv()
+		# Filtra paletes da bobina em uso e atualiza valores
+		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+		#st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina])
+
+		st.write(df_pal_sem['numero_palete'])
+
+		# Coloca o numero dos paletes
+		if (df_pal_sem['numero_palete'] != '-').any():
+			maximo_index = int(df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete'].max()) + 1
+			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + maximo_index
+		else:
+			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento']
+
+		# Escreve o dataframe dos paletes na bobina para escrita em banco
+		new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
+
+		# Flag de rerun da aplicacao
+		flag_rerun = False
 
 		# Armazena no banco as alteracoes na bobina
 		try:
 			doc_ref = db.collection("Bobina").document(documento)
-			doc_ref.set(new_fin)
+			doc_ref.set(new_uso)
 			st.success('Formulário armazenado com sucesso!')
+			flag_rerun = True
 		except:
 			st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
 			caching.clear_cache()
+
+		if flag_rerun:
+			st.experimental_rerun()
+
+	############################
+	# FIFO paletes sem selante #
+	############################
+
+	# Adiciona paletes
+	with col2:
+		st.subheader('Sem selante')
+		#col2.write('Ultimos gerados')
+		if df_ps_fifo_in.shape[0] < 5:
+			add_palete_sem = col2.button('Gerar palete TP sem Selante')
+			if add_palete_sem:
+
+				# verificar bobina em uso
+				bobina_atual = df_bobinas[df_bobinas['status'] == 'Em uso']['numero_OT']
+				numero_palete = df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-'), 'numero_palete'].min()
+
+				df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+
+				# prepara dados para escrever no banco
+				dic_fifo_in = {}
+				dic_fifo_in = df_bobinas.loc[df_bobinas['numero_OT'] == bobina_atual.iloc[0]].to_dict('records')
+
+				# Transforma dados do formulário em um dicionário
+				keys_values = dic_fifo_in[0].items()
+				new_fifo_in = {str(key): str(value) for key, value in keys_values}
+				documento = new_fifo_in['numero_OT']
+
+				# Escreve o dataframe dos paletes na bobina para escrita em banco
+				new_fifo_in['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == bobina_atual.iloc[0]].to_csv()
+
+				# Flag de rerun da aplicacao
+				flag_rerun = False
+
+				# Armazena no banco as alteracoes na bobina
+				try:
+					doc_ref = db.collection("Bobina").document(documento)
+					doc_ref.set(new_fifo_in)
+					flag_rerun = True
+
+				except:
+					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+
+				if flag_rerun:
+					st.experimental_rerun()
+
+		else:
+			st.error('Ha paletes demais na reserva')
+		
+		fifo_in_show = df_ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+		fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
+
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_in_show, 0, 0, True)
+		response = AgGrid(
+			fifo_in_show,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
+
+		if fifo_in_show.shape[0] > 0:
+			st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
+
+		download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
+
+		# consome paletes
+
+		#col2.write('Ultimos consumidos')
+		if df_ps_fifo_in.shape[0] > 0:
+			con_palete_sem = col2.button('Consumir palete TP sem Selante')
+			if con_palete_sem:
+				# observa o indice do primeiro elemento do fifo
+				numero_palete = df_pal_sem.loc[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-'), 'numero_palete'].min()
+
+				# atualiza a data de consumo do palete consumido
+				df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+
+				#identifica o numero da bobina do palete
+				bobina_consumo = df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'numero_OT']
+
+				# prepara dados para escrever no banco
+				dic_fifo_out = {}
+				dic_fifo_out = df_bobinas.loc[df_bobinas['numero_OT'] == bobina_consumo.iloc[0]].to_dict('records')
+
+				# Transforma dados do formulário em um dicionário
+				keys_values = dic_fifo_out[0].items()
+				new_fifo_out = {str(key): str(value) for key, value in keys_values}
+				documento = new_fifo_out['numero_OT']
+
+				# Escreve o dataframe dos paletes na bobina para escrita em banco
+				new_fifo_out['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == bobina_consumo.iloc[0]].to_csv()
+
+				# Flag de rerun da aplicacao
+				flag_rerun = False
+
+				# Armazena no banco as alteracoes na bobina
+				try:
+					doc_ref = db.collection("Bobina").document(documento)
+					doc_ref.set(new_fifo_out)
+					flag_rerun = True
+
+				except:
+					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+
+				if flag_rerun:
+					st.experimental_rerun()
+
+		else:
+			st.error('Nao ha palete sem selante para consumir')
+
+		fifo_out_show = df_ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
+		fifo_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
+		
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_out_show, 0, 0, True)
+		response = AgGrid(
+			fifo_out_show,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
+
+	###########################################
+	# Selecionar selantes disponiveis para uso #
+	###########################################
+
+	# Verifica selantes disponiveis
+	df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
+
+	# cria selectbox para selecionar selantes
+	numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
+
+	# parte do principio que nenhuma selante foi selecionada
+	selecionar_selante = False
+
+	# verifica se foi selecionada alguma selante
+	if numero_selante != None:
+		selecionar_selante = st11.button('Utilizar o selante selecionado?')
 	else:
-		st.info('Nao havia bobina em uso!')
+		st11.info('Nao ha selantes disponiveis')
 
-	####################################
-	# Coloca bobina selecionada em uso #
-	####################################
+	if selecionar_selante:
 
-	# modifica bobina selecionada para uso
-	df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
-	df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+		###################################
+		# Coloca anterior como finalizada #
+		###################################
 
-	# prepara dados para escrever no banco
-	dic_bobina_uso = {}
-	dic_bobina_uso = df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina].to_dict('records')
+		#verifica se ha selante em uso
+		selante_em_uso = df_selantes[df_selantes['status'] == 'Em uso']
 
-	# Transforma dados do formulário em um dicionário
-	keys_values = dic_bobina_uso[0].items()
-	new_uso = {str(key): str(value) for key, value in keys_values}
-	documento = new_uso['numero_OT']
+		if selante_em_uso.shape[0] > 0:
 
-	# Filtra paletes da bobina em uso e atualiza valores
-	df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-	#st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina])
+			# seleciona a selante em uso
+			val_em_uso = selante_em_uso.iloc[0,0]
 
-	st.write(df_pal_sem['numero_palete'])
-
-	# Coloca o numero dos paletes
-	if (df_pal_sem['numero_palete'] != '-').any():
-		maximo_index = int(df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete'].max()) + 1
-		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + maximo_index
-	else:
-		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento']
-
-	# Escreve o dataframe dos paletes na bobina para escrita em banco
-	new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
-
-	# Flag de rerun da aplicacao
-	flag_rerun = False
-
-	# Armazena no banco as alteracoes na bobina
-	try:
-		doc_ref = db.collection("Bobina").document(documento)
-		doc_ref.set(new_uso)
-		st.success('Formulário armazenado com sucesso!')
-		flag_rerun = True
-	except:
-		st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
-		caching.clear_cache()
-
-	if flag_rerun:
-		st.experimental_rerun()
-
-############################
-# FIFO paletes sem selante #
-############################
-
-# Adiciona paletes
-with col2:
-	st.subheader('Sem selante')
-	#col2.write('Ultimos gerados')
-	if df_ps_fifo_in.shape[0] < 5:
-		add_palete_sem = col2.button('Gerar palete TP sem Selante')
-		if add_palete_sem:
-
-			# verificar bobina em uso
-			bobina_atual = df_bobinas[df_bobinas['status'] == 'Em uso']['numero_OT']
-			numero_palete = df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-'), 'numero_palete'].min()
-
-			df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+			# modifica selante selecionada para finalizada
+			df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'status'] = 'Finalizada'
+			df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
 			# prepara dados para escrever no banco
-			dic_fifo_in = {}
-			dic_fifo_in = df_bobinas.loc[df_bobinas['numero_OT'] == bobina_atual.iloc[0]].to_dict('records')
+			dic_fin = {}
+			dic_fin = df_selantes.loc[df_selantes['numero_lote'] == val_em_uso].to_dict('records')
 
 			# Transforma dados do formulário em um dicionário
-			keys_values = dic_fifo_in[0].items()
-			new_fifo_in = {str(key): str(value) for key, value in keys_values}
-			documento = new_fifo_in['numero_OT']
+			keys_values = dic_fin[0].items()
+			new_fin = {str(key): str(value) for key, value in keys_values}
+			documento = new_fin['numero_lote']
 
-			# Escreve o dataframe dos paletes na bobina para escrita em banco
-			new_fifo_in['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == bobina_atual.iloc[0]].to_csv()
+			# escreve o dataframe dos paletes na selante para escrita em banco (nao altera valor, mas escreve para nao perder os dados)
+			new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
 
-			# Flag de rerun da aplicacao
-			flag_rerun = False
-
-			# Armazena no banco as alteracoes na bobina
+			# Armazena no banco as alteracoes na selante
 			try:
-				doc_ref = db.collection("Bobina").document(documento)
-				doc_ref.set(new_fifo_in)
-				flag_rerun = True
-
+				doc_ref = db.collection("Selante").document(documento)
+				doc_ref.set(new_fin)
+				st.success('Formulário armazenado com sucesso!')
 			except:
-				st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+				st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
+				caching.clear_cache()
+		else:
+			st.info('Nao havia selante em uso!')
 
-			if flag_rerun:
-				st.experimental_rerun()
+		####################################
+		# Coloca selante selecionada em uso #
+		####################################
 
-	else:
-		st.error('Ha paletes demais na reserva')
-	
-	fifo_in_show = df_ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
-	fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
-
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_in_show, 0, 0, True)
-	response = AgGrid(
-		fifo_in_show,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
-
-	if fifo_in_show.shape[0] > 0:
-		st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
-
-	download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
-
-	# consome paletes
-
-	#col2.write('Ultimos consumidos')
-	if df_ps_fifo_in.shape[0] > 0:
-		con_palete_sem = col2.button('Consumir palete TP sem Selante')
-		if con_palete_sem:
-			# observa o indice do primeiro elemento do fifo
-			numero_palete = df_pal_sem.loc[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-'), 'numero_palete'].min()
-
-			# atualiza a data de consumo do palete consumido
-			df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-
-			#identifica o numero da bobina do palete
-			bobina_consumo = df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'numero_OT']
-
-			# prepara dados para escrever no banco
-			dic_fifo_out = {}
-			dic_fifo_out = df_bobinas.loc[df_bobinas['numero_OT'] == bobina_consumo.iloc[0]].to_dict('records')
-
-			# Transforma dados do formulário em um dicionário
-			keys_values = dic_fifo_out[0].items()
-			new_fifo_out = {str(key): str(value) for key, value in keys_values}
-			documento = new_fifo_out['numero_OT']
-
-			# Escreve o dataframe dos paletes na bobina para escrita em banco
-			new_fifo_out['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == bobina_consumo.iloc[0]].to_csv()
-
-			# Flag de rerun da aplicacao
-			flag_rerun = False
-
-			# Armazena no banco as alteracoes na bobina
-			try:
-				doc_ref = db.collection("Bobina").document(documento)
-				doc_ref.set(new_fifo_out)
-				flag_rerun = True
-
-			except:
-				st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
-
-			if flag_rerun:
-				st.experimental_rerun()
-
-	else:
-		st.error('Nao ha palete sem selante para consumir')
-
-	fifo_out_show = df_ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
-	fifo_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
-    
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_out_show, 0, 0, True)
-	response = AgGrid(
-		fifo_out_show,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
-
-###########################################
-# Selecionar selantes disponiveis para uso #
-###########################################
-
-# Verifica selantes disponiveis
-df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
-
-# cria selectbox para selecionar selantes
-numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
-
-# parte do principio que nenhuma selante foi selecionada
-selecionar_selante = False
-
-# verifica se foi selecionada alguma selante
-if numero_selante != None:
-	selecionar_selante = st11.button('Utilizar o selante selecionado?')
-else:
-	st11.info('Nao ha selantes disponiveis')
-
-if selecionar_selante:
-
-	###################################
-	# Coloca anterior como finalizada #
-	###################################
-
-	#verifica se ha selante em uso
-	selante_em_uso = df_selantes[df_selantes['status'] == 'Em uso']
-
-	if selante_em_uso.shape[0] > 0:
-
-		# seleciona a selante em uso
-		val_em_uso = selante_em_uso.iloc[0,0]
-
-		# modifica selante selecionada para finalizada
-		df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'status'] = 'Finalizada'
-		df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+		# modifica selante selecionada para uso
+		df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'status'] = 'Em uso'
+		df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
 		# prepara dados para escrever no banco
-		dic_fin = {}
-		dic_fin = df_selantes.loc[df_selantes['numero_lote'] == val_em_uso].to_dict('records')
+		dic_selante_uso = {}
+		dic_selante_uso = df_selantes.loc[df_selantes['numero_lote'] == numero_selante].to_dict('records')
 
 		# Transforma dados do formulário em um dicionário
-		keys_values = dic_fin[0].items()
-		new_fin = {str(key): str(value) for key, value in keys_values}
-		documento = new_fin['numero_lote']
+		keys_values = dic_selante_uso[0].items()
+		new_uso = {str(key): str(value) for key, value in keys_values}
+		documento = new_uso['numero_lote']
 
-		# escreve o dataframe dos paletes na selante para escrita em banco (nao altera valor, mas escreve para nao perder os dados)
-		new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
+		# Filtra paletes da selante em uso e atualiza valores
+		df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+		st.write(df_pal_com[df_pal_com['numero_lote'] == numero_selante])
+
+		st.write(df_pal_com['numero_palete'])
+
+		# Coloca o numero dos paletes
+		if (df_pal_com['numero_palete'] != '-').any():
+			maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
+			df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento'] + maximo_index
+		else:
+			df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento']
+
+		# Escreve o dataframe dos paletes na selante para escrita em banco
+		new_uso['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == numero_selante].to_csv()
+
+		# Flag de rerun da aplicacao
+		flag_rerun = False
 
 		# Armazena no banco as alteracoes na selante
 		try:
 			doc_ref = db.collection("Selante").document(documento)
-			doc_ref.set(new_fin)
+			doc_ref.set(new_uso)
 			st.success('Formulário armazenado com sucesso!')
+			flag_rerun = True
 		except:
 			st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
 			caching.clear_cache()
-	else:
-		st.info('Nao havia selante em uso!')
 
-	####################################
-	# Coloca selante selecionada em uso #
-	####################################
+		if flag_rerun:
+			st.experimental_rerun()
 
-	# modifica selante selecionada para uso
-	df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'status'] = 'Em uso'
-	df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+	############################
+	# fifo_s paletes com selante #
+	############################
 
-	# prepara dados para escrever no banco
-	dic_selante_uso = {}
-	dic_selante_uso = df_selantes.loc[df_selantes['numero_lote'] == numero_selante].to_dict('records')
+	# Adiciona paletes
+	with col4:
+		st.subheader('Com selante')
+		#col4.write('Ultimos gerados')
+		if df_ps_fifo_s_in.shape[0] < 5:
+			add_palete_sem = col4.button('Gerar palete TP com Selante')
+			if add_palete_sem:
 
-	# Transforma dados do formulário em um dicionário
-	keys_values = dic_selante_uso[0].items()
-	new_uso = {str(key): str(value) for key, value in keys_values}
-	documento = new_uso['numero_lote']
+				# verificar selante em uso
+				selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
+				numero_palete = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
 
-	# Filtra paletes da selante em uso e atualiza valores
-	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-	st.write(df_pal_com[df_pal_com['numero_lote'] == numero_selante])
+				df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+				#st.write(df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete])
 
-	st.write(df_pal_com['numero_palete'])
+				# prepara dados para escrever no banco
+				dic_fifo_s_in = {}
+				dic_fifo_s_in = df_selantes.loc[df_selantes['numero_lote'] == selante_atual.iloc[0]].to_dict('records')
 
-	# Coloca o numero dos paletes
-	if (df_pal_com['numero_palete'] != '-').any():
-		maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
-		df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento'] + maximo_index
-	else:
-		df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento']
+				# Transforma dados do formulário em um dicionário
+				keys_values = dic_fifo_s_in[0].items()
+				new_fifo_s_in = {str(key): str(value) for key, value in keys_values}
+				documento = new_fifo_s_in['numero_lote']
 
-	# Escreve o dataframe dos paletes na selante para escrita em banco
-	new_uso['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == numero_selante].to_csv()
+				# Escreve o dataframe dos paletes na selante para escrita em banco
+				new_fifo_s_in['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == selante_atual.iloc[0]].to_csv()
 
-	# Flag de rerun da aplicacao
-	flag_rerun = False
+				# Flag de rerun da aplicacao
+				flag_rerun = False
 
-	# Armazena no banco as alteracoes na selante
-	try:
-		doc_ref = db.collection("Selante").document(documento)
-		doc_ref.set(new_uso)
-		st.success('Formulário armazenado com sucesso!')
-		flag_rerun = True
-	except:
-		st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
-		caching.clear_cache()
+				# Armazena no banco as alteracoes na selante
+				try:
+					doc_ref = db.collection("Selante").document(documento)
+					doc_ref.set(new_fifo_s_in)
+					flag_rerun = True
 
-	if flag_rerun:
-		st.experimental_rerun()
+				except:
+					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
 
-############################
-# fifo_s paletes com selante #
-############################
+				if flag_rerun:
+					st.experimental_rerun()
 
-# Adiciona paletes
-with col4:
-	st.subheader('Com selante')
-	#col4.write('Ultimos gerados')
-	if df_ps_fifo_s_in.shape[0] < 5:
-		add_palete_sem = col4.button('Gerar palete TP com Selante')
-		if add_palete_sem:
+		else:
+			st.error('Ha paletes demais na reserva')
 
-			# verificar selante em uso
-			selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
-			numero_palete = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
+		fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+		fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
-			df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-			#st.write(df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete])
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_in_show, 0, 0, True)
+		response = AgGrid(
+			fifo_s_in_show,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 
-			# prepara dados para escrever no banco
-			dic_fifo_s_in = {}
-			dic_fifo_s_in = df_selantes.loc[df_selantes['numero_lote'] == selante_atual.iloc[0]].to_dict('records')
+		if fifo_s_in_show.shape[0] > 0:
+			st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
 
-			# Transforma dados do formulário em um dicionário
-			keys_values = dic_fifo_s_in[0].items()
-			new_fifo_s_in = {str(key): str(value) for key, value in keys_values}
-			documento = new_fifo_s_in['numero_lote']
+		download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
 
-			# Escreve o dataframe dos paletes na selante para escrita em banco
-			new_fifo_s_in['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == selante_atual.iloc[0]].to_csv()
+	# consome paletes
 
-			# Flag de rerun da aplicacao
-			flag_rerun = False
+		#col4.write('Ultimos consumidos')
+		if df_ps_fifo_s_in.shape[0] > 0:
+			con_palete_sem = col4.button('Consumir palete TP com Selante')
+			if con_palete_sem:
+				# observa o indice do primeiro elemento do fifo_s
+				numero_palete = df_pal_com.loc[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-'), 'numero_palete'].min()
 
-			# Armazena no banco as alteracoes na selante
-			try:
-				doc_ref = db.collection("Selante").document(documento)
-				doc_ref.set(new_fifo_s_in)
-				flag_rerun = True
+				# atualiza a data de consumo do palete consumido
+				df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
-			except:
-				st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+				#identifica o numero da selante do palete
+				selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'numero_lote']
 
-			if flag_rerun:
-				st.experimental_rerun()
+				# prepara dados para escrever no banco
+				dic_fifo_s_out = {}
+				dic_fifo_s_out = df_selantes.loc[df_selantes['numero_lote'] == selante_consumo.iloc[0]].to_dict('records')
 
-	else:
-		st.error('Ha paletes demais na reserva')
+				# Transforma dados do formulário em um dicionário
+				keys_values = dic_fifo_s_out[0].items()
+				new_fifo_s_out = {str(key): str(value) for key, value in keys_values}
+				documento = new_fifo_s_out['numero_lote']
 
-	fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
-	fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
+				# Escreve o dataframe dos paletes na selante para escrita em banco
+				new_fifo_s_out['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == selante_consumo.iloc[0]].to_csv()
 
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_in_show, 0, 0, True)
-	response = AgGrid(
-		fifo_s_in_show,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
+				# Flag de rerun da aplicacao
+				flag_rerun = False
 
-	if fifo_s_in_show.shape[0] > 0:
-		st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
+				# Armazena no banco as alteracoes na selante
+				try:
+					doc_ref = db.collection("Selante").document(documento)
+					doc_ref.set(new_fifo_s_out)
+					flag_rerun = True
 
-	download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
+				except:
+					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
 
-# consome paletes
+				if flag_rerun:
+					st.experimental_rerun()
 
-	#col4.write('Ultimos consumidos')
-	if df_ps_fifo_s_in.shape[0] > 0:
-		con_palete_sem = col4.button('Consumir palete TP com Selante')
-		if con_palete_sem:
-			# observa o indice do primeiro elemento do fifo_s
-			numero_palete = df_pal_com.loc[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-'), 'numero_palete'].min()
+		else:
+			st.error('Nao ha palete sem selante para consumir')
 
-			# atualiza a data de consumo do palete consumido
-			df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+		fifo_s_out_show = df_ps_fifo_s_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
+		fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 
-			#identifica o numero da selante do palete
-			selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'numero_lote']
-
-			# prepara dados para escrever no banco
-			dic_fifo_s_out = {}
-			dic_fifo_s_out = df_selantes.loc[df_selantes['numero_lote'] == selante_consumo.iloc[0]].to_dict('records')
-
-			# Transforma dados do formulário em um dicionário
-			keys_values = dic_fifo_s_out[0].items()
-			new_fifo_s_out = {str(key): str(value) for key, value in keys_values}
-			documento = new_fifo_s_out['numero_lote']
-
-			# Escreve o dataframe dos paletes na selante para escrita em banco
-			new_fifo_s_out['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == selante_consumo.iloc[0]].to_csv()
-
-			# Flag de rerun da aplicacao
-			flag_rerun = False
-
-			# Armazena no banco as alteracoes na selante
-			try:
-				doc_ref = db.collection("Selante").document(documento)
-				doc_ref.set(new_fifo_s_out)
-				flag_rerun = True
-
-			except:
-				st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
-
-			if flag_rerun:
-				st.experimental_rerun()
-
-	else:
-		st.error('Nao ha palete sem selante para consumir')
-
-	fifo_s_out_show = df_ps_fifo_s_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
-	fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
-
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_out_show, 0, 0, True)
-	response = AgGrid(
-		fifo_s_out_show,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_out_show, 0, 0, True)
+		response = AgGrid(
+			fifo_s_out_show,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 
