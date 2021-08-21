@@ -931,8 +931,8 @@ with col2:
 	else:
 		st.error('Ha paletes demais na reserva')
 
-	fifo_in_show = df_ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
-	fifo_in_show = fifo_in_show.loc[fifo_in_show.tipo_bobina == tipo_de_bobina]
+	fifo_in_show = df_ps_fifo_in.loc[fifo_in_show.tipo_bobina == tipo_de_bobina, ['numero_palete', 'tipo_tampa']].sort_values(by='data_estoque', ascending=True)
+	#fifo_in_show = fifo_in_show.loc[fifo_in_show.tipo_bobina == tipo_de_bobina]
 	fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
     
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_in_show, 0, 0, True)
@@ -1172,7 +1172,7 @@ with col4:
 		st.error('Ha paletes demais na reserva')
 
 	fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'codigo_SAP']]
-	fifo_s_in_show = fifo_s_in_show.loc[fifo_s_in_show.tipo_bobina == tipo_de_bobina]
+	#fifo_s_in_show = fifo_s_in_show.loc[fifo_s_in_show.tipo_bobina == tipo_de_bobina]
 	fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_in_show, 0, 0, True)
