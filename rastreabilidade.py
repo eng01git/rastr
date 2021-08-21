@@ -781,7 +781,7 @@ if df_bobinas.shape[0] > 0:
 	if numero_bobina != None:
 		selecionar_bobina = st1.button('Utilizar a bobina selecionada?')
 	else:
-		st1.info('Nao ha bobinas disponiveis')
+		st1.info('Não há bobinas disponiveis')
 
 	if selecionar_bobina:
 
@@ -810,7 +810,7 @@ if df_bobinas.shape[0] > 0:
 			new_fin = {str(key): str(value) for key, value in keys_values}
 			documento = new_fin['numero_OT']
 
-			# escreve o dataframe dos paletes na bobina para escrita em banco (nao altera valor, mas escreve para nao perder os dados)
+			# escreve o dataframe dos paletes na bobina para escrita em banco (não altera valor, mas escreve para não perder os dados)
 			new_fin['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == val_em_uso].to_csv()
 
 			# Armazena no banco as alteracoes na bobina
@@ -822,7 +822,7 @@ if df_bobinas.shape[0] > 0:
 				st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
 				caching.clear_cache()
 		else:
-			st.info('Nao havia bobina em uso!')
+			st.info('Não havia bobina em uso!')
 
 		####################################
 		# Coloca bobina selecionada em uso #
@@ -921,7 +921,7 @@ if df_bobinas.shape[0] > 0:
 					st.experimental_rerun()
 
 		elif (ps_fifo_in.shape[0] >= 5):
-			st.error('Ha paletes demais na reserva')
+			st.error('Há paletes demais na reserva')
 		
 		fifo_in_show = ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
 		fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
@@ -986,7 +986,7 @@ if df_bobinas.shape[0] > 0:
 					st.experimental_rerun()
 
 		else:
-			st.error('Nao ha palete sem selante para consumir')
+			st.error('Não há palete sem selante para consumir')
 
 		fifo_out_show = ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 		fifo_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
@@ -1023,7 +1023,7 @@ if df_bobinas.shape[0] > 0:
 		if numero_selante != None:
 			selecionar_selante = st11.button('Utilizar o selante selecionado?')
 		else:
-			st11.info('Nao ha selantes disponiveis')
+			st11.info('Não há selantes disponiveis')
 
 		if selecionar_selante:
 
@@ -1052,7 +1052,7 @@ if df_bobinas.shape[0] > 0:
 				new_fin = {str(key): str(value) for key, value in keys_values}
 				documento = new_fin['numero_lote']
 
-				# escreve o dataframe dos paletes na selante para escrita em banco (nao altera valor, mas escreve para nao perder os dados)
+				# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
 				new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
 
 				# Armazena no banco as alteracoes na selante
@@ -1064,7 +1064,7 @@ if df_bobinas.shape[0] > 0:
 					st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
 					caching.clear_cache()
 			else:
-				st.info('Nao havia selante em uso!')
+				st.info('Não havia selante em uso!')
 
 			#####################################
 			# Coloca selante selecionada em uso #
@@ -1163,7 +1163,7 @@ if df_bobinas.shape[0] > 0:
 						st.experimental_rerun()
 
 			elif (sel_fifo_in.shape[0] >= 5):
-				st.error('Ha paletes demais na reserva')
+				st.error('há paletes demais na reserva')
 
 			fifo_s_in_show = sel_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
 			fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
@@ -1229,7 +1229,7 @@ if df_bobinas.shape[0] > 0:
 						st.experimental_rerun()
 
 			else:
-				st.error('Nao ha palete sem selante para consumir')
+				st.error('Não há palete sem selante para consumir')
 
 			fifo_s_out_show = sel_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 			fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
