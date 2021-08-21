@@ -890,7 +890,7 @@ if selecionar_bobina:
 # Adiciona paletes
 with col2:
 	st.subheader('Sem selante')
-	col2.write('Ultimos gerados')
+	#col2.write('Ultimos gerados')
 	if df_ps_fifo_in.shape[0] < 5:
 		add_palete_sem = col2.button('Adicionar palete TP sem Selante')
 		if add_palete_sem:
@@ -932,6 +932,8 @@ with col2:
 		st.error('Ha paletes demais na reserva')
 
 	fifo_in_show = df_ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+    fifo_in_show.rename(columns={'numero_palete': 'Ultimos_gerados'}, inplace=True)
+    
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_in_show, 0, 0, True)
 	response = AgGrid(
 		fifo_in_show,
@@ -951,7 +953,7 @@ with col2:
 
 # consome paletes
 
-	col2.write('Ultimos consumidos')
+	#col2.write('Ultimos consumidos')
 	if df_ps_fifo_in.shape[0] > 0:
 		con_palete_sem = col2.button('Consumir palete TP sem Selante')
 		if con_palete_sem:
@@ -995,6 +997,8 @@ with col2:
 		st.error('Nao ha palete sem selante para consumir')
 
 	fifo_out_show = df_ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
+    fifo_out_show.rename(columns={'numero_palete': 'Ultimos_consumidos'}, inplace=True)
+    
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_out_show, 0, 0, True)
 	response = AgGrid(
 		fifo_out_show,
@@ -1118,13 +1122,13 @@ if selecionar_selante:
 		st.experimental_rerun()
 
 ############################
-# fifo_s paletes sem selante #
+# fifo_s paletes com selante #
 ############################
 
 # Adiciona paletes
 with col4:
-	st.subheader('Sem selante')
-	col4.write('Ultimos gerados')
+	st.subheader('Com selante')
+	#col4.write('Ultimos gerados')
 	if df_ps_fifo_s_in.shape[0] < 5:
 		add_palete_sem = col4.button('Adicionar palete TP com Selante')
 		if add_palete_sem:
@@ -1167,7 +1171,7 @@ with col4:
 		st.error('Ha paletes demais na reserva')
 
 	fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'codigo_SAP']]
-	#st.write(fifo_s_in_show.head())
+	fifo_s_in_show.rename(columns={'numero_palete': 'Ultimos_gerados'}, inplace=True)
 
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_in_show, 0, 0, True)
 	response = AgGrid(
@@ -1188,7 +1192,7 @@ with col4:
 
 # consome paletes
 
-	col4.write('Ultimos consumidos')
+	#col4.write('Ultimos consumidos')
 	if df_ps_fifo_s_in.shape[0] > 0:
 		con_palete_sem = col4.button('Consumir palete TP com Selante')
 		if con_palete_sem:
@@ -1232,7 +1236,7 @@ with col4:
 		st.error('Nao ha palete sem selante para consumir')
 
 	fifo_s_out_show = df_ps_fifo_s_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'codigo_SAP']]
-	#st.write(fifo_s_out_show.head())
+	fifo_s_out_show.rename(columns={'numero_palete': 'Ultimos_consumidos'}, inplace=True)
 
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_out_show, 0, 0, True)
 	response = AgGrid(
