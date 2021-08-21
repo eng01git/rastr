@@ -931,7 +931,8 @@ with col2:
 	else:
 		st.error('Ha paletes demais na reserva')
 	
-	fifo_in_show = df_ps_fifo_in.loc[df_ps_fifo_in['tipo_tampa'] == str(tipo_de_bobina), ['numero_palete', 'tipo_tampa']].sort_values(by='data_estoque', ascending=True)
+	fifo_in_show = df_ps_fifo_in.loc[df_ps_fifo_in['tipo_tampa'] == str(tipo_de_bobina)].sort_values(by='data_estoque', ascending=True)
+	fifo_in_show = fifo_in_show['numero_palete', 'tipo_tampa']
 	fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
     
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_in_show, 0, 0, True)
