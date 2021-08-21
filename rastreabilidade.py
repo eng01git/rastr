@@ -294,7 +294,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	#st.markdown(t, unsafe_allow_html=True)
 
 	linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></a>'
-	st.markdown(linko, unsafe_allow_html=True)
+	return st.markdown(linko, unsafe_allow_html=True)
 
 
 # leitura de dados do banco
@@ -949,7 +949,8 @@ with col2:
 	if fifo_in_show.shape[0] > 0:
 		st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
 
-	download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
+	valor = download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
+	st.write(valor)
 
 # consome paletes
 
@@ -1188,8 +1189,8 @@ with col4:
 	if fifo_s_in_show.shape[0] > 0:
 		st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
 
-	download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
-
+	valor = download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
+	st.write(valor)
 # consome paletes
 
 	#col4.write('Ultimos consumidos')
