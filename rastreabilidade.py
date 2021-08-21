@@ -991,17 +991,20 @@ if df_bobinas.shape[0] > 0:
 		fifo_out_show = df_ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 		fifo_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 		
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_out_show, 0, 0, True)
-		response = AgGrid(
-			fifo_out_show,
-			gridOptions=gridOptions,
-			height=grid_height,
-			width='100%',
-			data_return_mode=return_mode_value,
-			update_mode=update_mode_value,
-			fit_columns_on_grid_load=fit_columns_on_grid_load,
-			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-			enable_enterprise_modules=enable_enterprise_modules)
+		if fifo_out_show.shape[0] > 0:
+			gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_out_show, 0, 0, True)
+			response = AgGrid(
+				fifo_out_show,
+				gridOptions=gridOptions,
+				height=grid_height,
+				width='100%',
+				data_return_mode=return_mode_value,
+				update_mode=update_mode_value,
+				fit_columns_on_grid_load=fit_columns_on_grid_load,
+				allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+				enable_enterprise_modules=enable_enterprise_modules)
+		else:
+			st.error('Não foram consumidos paletes sem selante')
 
 	###########################################
 	# Selecionar selantes disponiveis para uso#
@@ -1164,22 +1167,20 @@ if df_bobinas.shape[0] > 0:
 			fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
 			fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
-			gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_in_show, 0, 0, True)
-			response = AgGrid(
-				fifo_s_in_show,
-				gridOptions=gridOptions,
-				height=grid_height,
-				width='100%',
-				data_return_mode=return_mode_value,
-				update_mode=update_mode_value,
-				fit_columns_on_grid_load=fit_columns_on_grid_load,
-				allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-				enable_enterprise_modules=enable_enterprise_modules)
-
 			if fifo_s_in_show.shape[0] > 0:
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_in_show, 0, 0, True)
+				response = AgGrid(
+					fifo_s_in_show,
+					gridOptions=gridOptions,
+					height=grid_height,
+					width='100%',
+					data_return_mode=return_mode_value,
+					update_mode=update_mode_value,
+					fit_columns_on_grid_load=fit_columns_on_grid_load,
+					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+					enable_enterprise_modules=enable_enterprise_modules)
 				st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
-
-			
+				
 
 			# consome paletes
 			#col4.write('Ultimos consumidos')
@@ -1231,15 +1232,18 @@ if df_bobinas.shape[0] > 0:
 			fifo_s_out_show = df_ps_fifo_s_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 			fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 
-			gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_out_show, 0, 0, True)
-			response = AgGrid(
-				fifo_s_out_show,
-				gridOptions=gridOptions,
-				height=grid_height,
-				width='100%',
-				data_return_mode=return_mode_value,
-				update_mode=update_mode_value,
-				fit_columns_on_grid_load=fit_columns_on_grid_load,
-				allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-				enable_enterprise_modules=enable_enterprise_modules)
+			if fifo_s_out_show.shape[0] > 0:
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_out_show, 0, 0, True)
+				response = AgGrid(
+					fifo_s_out_show,
+					gridOptions=gridOptions,
+					height=grid_height,
+					width='100%',
+					data_return_mode=return_mode_value,
+					update_mode=update_mode_value,
+					fit_columns_on_grid_load=fit_columns_on_grid_load,
+					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+					enable_enterprise_modules=enable_enterprise_modules)
+			else:
+				st.error('Não foram consumidos paletes com selante')
 
