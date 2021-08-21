@@ -827,6 +827,8 @@ if df_bobinas.shape[0] > 0:
 		# Coloca bobina selecionada em uso #
 		####################################
 
+		st.write(numero_bobina)
+		st.write(df_bobinas['numero_OT'])
 		# modifica bobina selecionada para uso
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
