@@ -1133,10 +1133,7 @@ if df_bobinas.shape[0] > 0:
 
 					# verificar selante em uso
 					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
-					#numero_palete = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
-					numero_palete_aux = sel_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
-					st.write(numero_palete_aux)
-					#numero_palete = numero_palete_aux.iloc[7]
+					numero_palete = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
 
 					# atualiza valores de data de estoque e o tipo de tampa
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
@@ -1200,7 +1197,10 @@ if df_bobinas.shape[0] > 0:
 				con_palete_sem = col4.button('Consumir palete TP com Selante')
 				if con_palete_sem:
 					# observa o indice do primeiro elemento do fifo_s
-					numero_palete = df_pal_com.loc[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-'), 'numero_palete'].min()
+					#numero_palete = df_pal_com.loc[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-'), 'numero_palete'].min()
+					numero_palete_aux = sel_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
+					st.write(numero_palete_aux)
+					#numero_palete = numero_palete_aux.iloc[7]
 
 					# atualiza a data de consumo do palete consumido
 					df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
