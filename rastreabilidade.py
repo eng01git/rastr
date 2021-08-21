@@ -997,7 +997,7 @@ with col2:
 		st.error('Nao ha palete sem selante para consumir')
 
 	fifo_out_show = df_ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
-    fifo_out_show.rename(columns={'numero_palete': 'Ultimos_consumidos'}, inplace=True)
+	fifo_out_show.rename(columns={'numero_palete': 'Ultimos_consumidos'}, inplace=True)
     
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_out_show, 0, 0, True)
 	response = AgGrid(
