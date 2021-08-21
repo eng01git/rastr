@@ -938,12 +938,12 @@ if df_bobinas.shape[0] > 0:
 		if fifo_in_show.shape[0] > 0:
 			st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
 
-		download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
-
 		# consome paletes
-
 		#col2.write('Ultimos consumidos')
 		if df_ps_fifo_in.shape[0] > 0:
+			# download da etiqueta
+			download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
+
 			con_palete_sem = col2.button('Consumir palete TP sem Selante')
 			if con_palete_sem:
 				# observa o indice do primeiro elemento do fifo
@@ -1176,12 +1176,14 @@ if df_bobinas.shape[0] > 0:
 		if fifo_s_in_show.shape[0] > 0:
 			st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
 
-		download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
+		
 
-	# consome paletes
-
+		# consome paletes
 		#col4.write('Ultimos consumidos')
 		if df_ps_fifo_s_in.shape[0] > 0:
+			# download das etiquetas
+			download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
+			
 			con_palete_sem = col4.button('Consumir palete TP com Selante')
 			if con_palete_sem:
 				# observa o indice do primeiro elemento do fifo_s
