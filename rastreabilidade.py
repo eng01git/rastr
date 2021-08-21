@@ -1007,15 +1007,20 @@ if df_bobinas.shape[0] > 0:
 	# Verifica selantes disponiveis
 	df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
 
-	# cria selectbox para selecionar selantes
-	numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
-
 	# parte do principio que nenhuma selante foi selecionada
 	selecionar_selante = False
 
-	# verifica se foi selecionada alguma selante
-	if numero_selante != None:
-		selecionar_selante = st11.button('Utilizar o selante selecionado?')
+	if df_selantes_disp.shape[0] > 0:
+
+		# cria selectbox para selecionar selantes
+		numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
+
+		# verifica se foi selecionada alguma selante
+		if numero_selante != None:
+			selecionar_selante = st11.button('Utilizar o selante selecionado?')
+		else:
+			st11.info('Nao ha selantes disponiveis')
+
 	else:
 		st11.info('Nao ha selantes disponiveis')
 
