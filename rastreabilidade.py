@@ -47,7 +47,7 @@ tz = pytz.timezone('America/Bahia')
 #												  funcoes															 #
 #######################################################################################################################
 
-st.write('teste 2 asd')
+st.write('teste 2 ')
 def trata_dados(data, tipo):
 	
 	# tratamento da planilha de tampas prata
