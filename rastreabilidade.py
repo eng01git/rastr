@@ -651,11 +651,11 @@ df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 tipo_bobina_uso = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
 
 # dataframes do fifo sem selante
-df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')]
+df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & df_pal_sem['tipo_tampa'] == str(tipo_bobina_uso)]
 df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
 # dataframes do fifo com selante
-df_ps_fifo_s_in = df_pal_com[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-')]
+df_ps_fifo_s_in = df_pal_com[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-')] # & df_pal_com['tipo_tampa'] == str(tipo_bobina_uso)]
 df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 
 #######################
