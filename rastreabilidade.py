@@ -680,10 +680,8 @@ with st.beta_expander('Bobinas'):
 	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 	if uploaded_file is not None:
 		data_excel = upload_excel(uploaded_file)
-	
-		if data_excel != None:
-			df_excel = insert_excel(data_excel)
-			df_bobinas = df_bobinas.append(df_excel)
+		df_excel = insert_excel(data_excel)
+		df_bobinas = df_bobinas.append(df_excel)
 
 	adicionar_bobina()
 
