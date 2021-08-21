@@ -771,7 +771,8 @@ if df_bobinas.shape[0] > 0:
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 	# cria selectbox para selecionar bobinas
-	numero_bobina = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
+	numero_bobina_full = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
+	numero_bobina = numero_bobina_full.split()[0]
 
 	# parte do principio que nenhuma bobina foi selecionada
 	selecionar_bobina = False
