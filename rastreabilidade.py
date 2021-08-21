@@ -666,7 +666,7 @@ else:
 	tipo_bobina_uso = 'Não há bobina em uso'
 
 # dataframes do fifo sem selante
-df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')]
+df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'].astype(str) == tipo_bobina_uso)]
 df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
 # dataframes do fifo com selante
@@ -1067,9 +1067,9 @@ if df_bobinas.shape[0] > 0:
 			else:
 				st.info('Nao havia selante em uso!')
 
-			####################################
+			#####################################
 			# Coloca selante selecionada em uso #
-			####################################
+			#####################################
 
 			# modifica selante selecionada para uso
 			df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'status'] = 'Em uso'
@@ -1116,9 +1116,9 @@ if df_bobinas.shape[0] > 0:
 			if flag_rerun:
 				st.experimental_rerun()
 
-		############################
+		##############################
 		# fifo_s paletes com selante #
-		############################
+		##############################
 
 		# Adiciona paletes
 		with col4:
