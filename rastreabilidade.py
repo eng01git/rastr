@@ -649,6 +649,7 @@ df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 
 # define a bobina em uso
 tipo_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
+st.write(tipo_bobina)
 tipo_bobina_uso = str(tipo_bobina.iloc[0])
 
 # dataframes do fifo sem selante
