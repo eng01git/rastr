@@ -293,7 +293,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	#t = "<div>Hello there my <span class='highlight blue'>name <span class='bold'>yo</span> </span> is <span class='highlight red'>Fanilo <span class='bold'>Name</span></span></div>"
 	#st.markdown(t, unsafe_allow_html=True)
 
-	linko = f'<button href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></button>'
+	linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></a>'
 	st.markdown(linko, unsafe_allow_html=True)
 
 
@@ -947,7 +947,7 @@ with col2:
 		enable_enterprise_modules=enable_enterprise_modules)
 
 	if fifo_in_show.shape[0] > 0:
-		st.info('Proximo palete: ' + str(fifo_in_show.iloc[0, 0]))
+		st.info('**Proximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
 
 	download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
 
@@ -1186,7 +1186,7 @@ with col4:
 		enable_enterprise_modules=enable_enterprise_modules)
 
 	if fifo_s_in_show.shape[0] > 0:
-		st.success('Proximo palete: ' + str(fifo_s_in_show.iloc[0, 0]))
+		st.success('**Proximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
 
 	download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
 
