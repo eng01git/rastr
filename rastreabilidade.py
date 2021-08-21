@@ -951,6 +951,7 @@ if df_bobinas.shape[0] > 0:
 			if con_palete_sem:
 				# observa o indice do primeiro elemento do fifo
 				#numero_palete = df_pal_sem.loc[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-'), 'numero_palete'].min()
+				st.write(df_pal_sem.loc[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-'), 'numero_palete'].min())
 				numero_palete = ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
 				st.write(numero_palete.iloc[7])
 
