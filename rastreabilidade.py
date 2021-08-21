@@ -950,7 +950,7 @@ with col2:
 		st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
 
 	valor = download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
-	st.write(valor)
+	st.write(str(valor))
 
 # consome paletes
 
@@ -1190,7 +1190,7 @@ with col4:
 		st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
 
 	valor = download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
-	st.write(valor)
+	st.write(str(valor))
 # consome paletes
 
 	#col4.write('Ultimos consumidos')
