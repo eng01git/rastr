@@ -952,6 +952,7 @@ if df_bobinas.shape[0] > 0:
 				# observa o indice do primeiro elemento do fifo
 				#numero_palete = df_pal_sem.loc[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-'), 'numero_palete'].min()
 				numero_palete = ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
+				st.write(numero_palete)
 
 				# atualiza a data de consumo do palete consumido
 				df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
