@@ -134,15 +134,17 @@ def upload_excel(uploaded_file):
 
 def insert_excel(df):
 	try:
-		# lista de bobinas ja inclusas no sistema
-		bobinas_antigas = df_bobinas.numero_OT
+		# verifica se há bobinas no sistema
+		if df_bobinas.shape[0]:
+			# lista de bobinas ja inclusas no sistema
+			bobinas_antigas = df_bobinas.numero_OT
 
-		df.numero_OT = df.numero_OT.astype(str)
+			df.numero_OT = df.numero_OT.astype(str)
 
-		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
-		st.subheader('Bobinas a serem inseridas')
-		
-		df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
+			# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
+			st.subheader('Bobinas a serem inseridas')
+			
+			df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
 
 		# Se houver variáveis a serem incluídas e faz a inclusão
 		if df.shape[0] > 0:
@@ -706,7 +708,7 @@ with st.beta_expander('Bobinas e selantes'):
 	st.subheader('Inserir Selante')
 	adicionar_selante()
 
-	if df_selantes.shap[0] > 0:
+	if df_selantes.shape[0] > 0:
 		st.subheader('Selecionar selante para uso')
 		st11, st22 = st.beta_columns([99, 1])
 
