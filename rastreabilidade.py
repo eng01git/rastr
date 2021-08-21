@@ -643,6 +643,12 @@ tipos_bobinas = {'Tampa Prata': 50490760,
 
 tipos_selantes = {'Selante': 50491194}
 
+# botao para teste
+reset = st.button('Reset')
+
+if reset:
+	caching.clear_cache()
+
 # leitura e exibicao dos dados das bobinas
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
@@ -759,12 +765,6 @@ df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 # cria selectbox para selecionar bobinas
 numero_bobina = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
-
-# botao para teste
-#reset = st.button('Reset')
-
-#if reset:
-#	caching.clear_cache()
 
 # parte do principio que nenhuma bobina foi selecionada
 selecionar_bobina = False
