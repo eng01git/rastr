@@ -684,50 +684,52 @@ with st.beta_expander('Bobinas e selantes'):
 		df_bobinas = df_bobinas.append(df_excel)
 
 	adicionar_bobina()
+	if df_bobinas.shape[0] > 0:
+		st.subheader('Selecionar bobina para uso')
+		st1, st2 = st.beta_columns([99, 1])
 
-	st.subheader('Selecionar bobina para uso')
-	st1, st2 = st.beta_columns([99, 1])
-
-	st.subheader('Detalhamento das bobinas')
-	#st.write(df_bobinas)
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
-	response = AgGrid(
-		df_bobinas,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
+		st.subheader('Detalhamento das bobinas')
+		#st.write(df_bobinas)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
+		response = AgGrid(
+			df_bobinas,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 
 #with st.beta_expander('Selante'):
 	st.subheader('Inserir Selante')
 	adicionar_selante()
 
-	st.subheader('Selecionar selante para uso')
-	st11, st22 = st.beta_columns([99, 1])
+	if df_selantes.shap[0] > 0:
+		st.subheader('Selecionar selante para uso')
+		st11, st22 = st.beta_columns([99, 1])
 
-	st.subheader('Detalhamento dos selantes')
-	#st.write(df_selantes)
-	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(199, df_selantes, 0, 0, True)
-	response = AgGrid(
-		df_selantes,
-		gridOptions=gridOptions,
-		height=grid_height,
-		width='100%',
-		data_return_mode=return_mode_value,
-		update_mode=update_mode_value,
-		fit_columns_on_grid_load=fit_columns_on_grid_load,
-		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-		enable_enterprise_modules=enable_enterprise_modules)
+		st.subheader('Detalhamento dos selantes')
+		#st.write(df_selantes)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(199, df_selantes, 0, 0, True)
+		response = AgGrid(
+			df_selantes,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 
 # define imagem e barra lateral
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
 imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_bobina_uso), unsafe_allow_html=True)
 imagem.image('lid_linha.png')
 
+# verifica se há bobinas no sistema para habilitar as demais funcionalidades do sistema
 if df_bobinas.shape[0] > 0:
 	st.subheader('Histórico de paletes com e sem selante')
 	with st.beta_expander('Paletes sem selante'):
