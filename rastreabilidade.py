@@ -646,10 +646,10 @@ tipos_bobinas = {'Tampa Prata': 50490760,
 tipos_selantes = {'Selante': 50491194}
 
 # botao para teste
-reset = st.button('Reset')
+# reset = st.button('Reset')
 
-if reset:
-	caching.clear_cache()
+# if reset:
+#	caching.clear_cache()
 
 # leitura e exibicao dos dados das bobinas
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
