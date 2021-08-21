@@ -660,6 +660,8 @@ if df_bobinas.shape[0] > 0:
 		tipo_bobina_uso = str(tipo_bobina.iloc[0])
 	else:
 		tipo_bobina_uso = 'Não há bobina em uso'
+else:
+	tipo_bobina_uso = 'Não há bobina em uso'
 
 # dataframes do fifo sem selante
 #st.write(df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')])
