@@ -1145,7 +1145,7 @@ with col4:
 	else:
 		st.error('Ha paletes demais na reserva')
 
-	fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'codigo_SAP']]
+	fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
 	fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_in_show, 0, 0, True)
@@ -1210,7 +1210,7 @@ with col4:
 	else:
 		st.error('Nao ha palete sem selante para consumir')
 
-	fifo_s_out_show = df_ps_fifo_s_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'codigo_SAP']]
+	fifo_s_out_show = df_ps_fifo_s_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 	fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 
 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(175, fifo_s_out_show, 0, 0, True)
