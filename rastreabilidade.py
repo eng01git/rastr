@@ -666,12 +666,12 @@ else:
 	tipo_bobina_uso = 'Não há bobina em uso'
 
 # dataframes do fifo sem selante
-df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'].astype(str) == tipo_bobina_uso)]
-df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
+ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'].astype(str) == tipo_bobina_uso)]
+ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
 # dataframes do fifo com selante
-df_ps_fifo_s_in = df_pal_com[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-')] # & (df_pal_com['tipo_tampa'] == str(tipo_bobina_uso))]
-df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
+sel_fifo_in = df_pal_com[(df_pal_com['data_estoque'] != '-') & (df_pal_com['data_consumo'] == '-') & (df_pal_com['tipo_tampa'].astype(str) == tipo_bobina_uso)] # & (df_pal_com['tipo_tampa'] == str(tipo_bobina_uso))]
+sel_fifo_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 
 #######################
 # organizacao da tela #
@@ -883,7 +883,7 @@ if df_bobinas.shape[0] > 0:
 	with col2:
 		st.subheader('Sem selante')
 		#col2.write('Ultimos gerados')
-		if (df_ps_fifo_in.shape[0] < 5) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
+		if (ps_fifo_in.shape[0] < 5) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
 			add_palete_sem = col2.button('Gerar palete TP sem Selante')
 			if add_palete_sem:
 
@@ -920,10 +920,10 @@ if df_bobinas.shape[0] > 0:
 				if flag_rerun:
 					st.experimental_rerun()
 
-		elif (df_ps_fifo_in.shape[0] >= 5):
+		elif (ps_fifo_in.shape[0] >= 5):
 			st.error('Ha paletes demais na reserva')
 		
-		fifo_in_show = df_ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+		fifo_in_show = ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
 		fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
 		if fifo_in_show.shape[0] > 0:
@@ -944,9 +944,9 @@ if df_bobinas.shape[0] > 0:
 
 		# consome paletes
 		#col2.write('Ultimos consumidos')
-		if df_ps_fifo_in.shape[0] > 0:
+		if ps_fifo_in.shape[0] > 0:
 			# download da etiqueta
-			download_etiqueta(df_ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
+			download_etiqueta(ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
 
 			con_palete_sem = col2.button('Consumir palete TP sem Selante')
 			if con_palete_sem:
@@ -989,7 +989,7 @@ if df_bobinas.shape[0] > 0:
 		else:
 			st.error('Nao ha palete sem selante para consumir')
 
-		fifo_out_show = df_ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
+		fifo_out_show = ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 		fifo_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 		
 		if fifo_out_show.shape[0] > 0:
@@ -1124,7 +1124,7 @@ if df_bobinas.shape[0] > 0:
 		with col4:
 			st.subheader('Com selante')
 			#col4.write('Ultimos gerados')
-			if (df_ps_fifo_s_in.shape[0] < 5) & (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0):
+			if (sel_fifo_in.shape[0] < 5) & (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0):
 				add_palete_sem = col4.button('Gerar palete TP com Selante')
 				if add_palete_sem:
 
@@ -1132,8 +1132,9 @@ if df_bobinas.shape[0] > 0:
 					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
 					numero_palete = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
 
+					# atualiza valores de data de estoque e o tipo de tampa
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-					#st.write(df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete])
+					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'tipo_tampa'] = tipo_bobina_uso
 
 					# prepara dados para escrever no banco
 					dic_fifo_s_in = {}
@@ -1162,10 +1163,10 @@ if df_bobinas.shape[0] > 0:
 					if flag_rerun:
 						st.experimental_rerun()
 
-			elif (df_ps_fifo_s_in.shape[0] >= 5):
+			elif (sel_fifo_in.shape[0] >= 5):
 				st.error('Ha paletes demais na reserva')
 
-			fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+			fifo_s_in_show = sel_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
 			fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
 			if fifo_s_in_show.shape[0] > 0:
@@ -1187,9 +1188,9 @@ if df_bobinas.shape[0] > 0:
 
 			# consome paletes
 			#col4.write('Ultimos consumidos')
-			if df_ps_fifo_s_in.shape[0] > 0:
+			if sel_fifo_in.shape[0] > 0:
 				# download das etiquetas
-				download_etiqueta(df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
+				download_etiqueta(sel_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
 
 				con_palete_sem = col4.button('Consumir palete TP com Selante')
 				if con_palete_sem:
@@ -1232,7 +1233,7 @@ if df_bobinas.shape[0] > 0:
 			else:
 				st.error('Nao ha palete sem selante para consumir')
 
-			fifo_s_out_show = df_ps_fifo_s_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
+			fifo_s_out_show = sel_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 			fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 
 			if fifo_s_out_show.shape[0] > 0:
