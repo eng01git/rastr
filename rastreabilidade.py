@@ -649,12 +649,12 @@ df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 
 # define a bobina em uso
 tipo_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
-tipo_bobina_uso = tipo_bobina.iloc[0]
+tipo_bobina_uso = str(tipo_bobina.iloc[0])
 
 # dataframes do fifo sem selante
-#st.write(df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')])
-#st.write(tipo_bobina_uso)
-df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'] == str(tipo_bobina_uso))]
+st.write(df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')])
+st.write(tipo_bobina_uso)
+df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'] == tipo_bobina_uso)]
 st.write(df_ps_fifo_in)
 df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
