@@ -179,11 +179,13 @@ def insert_excel(df):
 			inserir = st.button('Inserir os dados no sistema?')
 			
 			if inserir:
+				# escreve os dados no servidor
 				batch.commit()	
 
-			# Limpa cache
-			caching.clear_cache()		
-			return df
+				# Limpa cache
+				caching.clear_cache()		
+				return df
+			return None
 		else:
 			st.info('Todas as bobinas filtradas da planilha já estão inseridas no sistema!')
 			return None
