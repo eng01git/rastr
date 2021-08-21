@@ -654,7 +654,7 @@ tipo_bobina_uso = tipo_bobina.iloc[0]
 # dataframes do fifo sem selante
 #st.write(df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')])
 #st.write(tipo_bobina_uso)
-df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'] == str(tipo_bobina_uso]))]
+df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'] == str(tipo_bobina_uso))]
 st.write(df_ps_fifo_in)
 df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
