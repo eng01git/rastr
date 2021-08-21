@@ -17,9 +17,9 @@ from google.cloud import firestore
 from google.oauth2 import service_account
 
 
-######################################################################################################
+###############################################################################
 # Configurações da página
-######################################################################################################
+###############################################################################
 
 st.set_page_config(
 	page_title="Rastreabilidade",
@@ -27,10 +27,43 @@ st.set_page_config(
 )
 
 
-######################################################################################################
+###############################################################################
 # Configurando acesso ao firebase
-######################################################################################################
-textkey_2 = """{\n  \"type\": \"service_account\",\n  \"project_id\": \"lid-rastr\",\n  \"private_key_id\": \"a7c22fdbd57a9b70915020a3075fe968298d9b07\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDGij/1qDDBibyf\\nooQJBsT+afWbqJchuhDgLixrMMrBknCzDKqnMKQGPAq3d3E5A95vf0tyJOQflefW\\ntb89OApzGmx9fDzN4NKIgUPQZJYB1GG/x+JeyQqJCVPzpG3R5t6WtK7XSWxg5WBx\\nQ1JS2KAYKZehZzhp1zDr25w5LeQlNpIbKpAS67yOO4nieA3ft5XGF/YCTPBA5IrV\\nkPusIUE0nbFGPIqHnq6Cj3pnVzpd/iweec9UiGVeUCW3Dw7kCJQom1lHoVYksMhx\\nZSQGzAiIOu6s4OLE/CPXpoa6P8i2erppcQyYIXJ6dL2W4AJ/CKKAt0zRN1N13pgt\\nnhpUIXELAgMBAAECggEAQ8JlR9MKKNN4Y8cUZvw/eVDyeRiV0/Xr0ocPs9moKV5w\\nRjt5dqwcHuCZC7qhEsNmRAle12sNzFXeFSJcTWl174jCJCWlnuIvGFV9rn7Vz3QL\\nlGeEs7LLfK+JTmr87BluOGMcFO/DJGLEgoNmck3qfbScQoK29zBxSt3duIoYBja5\\n6MmkTPPnQhi/gWiI7V/vsAcLvSQH1+PqYP/OzzIsd/Cp9vwNx/u+i50AndsXjDUR\\n2HcfwOIeE3h4H3Zh1Fvzgsznm2fjKEOJAG6wzJtzbe0mBRslld2v+Wuy3QuDM1+N\\nDA1hvSatnxaLNfGCnA70YmDoe+ueoVcGdUl2u0NbYQKBgQD7F/GUeV6Zp/ouh7Ka\\nzmtAtJDk5nWy43ujHH/E+0v5jqz/W0RbvAYuK321IyN1wBA/LHqHMit3Z+XxEw9Z\\ndKGEASNY1Lv7HEgoks6Chn02+k9HJLYD0sdQgIzhMKrIP5UOmwDQT+BNv+nWKXhn\\nyrmwyPnNZ8M2e2+hJBt6dceg2wKBgQDKa2pebKAq7DT0XeU6x6vX/kGtBCycgvzn\\nKb7R9Z7QnUk0IAfAUtQ0wwclhi1R08XpZwzL3BEO6EAo5fzJa/6ObEv9SUwsx7YP\\nriekUDkGqxacGFIe7QqVEHxQgDQ0eUrGd6SOELGNOmi5etVZJlsMZKp6GmvyQL8n\\nbMQUqS+PkQKBgQCnRZUnLw+JV3EATF/8ZyTmDyQziR/Bk3ALAnJPvIUpdBXla1yH\\nrCOF4G03HXiC+fcYzr21kQOJ4Uo6plLkaiErOkLc66NrLrUXam1uYL/Lv0bPAzLK\\nK0GibHDtl6k+C7V17GbHX17zDLVveWL/6fp4PfrEDqrqgaKk+9PeadYaXwKBgG6m\\nczn0pUVxY60lWrZcCesDeQFMI9rWm8r9fesmGk+teyO8UqBmZswExHZVt5ZgbnKd\\nO1iBDu4YNWJl/l5Y44kVWCC4HaTo8vP1XoQqulGT2sMvZEy1hTBhF6OlwWPh3edJ\\n5bEnHPe3syGZLOET33eR28LtiI6fqB60DSfCKFaRAoGAR74hITKw+PbTdUWql/uT\\nuVHE1JaxhnvNRc+/khoNp903fGAHiVJ5hjnFKRVRUB8uMUtTSfKsS9Y5a4BatvB+\\nAdAY/BHdXad2Xwom8kH9Oirph8exXro3x+FmFzBbwcRwggCGXPX0p1vPPzcZLWnp\\nEXk80T6vA2vVQxYvIrG1yqw=\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"firebase-adminsdk-i3gy3@lid-rastr.iam.gserviceaccount.com\",\n  \"client_id\": \"105084896569014155165\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-i3gy3%40lid-rastr.iam.gserviceaccount.com\"\n}\n"""
+###############################################################################
+textkey_2 = """{\n  \"type\": \"service_account\",\n  \"project_id\": \"lid-ras
+tr\",\n  \"private_key_id\": \"a7c22fdbd57a9b70915020a3075fe968298d9b07\",\n  \
+"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQE
+FAASCBKcwggSjAgEAAoIBAQDGij/1qDDBibyf\\nooQJBsT+afWbqJchuhDgLixrMMrBknCzDKqn
+MKQGPAq3d3E5A95vf0tyJOQflefW\\ntb89OApzGmx9fDzN4NKIgUPQZJYB1GG/x+JeyQqJCVPzp
+G3R5t6WtK7XSWxg5WBx\\nQ1JS2KAYKZehZzhp1zDr25w5LeQlNpIbKpAS67yOO4nieA3ft5XGF/
+YCTPBA5IrV\\nkPusIUE0nbFGPIqHnq6Cj3pnVzpd/iweec9UiGVeUCW3Dw7kCJQom1lHoVYksMh
+x\\nZSQGzAiIOu6s4OLE/CPXpoa6P8i2erppcQyYIXJ6dL2W4AJ/CKKAt0zRN1N13pgt\\nnhpUI
+XELAgMBAAECggEAQ8JlR9MKKNN4Y8cUZvw/eVDyeRiV0/Xr0ocPs9moKV5w\\nRjt5dqwcHuCZC7
+qhEsNmRAle12sNzFXeFSJcTWl174jCJCWlnuIvGFV9rn7Vz3QL\\nlGeEs7LLfK+JTmr87BluOGM
+cFO/DJGLEgoNmck3qfbScQoK29zBxSt3duIoYBja5\\n6MmkTPPnQhi/gWiI7V/vsAcLvSQH1+Pq
+YP/OzzIsd/Cp9vwNx/u+i50AndsXjDUR\\n2HcfwOIeE3h4H3Zh1Fvzgsznm2fjKEOJAG6wzJtzb
+e0mBRslld2v+Wuy3QuDM1+N\\nDA1hvSatnxaLNfGCnA70YmDoe+ueoVcGdUl2u0NbYQKBgQD7F/
+GUeV6Zp/ouh7Ka\\nzmtAtJDk5nWy43ujHH/E+0v5jqz/W0RbvAYuK321IyN1wBA/LHqHMit3Z+X
+xEw9Z\\ndKGEASNY1Lv7HEgoks6Chn02+k9HJLYD0sdQgIzhMKrIP5UOmwDQT+BNv+nWKXhn\\ny
+rmwyPnNZ8M2e2+hJBt6dceg2wKBgQDKa2pebKAq7DT0XeU6x6vX/kGtBCycgvzn\\nKb7R9Z7QnU
+k0IAfAUtQ0wwclhi1R08XpZwzL3BEO6EAo5fzJa/6ObEv9SUwsx7YP\\nriekUDkGqxacGFIe7Qq
+VEHxQgDQ0eUrGd6SOELGNOmi5etVZJlsMZKp6GmvyQL8n\\nbMQUqS+PkQKBgQCnRZUnLw+JV3EA
+TF/8ZyTmDyQziR/Bk3ALAnJPvIUpdBXla1yH\\nrCOF4G03HXiC+fcYzr21kQOJ4Uo6plLkaiErO
+kLc66NrLrUXam1uYL/Lv0bPAzLK\\nK0GibHDtl6k+C7V17GbHX17zDLVveWL/6fp4PfrEDqrqga
+Kk+9PeadYaXwKBgG6m\\nczn0pUVxY60lWrZcCesDeQFMI9rWm8r9fesmGk+teyO8UqBmZswExHZ
+Vt5ZgbnKd\\nO1iBDu4YNWJl/l5Y44kVWCC4HaTo8vP1XoQqulGT2sMvZEy1hTBhF6OlwWPh3edJ
+\\n5bEnHPe3syGZLOET33eR28LtiI6fqB60DSfCKFaRAoGAR74hITKw+PbTdUWql/uT\\nuVHE1J
+axhnvNRc+/khoNp903fGAHiVJ5hjnFKRVRUB8uMUtTSfKsS9Y5a4BatvB+\\nAdAY/BHdXad2Xwo
+m8kH9Oirph8exXro3x+FmFzBbwcRwggCGXPX0p1vPPzcZLWnp\\nEXk80T6vA2vVQxYvIrG1yqw=
+\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"firebase-adminsdk-
+i3gy3@lid-rastr.iam.gserviceaccount.com\",\n  \"client_id\": \"1050848965690
+14155165\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\
+n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_pro
+vider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n
+\"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metada
+ta/x509/firebase-adminsdk-i3gy3%40lid-rastr.iam.gserviceaccount.com\"
+\n}\n"""
+
 
 # Pega as configurações do banco do segredo
 key_dict = json.loads(textkey_2)
@@ -43,33 +76,35 @@ db = firestore.Client(credentials=creds, project="lid-rastr")
 
 tz = pytz.timezone('America/Bahia')
 
-#######################################################################################################################
-#												  funcoes															 #
-#######################################################################################################################
+##############################################################################
+# 												  funcoes					
+##############################################################################
 
 st.write('teste 2 ')
+
+
 def trata_dados(data, tipo):
-	
+
 	# tratamento da planilha de tampas prata
-	data.rename(columns={data.columns[0]: "remove" }, inplace = True)
+	data.rename(columns={data.columns[0]: "remove"}, inplace=True)
 	data.dropna(subset=['remove'], inplace=True)
-	data.rename(columns=data.iloc[0].str.strip(), inplace = True)
+	data.rename(columns=data.iloc[0].str.strip(), inplace=True)
 	data.reset_index(drop=True, inplace=True)
 	data.drop([0], inplace=True)
-	data.rename(columns={data.columns[17]: "observacao" }, inplace = True)
+	data.rename(columns={data.columns[17]: "observacao"}, inplace=True)
 	data = data.loc[(data['STATUS'].str.lower() == 'armazenada') & (pd.isna(data['observacao']))]
-	data = data.iloc[:,[2,6,1,0,4,3,14,15,16]]
+	data = data.iloc[:, [2, 6, 1, 0, 4, 3, 14, 15, 16]]
 	
 	dicionario_colunas = {
-		data.columns[0]: "numero_OT", 
-		data.columns[1]: "data", 
-		data.columns[2]: "tipo_bobina", 
-		data.columns[3]: "codigo_bobina", 
-		data.columns[4]: "peso_bobina", 
+		data.columns[0]: "numero_OT",
+		data.columns[1]: "data",
+		data.columns[2]: "tipo_bobina",
+		data.columns[3]: "codigo_bobina",
+		data.columns[4]: "peso_bobina",
 		data.columns[5]: "codigo_SAP",
-		data.columns[6]: "data_entrada", 
-		data.columns[7]: "paletes_gerados", 
-		data.columns[8]: "status"		
+		data.columns[6]: "data_entrada",
+		data.columns[7]: "paletes_gerados",
+		data.columns[8]: "status"	
 	}
 	
 	data.rename(columns=dicionario_colunas, inplace=True)
@@ -93,40 +128,39 @@ def trata_dados(data, tipo):
 	return data
 
 
-
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		# tratamento da planilha de tampas prata
-		#st.subheader('Bobina Disponíveis: Tampa Prata')
+		# st.subheader('Bobina Disponíveis: Tampa Prata')
 		df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 		tratado_tp = trata_dados(df_tp, 1)
-		#st.write(tratado_tp.head(10))
+		# st.write(tratado_tp.head(10))
 
 		# tratamento da planilha de tampass gold
-		#st.subheader('Bobina Disponíveis: Tampa Dourada')
+		# st.subheader('Bobina Disponíveis: Tampa Dourada')
 		df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
 		tratado_gd = trata_dados(df_gd, 2)
-		#st.write(tratado_gd.head(10))
+		# st.write(tratado_gd.head(10))
 
 		# tratamento da palnilha de tampas brancas
-		#st.subheader('Bobina Disponíveis: Tampa Branca')
+		# st.subheader('Bobina Disponíveis: Tampa Branca')
 		df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
 		tratado_br = trata_dados(df_br, 3)
-		#st.write(tratado_br.head(10))
+		# st.write(tratado_br.head(10))
 
 		# tratamento da planilha de tampas de lacre azul
-		#st.subheader('Bobina Disponíveis: Tampa Lacre Azul')
+		# st.subheader('Bobina Disponíveis: Tampa Lacre Azul')
 		df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
 		tratado_ta = trata_dados(df_ta, 4)
-		#st.write(tratado_ta.head(10))
+		# st.write(tratado_ta.head(10))
 
 		dados = tratado_tp.append(tratado_gd, ignore_index=True)
 		dados = dados.append(tratado_br, ignore_index=True)
 		dados = dados.append(tratado_ta, ignore_index=True)
 		
-		#st.subheader('Bobinas Filtradas')
-		#st.write(dados)
+		# st.subheader('Bobinas Filtradas')
+		# st.write(dados)
 
 		return dados
 	except:
@@ -136,7 +170,7 @@ def upload_excel(uploaded_file):
 
 def insert_excel(df):
 	try:
-		#lista de bobinas ja inclusas no sistema
+		# lista de bobinas ja inclusas no sistema
 		bobinas_antigas = df_bobinas.numero_OT
 
 		df.numero_OT = df.numero_OT.astype(str)
@@ -147,7 +181,7 @@ def insert_excel(df):
 		df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
 
 		# Se houver variáveis a serem incluídas e faz a inclusão
-		if df.shape[0] > 0 :
+		if df.shape[0] > 0:
 			st.write('Confira os dados antes de inserí-los no sistema. Valores "nan" indicam que faltam dados e a planilha deve ser corrigida.')
 			st.write(df)
 			batch = db.batch()
