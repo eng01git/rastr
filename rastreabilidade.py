@@ -15,7 +15,7 @@ from io import BytesIO
 from openpyxl import load_workbook, Workbook
 from google.cloud import firestore
 from google.oauth2 import service_account
-from user_func import trata_dados
+import user_func as uf1
 
 
 ###############################################################################
@@ -100,25 +100,25 @@ def upload_excel(uploaded_file):
 		# tratamento da planilha de tampas prata
 		# st.subheader('Bobina Disponíveis: Tampa Prata')
 		df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-		tratado_tp = trata_dados(df_tp, 1)
+		tratado_tp = uf1.trata_dados(df_tp, 1)
 		# st.write(tratado_tp.head(10))
 
 		# tratamento da planilha de tampass gold
 		# st.subheader('Bobina Disponíveis: Tampa Dourada')
 		df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
-		tratado_gd = trata_dados(df_gd, 2)
+		tratado_gd = uf1.trata_dados(df_gd, 2)
 		# st.write(tratado_gd.head(10))
 
 		# tratamento da palnilha de tampas brancas
 		# st.subheader('Bobina Disponíveis: Tampa Branca')
 		df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
-		tratado_br = trata_dados(df_br, 3)
+		tratado_br = uf1.trata_dados(df_br, 3)
 		# st.write(tratado_br.head(10))
 
 		# tratamento da planilha de tampas de lacre azul
 		# st.subheader('Bobina Disponíveis: Tampa Lacre Azul')
 		df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
-		tratado_ta = trata_dados(df_ta, 4)
+		tratado_ta = uf1.trata_dados(df_ta, 4)
 		# st.write(tratado_ta.head(10))
 
 		dados = tratado_tp.append(tratado_gd, ignore_index=True)
