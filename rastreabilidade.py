@@ -134,63 +134,62 @@ def upload_excel(uploaded_file):
 
 
 def insert_excel(df):
-	#try:
-	#lista de bobinas ja inclusas no sistema
-	bobinas_antigas = df_bobinas.numero_OT
-	
-	df.numero_OT = df.numero_OT.astype(str)
+	try:
+		#lista de bobinas ja inclusas no sistema
+		bobinas_antigas = df_bobinas.numero_OT
 
-	# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
-	st.subheader('Bobinas a serem inseridas')
-	df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
-	
-	if df.shape[0] > 0:
-		st.write(df)
-	else:
-		st.info('Todas as bobinas filtradas da planilha já estão inseridas no sistema!')
+		df.numero_OT = df.numero_OT.astype(str)
 
-	# Se houver variáveis a serem incluídas e faz a inclusão
-	if df.shape[0] > 0 :
-		
-		batch = db.batch()
-		for index, row in df.iterrows():
+		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
+		st.subheader('Bobinas a serem inseridas')
+		df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
+
+		# Se houver variáveis a serem incluídas e faz a inclusão
+		if df.shape[0] > 0 :
+			st.write(df)
+			batch = db.batch()
+			for index, row in df.iterrows():
+
+				# Define a quantidade de paletes que podem ser gerados pela bobina
+				qtd_paletes = row.paletes_gerados
+
+				# cria dataframe e preenche com os dados da bobina
+				df_paletes_sem = pd.DataFrame(columns=col_pal_sem, index=list(range(qtd_paletes)))
+				df_paletes_sem['numero_OT'] = str(row['numero_OT'])
+				df_paletes_sem['tipo_tampa'] = str(row['tipo_bobina'])
+				df_paletes_sem['data_gerado'] = str(row['data_entrada'])
+				df_paletes_sem['data_estoque'] = '-'
+				df_paletes_sem['data_consumo'] = '-'
+				df_paletes_sem['codigo_tampa_SAP'] = '-'
+				df_paletes_sem['numero_palete'] = '-'
+
+				# for para iterar sobre todos os paletes e salvar
+				for index, rows in df_paletes_sem.iterrows():
+					if index < 10:
+						 index_str = '0' + str(index)
+					else:
+						 index_str = str(index)
+					rows['documento'] = index_str
+
+				row['Paletes'] = df_paletes_sem.to_csv()
+				ref = db.collection('Bobina').document(row['numero_OT'])
+				row_string = row.astype(str)
+				batch.set(ref, row_string.to_dict())
 			
-			# Define a quantidade de paletes que podem ser gerados pela bobina
-			qtd_paletes = row.paletes_gerados
-
-			# cria dataframe e preenche com os dados da bobina
-			df_paletes_sem = pd.DataFrame(columns=col_pal_sem, index=list(range(qtd_paletes)))
-			df_paletes_sem['numero_OT'] = str(row['numero_OT'])
-			df_paletes_sem['tipo_tampa'] = str(row['tipo_bobina'])
-			df_paletes_sem['data_gerado'] = str(row['data_entrada'])
-			df_paletes_sem['data_estoque'] = '-'
-			df_paletes_sem['data_consumo'] = '-'
-			df_paletes_sem['codigo_tampa_SAP'] = '-'
-			df_paletes_sem['numero_palete'] = '-'
-
-			# for para iterar sobre todos os paletes e salvar
-			for index, rows in df_paletes_sem.iterrows():
-				if index < 10:
-				   	 index_str = '0' + str(index)
-				else:
-				   	 index_str = str(index)
-				rows['documento'] = index_str
-
-			row['Paletes'] = df_paletes_sem.to_csv()
-			ref = db.collection('Bobina').document(row['numero_OT'])
-			row_string = row.astype(str)
-			batch.set(ref, row_string.to_dict())
+			inserir = st.button('Inserir os dados no sistema?')
 			
-		batch.commit()	
-		#df_bobinas = df_bobinas.append(df, ignore_index=True)
-		#df_bobinas
-		
-		# Limpa cache
-		caching.clear_cache()		
-		return df
-	#except:
-		#st.error('Arquivo não compatível com exportação do MES')
-		#return None
+			if inserir:
+				batch.commit()	
+
+			# Limpa cache
+			caching.clear_cache()		
+			return df
+		else:
+			st.info('Todas as bobinas filtradas da planilha já estão inseridas no sistema!')
+			return None
+	except:
+		st.error('Dados não inseridos no banco')
+		return None
 	#pass
 
 	
