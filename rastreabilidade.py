@@ -142,10 +142,12 @@ def insert_excel(df):
 
 		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
 		st.subheader('Bobinas a serem inseridas')
+		
 		df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
 
 		# Se houver variáveis a serem incluídas e faz a inclusão
 		if df.shape[0] > 0 :
+			st.write('Confira os dados antes de inserí-los no sistema. Valores "nan" indicam que faltam dados e a planilha deve ser corrigida.')
 			st.write(df)
 			batch = db.batch()
 			for index, row in df.iterrows():
@@ -239,6 +241,7 @@ def show_pdf(file_path):
 	pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
 	st.markdown(pdf_display, unsafe_allow_html=True)
 
+st.markdown("<h1 style='text-align: center; color: red;'>Some title</h1>", unsafe_allow_html=True)
 
 def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
