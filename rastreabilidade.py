@@ -175,7 +175,7 @@ def insert_excel(df):
 				rows['documento'] = index_str
 
 			row['Paletes'] = df_paletes_sem.to_csv()
-			ref = db.collection('Bobina').document(row['numero_OT'])
+			ref = db.collection('Bobina').document(str(row['numero_OT']))
 			row_string = row.astype(str)
 			batch.set(ref, row_string.to_dict())
 		
