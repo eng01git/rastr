@@ -939,8 +939,7 @@ if df_bobinas.shape[0] > 0:
 				allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 				enable_enterprise_modules=enable_enterprise_modules)
 			st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
-		else:
-			st.info('Não foram gerados paletes semm selante')
+
 
 		# consome paletes
 		#col2.write('Ultimos consumidos')
@@ -1182,8 +1181,7 @@ if df_bobinas.shape[0] > 0:
 					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 					enable_enterprise_modules=enable_enterprise_modules)
 				st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
-			else:
-				st.info('Não foram gerados paletes com selante')
+
 				
 
 			# consome paletes
