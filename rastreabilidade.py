@@ -293,7 +293,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	#t = "<div>Hello there my <span class='highlight blue'>name <span class='bold'>yo</span> </span> is <span class='highlight red'>Fanilo <span class='bold'>Name</span></span></div>"
 	#st.markdown(t, unsafe_allow_html=True)
 
-	linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></a>'
+	linko = f'<button href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></button>'
 	st.markdown(linko, unsafe_allow_html=True)
 
 
@@ -892,7 +892,7 @@ with col2:
 	st.subheader('Sem selante')
 	#col2.write('Ultimos gerados')
 	if df_ps_fifo_in.shape[0] < 5:
-		add_palete_sem = col2.button('Adicionar palete TP sem Selante')
+		add_palete_sem = col2.button('Gerar palete TP sem Selante')
 		if add_palete_sem:
 
 			# verificar bobina em uso
@@ -1130,7 +1130,7 @@ with col4:
 	st.subheader('Com selante')
 	#col4.write('Ultimos gerados')
 	if df_ps_fifo_s_in.shape[0] < 5:
-		add_palete_sem = col4.button('Adicionar palete TP com Selante')
+		add_palete_sem = col4.button('Gerar palete TP com Selante')
 		if add_palete_sem:
 
 			# verificar selante em uso
