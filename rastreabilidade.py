@@ -485,6 +485,7 @@ def adicionar_selante():
 			df_paletes_selante['numero_lote'] = str(new_d['numero_lote'])
 			df_paletes_selante['codigo_SAP'] = str(new_d['codigo_SAP'])
 			df_paletes_selante['data_gerado'] = str(new_d['data_entrada'])
+			df_paletes_selante['tipo_tampa']
 			df_paletes_selante['data_estoque'] = '-'
 			df_paletes_selante['data_consumo'] = '-'
 			df_paletes_selante['lote_semi'] = '-'
@@ -620,11 +621,6 @@ def config_grid(height, df, lim_min, lim_max, customizar):
 #####								rastreabilidade  		   									  ########
 ##########################################################################################################
 
-#################################
-# leitura de dados e definicoes #
-#################################
-
-
 # definicao de colunas para leitura d dados do banco
 col_bobinas = ['numero_OT', 'data', 'tipo_bobina', 'codigo_bobina', 'peso_bobina', 'codigo_SAP', 'data_entrada',
 			   'paletes_gerados', 'status']
@@ -632,7 +628,7 @@ col_pal_sem = ['numero_OT', 'documento', 'tipo_tampa', 'data_gerado', 'data_esto
 			   'codigo_tampa_SAP', 'numero_palete']
 col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'data', 'data_entrada', 'paletes_gerados',
 			   'status']
-col_pal_sel = ['numero_lote', 'documento', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
+col_pal_sel = ['numero_lote', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
 
 tipos_tampas = {'Tampa Prata Sem Selante': 40009011,
 		'Tampa Prata Com Selante': 40009012,
@@ -663,20 +659,6 @@ df_ps_fifo_s_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 #######################
 # organizacao da tela #
 #######################
-
-#uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
-#if uploaded_file is not None:
-#	data_excel = upload_excel(uploaded_file)
-#	df_excel = insert_excel(data_excel)
-#	df_bobinas = df_bobinas.append(df_excel)
-	
-# define imagem e barra lateral
-#col2, imagem, col4 = st.beta_columns([3, 10, 3])
-#imagem.write(df_pal_sem)
-#imagem.write(df_pal_com)
-#imagem.image('lid_linha.png')
-
-#st.subheader('Bobinas e Selantes')
 
 with st.beta_expander('Bobinas e selantes'):
 	st.subheader('Inserir Bobinas')
@@ -732,12 +714,6 @@ tipo_de_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
 imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_de_bobina.iloc[0]), unsafe_allow_html=True)
 imagem.image('lid_linha.png')
 
-
-#t = "<div> is <span class='highlight red'>Fanilo <span class='bold'>Name</span></span></div>"
-
-#imagem.subheader(tipo_de_bobina.iloc[0])
-#imagem.markdown("<div><span class='highlight gray'>Tipo de tampa em produção: {}</span></dic>".format(tipo_de_bobina.iloc[0]), unsafe_allow_html=True)
-
 st.subheader('Histórico de paletes com e sem selante')
 with st.beta_expander('Paletes sem selante'):
 
@@ -779,10 +755,10 @@ df_bobinas_disp.sort_values(by=['data'], inplace=True)
 numero_bobina = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
 
 # botao para teste
-reset = st.button('Reset')
+#reset = st.button('Reset')
 
-if reset:
-	caching.clear_cache()
+#if reset:
+#	caching.clear_cache()
 
 # parte do principio que nenhuma bobina foi selecionada
 selecionar_bobina = False
@@ -1038,7 +1014,6 @@ if selecionar_selante:
 
 	#verifica se ha selante em uso
 	selante_em_uso = df_selantes[df_selantes['status'] == 'Em uso']
-	#st.write(selante_em_uso)
 
 	if selante_em_uso.shape[0] > 0:
 
