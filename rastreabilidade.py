@@ -94,107 +94,107 @@ def trata_dados(data, tipo):
 
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
-	try:
-		# tratamento da planilha de tampas prata
-		# st.subheader('Bobina Disponíveis: Tampa Prata')
-		df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-		tratado_tp = trata_dados(df_tp, 1)
-		# st.write(tratado_tp.head(10))
+	#try:
+	# tratamento da planilha de tampas prata
+	# st.subheader('Bobina Disponíveis: Tampa Prata')
+	df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+	tratado_tp = trata_dados(df_tp, 1)
+	# st.write(tratado_tp.head(10))
 
-		# tratamento da planilha de tampass gold
-		# st.subheader('Bobina Disponíveis: Tampa Dourada')
-		df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
-		tratado_gd = trata_dados(df_gd, 2)
-		# st.write(tratado_gd.head(10))
+	# tratamento da planilha de tampass gold
+	# st.subheader('Bobina Disponíveis: Tampa Dourada')
+	df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
+	tratado_gd = trata_dados(df_gd, 2)
+	# st.write(tratado_gd.head(10))
 
-		# tratamento da palnilha de tampas brancas
-		# st.subheader('Bobina Disponíveis: Tampa Branca')
-		df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
-		tratado_br = trata_dados(df_br, 3)
-		# st.write(tratado_br.head(10))
+	# tratamento da palnilha de tampas brancas
+	# st.subheader('Bobina Disponíveis: Tampa Branca')
+	df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
+	tratado_br = trata_dados(df_br, 3)
+	# st.write(tratado_br.head(10))
 
-		# tratamento da planilha de tampas de lacre azul
-		# st.subheader('Bobina Disponíveis: Tampa Lacre Azul')
-		df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
-		tratado_ta = trata_dados(df_ta, 4)
-		# st.write(tratado_ta.head(10))
+	# tratamento da planilha de tampas de lacre azul
+	# st.subheader('Bobina Disponíveis: Tampa Lacre Azul')
+	df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
+	tratado_ta = trata_dados(df_ta, 4)
+	# st.write(tratado_ta.head(10))
 
-		dados = tratado_tp.append(tratado_gd, ignore_index=True)
-		dados = dados.append(tratado_br, ignore_index=True)
-		dados = dados.append(tratado_ta, ignore_index=True)
-		
-		# st.subheader('Bobinas Filtradas')
-		# st.write(dados)
+	dados = tratado_tp.append(tratado_gd, ignore_index=True)
+	dados = dados.append(tratado_br, ignore_index=True)
+	dados = dados.append(tratado_ta, ignore_index=True)
+	
+	# st.subheader('Bobinas Filtradas')
+	# st.write(dados)
 
-		return dados
-	except:
-		st.error('Arquivo não compatível')
-	return None
+	return dados
+	#except:
+	#	st.error('Arquivo não compatível')
+	#return None
 
 
 def insert_excel(df):
-	try:
-		# verifica se há bobinas no sistema
-		if df_bobinas.shape[0]:
-			# lista de bobinas ja inclusas no sistema
-			bobinas_antigas = df_bobinas.numero_OT
+	#try:
+	# verifica se há bobinas no sistema
+	if df_bobinas.shape[0]:
+		# lista de bobinas ja inclusas no sistema
+		bobinas_antigas = df_bobinas.numero_OT
 
-			df.numero_OT = df.numero_OT.astype(str)
+		df.numero_OT = df.numero_OT.astype(str)
 
-			# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
-			st.subheader('Bobinas a serem inseridas')
-			
-			df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
+		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
+		st.subheader('Bobinas a serem inseridas')
+		
+		df = df[~df['numero_OT'].isin(list(bobinas_antigas))]
 
-		# Se houver variáveis a serem incluídas e faz a inclusão
-		if df.shape[0] > 0:
-			st.write('Confira os dados antes de inserí-los no sistema. Valores "nan" indicam que faltam dados e a planilha deve ser corrigida.')
-			st.write(df)
-			batch = db.batch()
-			for index, row in df.iterrows():
+	# Se houver variáveis a serem incluídas e faz a inclusão
+	if df.shape[0] > 0:
+		st.write('Confira os dados antes de inserí-los no sistema. Valores "nan" indicam que faltam dados e a planilha deve ser corrigida.')
+		st.write(df)
+		batch = db.batch()
+		for index, row in df.iterrows():
 
-				# Define a quantidade de paletes que podem ser gerados pela bobina
-				qtd_paletes = row.paletes_gerados
+			# Define a quantidade de paletes que podem ser gerados pela bobina
+			qtd_paletes = row.paletes_gerados
 
-				# cria dataframe e preenche com os dados da bobina
-				df_paletes_sem = pd.DataFrame(columns=col_pal_sem, index=list(range(qtd_paletes)))
-				df_paletes_sem['numero_OT'] = str(row['numero_OT'])
-				df_paletes_sem['tipo_tampa'] = str(row['tipo_bobina'])
-				df_paletes_sem['data_gerado'] = str(row['data_entrada'])
-				df_paletes_sem['data_estoque'] = '-'
-				df_paletes_sem['data_consumo'] = '-'
-				df_paletes_sem['codigo_tampa_SAP'] = '-'
-				df_paletes_sem['numero_palete'] = '-'
+			# cria dataframe e preenche com os dados da bobina
+			df_paletes_sem = pd.DataFrame(columns=col_pal_sem, index=list(range(qtd_paletes)))
+			df_paletes_sem['numero_OT'] = str(row['numero_OT'])
+			df_paletes_sem['tipo_tampa'] = str(row['tipo_bobina'])
+			df_paletes_sem['data_gerado'] = str(row['data_entrada'])
+			df_paletes_sem['data_estoque'] = '-'
+			df_paletes_sem['data_consumo'] = '-'
+			df_paletes_sem['codigo_tampa_SAP'] = '-'
+			df_paletes_sem['numero_palete'] = '-'
 
-				# for para iterar sobre todos os paletes e salvar
-				for index, rows in df_paletes_sem.iterrows():
-					if index < 10:
-						 index_str = '0' + str(index)
-					else:
-						 index_str = str(index)
-					rows['documento'] = index_str
+			# for para iterar sobre todos os paletes e salvar
+			for index, rows in df_paletes_sem.iterrows():
+				if index < 10:
+						index_str = '0' + str(index)
+				else:
+						index_str = str(index)
+				rows['documento'] = index_str
 
-				row['Paletes'] = df_paletes_sem.to_csv()
-				ref = db.collection('Bobina').document(row['numero_OT'])
-				row_string = row.astype(str)
-				batch.set(ref, row_string.to_dict())
-			
-			inserir = st.button('Inserir os dados no sistema?')
-			
-			if inserir:
-				# escreve os dados no servidor
-				batch.commit()	
+			row['Paletes'] = df_paletes_sem.to_csv()
+			ref = db.collection('Bobina').document(row['numero_OT'])
+			row_string = row.astype(str)
+			batch.set(ref, row_string.to_dict())
+		
+		inserir = st.button('Inserir os dados no sistema?')
+		
+		if inserir:
+			# escreve os dados no servidor
+			batch.commit()	
 
-				# Limpa cache
-				caching.clear_cache()		
-				return df
-			return None
-		else:
-			st.info('Todas as bobinas filtradas da planilha já estão inseridas no sistema!')
-			return None
-	except:
-		st.error('Dados não inseridos no banco')
+			# Limpa cache
+			caching.clear_cache()		
+			return df
 		return None
+	else:
+		st.info('Todas as bobinas filtradas da planilha já estão inseridas no sistema!')
+		return None
+	#except:
+	#	st.error('Dados não inseridos no banco')
+	#	return None
 	#pass
 
 	
@@ -1007,20 +1007,15 @@ if df_bobinas.shape[0] > 0:
 	# Verifica selantes disponiveis
 	df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
 
+	# cria selectbox para selecionar selantes
+	numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
+
 	# parte do principio que nenhuma selante foi selecionada
 	selecionar_selante = False
 
-	if df_selantes_disp.shape[0] > 0:
-
-		# cria selectbox para selecionar selantes
-		numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
-
-		# verifica se foi selecionada alguma selante
-		if numero_selante != None:
-			selecionar_selante = st11.button('Utilizar o selante selecionado?')
-		else:
-			st11.info('Nao ha selantes disponiveis')
-
+	# verifica se foi selecionada alguma selante
+	if numero_selante != None:
+		selecionar_selante = st11.button('Utilizar o selante selecionado?')
 	else:
 		st11.info('Nao ha selantes disponiveis')
 
