@@ -735,7 +735,7 @@ tipo_de_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
 
 #imagem.subheader(tipo_de_bobina.iloc[0])
 #imagem.markdown("<div><span class='highlight gray'>Tipo de tampa em produção: {}</span></dic>".format(tipo_de_bobina.iloc[0]), unsafe_allow_html=True)
-imagem.markdown("<h1 style='text-align: center; color: black;'>Some title</h1>", unsafe_allow_html=True)
+imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_de_bobina.iloc[0], unsafe_allow_html=True)
 
 st.subheader('Histórico de paletes com e sem selante')
 with st.beta_expander('Paletes sem selante'):
