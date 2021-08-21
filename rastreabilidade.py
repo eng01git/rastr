@@ -654,15 +654,18 @@ df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 
 # define a bobina em uso
-tipo_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
-st.write(tipo_bobina)
-tipo_bobina_uso = str(tipo_bobina.iloc[0])
+
+if df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina'].shape[0]:
+	tipo_bobina = df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina']
+	tipo_bobina_uso = str(tipo_bobina.iloc[0])
+else:
+	tipo_bobina_uso = 'Não há bobina em uso'
 
 # dataframes do fifo sem selante
-st.write(df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')])
-st.write(tipo_bobina_uso)
-df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'].astype(str) == tipo_bobina_uso)]
-st.write(df_ps_fifo_in)
+#st.write(df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')])
+#st.write(tipo_bobina_uso)
+df_ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-')]
+#st.write(df_ps_fifo_in)
 df_ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
 # dataframes do fifo com selante
