@@ -15,6 +15,7 @@ from io import BytesIO
 from openpyxl import load_workbook, Workbook
 from google.cloud import firestore
 from google.oauth2 import service_account
+from user_func import trata_dados
 
 
 ###############################################################################
@@ -47,10 +48,8 @@ tz = pytz.timezone('America/Bahia')
 # 												  funcoes					
 ##############################################################################
 
-st.write('teste 2 ')
 
-
-def trata_dados(data, tipo):
+"""def trata_dados(data, tipo):
 
 	# tratamento da planilha de tampas prata
 	data.rename(columns={data.columns[0]: "remove"}, inplace=True)
@@ -93,7 +92,7 @@ def trata_dados(data, tipo):
 	data.paletes_gerados = data.paletes_gerados.astype('int')
 	data.status = 'Disponível'
 	return data
-
+"""
 
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
