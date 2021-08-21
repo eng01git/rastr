@@ -920,7 +920,7 @@ if df_bobinas.shape[0] > 0:
 				if flag_rerun:
 					st.experimental_rerun()
 
-		else:
+		elif (df_ps_fifo_in.shape[0] >= 5):
 			st.error('Ha paletes demais na reserva')
 		
 		fifo_in_show = df_ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
@@ -1162,7 +1162,7 @@ if df_bobinas.shape[0] > 0:
 					if flag_rerun:
 						st.experimental_rerun()
 
-			else:
+			elif (df_ps_fifo_s_in.shape[0] >= 5):
 				st.error('Ha paletes demais na reserva')
 
 			fifo_s_in_show = df_ps_fifo_s_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
