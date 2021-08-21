@@ -883,7 +883,7 @@ if df_bobinas.shape[0] > 0:
 	with col2:
 		st.subheader('Sem selante')
 		#col2.write('Ultimos gerados')
-		if df_ps_fifo_in.shape[0] < 5:
+		if (df_ps_fifo_in.shape[0] < 5) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
 			add_palete_sem = col2.button('Gerar palete TP sem Selante')
 			if add_palete_sem:
 
@@ -941,8 +941,6 @@ if df_bobinas.shape[0] > 0:
 			st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
 		else:
 			st.info('Não foram gerados paletes semm selante')
-
-			
 
 		# consome paletes
 		#col2.write('Ultimos consumidos')
@@ -1126,7 +1124,7 @@ if df_bobinas.shape[0] > 0:
 		with col4:
 			st.subheader('Com selante')
 			#col4.write('Ultimos gerados')
-			if df_ps_fifo_s_in.shape[0] < 5:
+			if (df_ps_fifo_s_in.shape[0] < 5) & (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0):
 				add_palete_sem = col4.button('Gerar palete TP com Selante')
 				if add_palete_sem:
 
