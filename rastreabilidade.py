@@ -931,7 +931,7 @@ with col2:
 	else:
 		st.error('Ha paletes demais na reserva')
 
-	fifo_in_show = df_ps_fifo_in.loc[fifo_in_show.tipo_bobina == tipo_de_bobina, ['numero_palete', 'tipo_tampa']].sort_values(by='data_estoque', ascending=True)
+	fifo_in_show = df_ps_fifo_in.loc[df_ps_fifo_in.tipo_bobina == tipo_de_bobina, ['numero_palete', 'tipo_tampa']].sort_values(by='data_estoque', ascending=True)
 	#fifo_in_show = fifo_in_show.loc[fifo_in_show.tipo_bobina == tipo_de_bobina]
 	fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
     
