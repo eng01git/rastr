@@ -1407,11 +1407,20 @@ if df_bobinas.shape[0] > 0:
 	st.subheader('Rastreio por data')
 	with st.beta_expander('Análise de bobinas e selante por dia'):
 		data_filtro = st.date_input('Selecione a data que deseja filtrar')
+
+		# bobinas que possuem data de entrada e de saída
 		bobinas_filtradas = df_bobinas.loc[(df_bobinas['data_entrada'] != '-') & (df_bobinas['data_saida'] != '-')]
+
+		# converte os valores de string para datetime
 		bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
 		bobinas_filtradas['data_saida'] = pd.to_datetime(bobinas_filtradas['data_saida'])
-		st.write(bobinas_filtradas)
+
+		# filtra as bobinas de acordo com a data
 		filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro) | (bobinas_filtradas['data_saida'].dt.date == data_filtro) | ((bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'].dt.date >= data_filtro))]
+		
+		# transforma as datas de volta em strings para facilitar a visualizacao
+		filtro_bobina['data_entrada'] = filtro_bobina['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+		filtro_bobina['data_saida'] = filtro_bobina['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
 		st.write(filtro_bobina)
 
 # botao para teste
