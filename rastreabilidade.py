@@ -1258,9 +1258,9 @@ if df_bobinas.shape[0] > 0:
 
 st.subheader('Remoção de bobinas e selantes da produção')
 with st.beta_expander('Remover bobina ou selante'):
-	c0, c1, c2, c3, c4, c5 = st.beta_columns([3,1,1,3,1,1])
+	c0, c1, c2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,3.5,1.5,1])
 
-	st.subheader('Remover bobinas')
+	c0.subheader('Remover bobinas')
 	if bobina_em_uso.shape[0] > 0:
 		c0.text_input('Descreva o motivo da retirada da bobina')
 		c1.number_input('Peso restante', format='%i', value=5000, step=1)
