@@ -1279,6 +1279,7 @@ if bobina_em_uso.shape[0] > 0:
 		remover_bobina = c2.button('Remover bobina em uso')
 
 		if remover_bobina:
+			# concatena comentario e peso para escrita no banco
 			comentario_peso = ('Motivo: ' + comentario_remover + ' Peso restante: ' + str(peso_remover))
 
 			# seleciona a bobina em uso
@@ -1316,41 +1317,22 @@ if bobina_em_uso.shape[0] > 0:
 			# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
 			new_remove['Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
 
-			# Armazena no banco as alteracoes na selante
+			# flag para rodar novamente o script
+			rerun = False
+
+			# Armazena no banco as alteracoes da bobina
 			try:
 				doc_ref = db.collection("Bobina").document(documento_remove)
 				doc_ref.set(new_remove)
 				st.success('Formulário armazenado com sucesso!')
+				rerun = True
 			except:
 				st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
 				caching.clear_cache()
 
+			# comando para rodar novament o script
+			if rerun:
+				st.experimental_rerun()
 
-
-
-
-			# valores a serem escritos
-			# row = df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso]
-
-			# # escrita dos dados no banco
-			# rerun = False
-			# # Armazena no banco
-			# #try:
-			# ref = db.collection('Bobina').document(str(row.iloc[0,0]))
-			# row_string = row.astype(str)
-			# ref.set(row_string.to_dict())
-
-			# # Limpa cache
-			# caching.clear_cache()
-
-			# # flag para rodar novamente o script
-			# rerun = True
-			# #except:
-			# #	st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
-
-			# if rerun:
-			# 	st.experimental_rerun()
 else:
 	st.info('Não há bobina em uso')
-
-st.write(df_pal_sem)
