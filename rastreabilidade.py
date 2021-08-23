@@ -668,6 +668,12 @@ bobina_em_uso = pd.DataFrame()
 if df_bobinas.shape[0] > 0:
 	bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
 
+#verifica se ha selante em uso
+selante_em_uso = pd.DataFrame()
+
+if df_selantes.shape[0] > 0:
+	selante_em_uso = df_selantes[df_selantes['status'] == 'Em uso']
+
 # dataframes do fifo sem selante
 ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'].astype(str) == tipo_bobina_uso)]
 ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
@@ -1005,9 +1011,6 @@ if df_bobinas.shape[0] > 0:
 			###################################
 			# Coloca anterior como finalizada #
 			###################################
-
-			#verifica se ha selante em uso
-			selante_em_uso = df_selantes[df_selantes['status'] == 'Em uso']
 
 			if selante_em_uso.shape[0] > 0:
 
