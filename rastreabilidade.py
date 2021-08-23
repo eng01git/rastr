@@ -1229,15 +1229,17 @@ if df_bobinas.shape[0] > 0:
 				st.info('Não foram consumidos paletes com selante')
 
 st.subheader('Remoção de bobinas e selantes da produção')
+
+# colunas para remoção de bobinas e colunas
+t0, t1 = st.beta_columns(2)
+c0, c1, c2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,3.5,1.5,1])
+
+# titulos
+t0.subheader('Remover bobinas')
+t1.subheader('Remover selante')
+
 if bobina_em_uso.shape[0] > 0:
 	with st.beta_expander('Remover bobina ou selante'):
-		# colunas para remoção de bobinas e colunas
-		t0, t1 = st.beta_columns(2)
-		c0, c1, c2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,3.5,1.5,1])
-
-		# titulos
-		t0.subheader('Remover bobinas')
-		t1.subheader('Remover selante')
 
 		# coleta os dados relativos a remoção da bobina
 		comentario_remover = c0.text_input('Descreva o motivo da retirada da bobina')
@@ -1300,62 +1302,63 @@ if bobina_em_uso.shape[0] > 0:
 			if rerun:
 				st.experimental_rerun()
 
-		# coleta os dados relativos a remoção do selante
-		comentario_remover_sel = c3.text_input('Descreva o motivo da retirada do selante')
-		peso_remover_sel = c4.number_input('Peso restante', format='%i', value=3000, step=100)
-		remover_selante = c5.button('Remover selante em uso')
+		if selante_em_uso.shape[0] > 0:
+			# coleta os dados relativos a remoção do selante
+			comentario_remover_sel = c3.text_input('Descreva o motivo da retirada do selante')
+			peso_remover_sel = c4.number_input('Peso restante', format='%i', value=3000, step=100)
+			remover_selante = c5.button('Remover selante em uso')
 
-		if remover_selante:
-			# concatena comentario e peso para escrita no banco
-			comentario_peso_sel = ('Motivo: ' + comentario_remover_sel + ' Peso restante: ' + str(peso_remover_sel))
+			if remover_selante:
+				# concatena comentario e peso para escrita no banco
+				comentario_peso_sel = ('Motivo: ' + comentario_remover_sel + ' Peso restante: ' + str(peso_remover_sel))
 
-			# verificar selante em uso
-			selante_atual = selante_em_uso.iloc[0,0]
+				# verificar selante em uso
+				selante_atual = selante_em_uso.iloc[0,0]
 
-			# modifica bobina selecionada para removida
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'status'] = 'Removida'
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'comentario'] = comentario_peso_sel
+				# modifica bobina selecionada para removida
+				df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'status'] = 'Removida'
+				df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+				df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'comentario'] = comentario_peso_sel
 
-			# peso incial da bobinaa
-			peso_inicial_sel = selante_em_uso.iloc[0,3]
+				# peso incial da bobinaa
+				peso_inicial_sel = selante_em_uso.iloc[0,3]
 
-			# calculo do peso consumido
-			peso_consumido_sel = int(peso_inicial_sel) - peso_remover_sel
+				# calculo do peso consumido
+				peso_consumido_sel = int(peso_inicial_sel) - peso_remover_sel
 
-			# paletes produzidos no total antes da remoção
-			paletes_produzidos_sel = int((peso_consumido_sel) * 2857 / 187200)
+				# paletes produzidos no total antes da remoção
+				paletes_produzidos_sel = int((peso_consumido_sel) * 2857 / 187200)
 
-			# atualiza o total de paletes produzidos pela bobina
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'paletes_gerados'] = paletes_produzidos_sel
+				# atualiza o total de paletes produzidos pela bobina
+				df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'paletes_gerados'] = paletes_produzidos_sel
 
-			# remove da lista da paletes os paletes que não foram gerados
-			df_pal_com.drop(df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual) & (df_pal_com['documento'] >= paletes_produzidos_sel)].index, inplace=True)
+				# remove da lista da paletes os paletes que não foram gerados
+				df_pal_com.drop(df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual) & (df_pal_com['documento'] >= paletes_produzidos_sel)].index, inplace=True)
 
-			# prepara dados para escrever no banco
-			dic_remove = {}
-			dic_remove = df_selantes.loc[(df_selantes['numero_lote'] == selante_atual)].to_dict('records')
+				# prepara dados para escrever no banco
+				dic_remove = {}
+				dic_remove = df_selantes.loc[(df_selantes['numero_lote'] == selante_atual)].to_dict('records')
 
-			# Transforma dados do formulário em um dicionário
-			keys_values = dic_remove[0].items()
-			new_remove_sel = {str(key): str(value) for key, value in keys_values}
-			documento_remove_sel = new_remove_sel['numero_lote']
+				# Transforma dados do formulário em um dicionário
+				keys_values = dic_remove[0].items()
+				new_remove_sel = {str(key): str(value) for key, value in keys_values}
+				documento_remove_sel = new_remove_sel['numero_lote']
 
-			# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
-			new_remove_sel['Paletes'] = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual)].to_csv()
+				# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
+				new_remove_sel['Paletes'] = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual)].to_csv()
 
-			# flag para rodar novamente o script
-			rerun = False
+				# flag para rodar novamente o script
+				rerun = False
 
-			# Armazena no banco as alteracoes da selante
-			try:
-				doc_ref = db.collection("Selante").document(documento_remove_sel)
-				doc_ref.set(new_remove_sel)
-				st.success('Modificação armazenada com sucesso!')
-				rerun = True
-			except:
-				st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
-				caching.clear_cache()
+				# Armazena no banco as alteracoes da selante
+				try:
+					doc_ref = db.collection("Selante").document(documento_remove_sel)
+					doc_ref.set(new_remove_sel)
+					st.success('Modificação armazenada com sucesso!')
+					rerun = True
+				except:
+					st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
+					caching.clear_cache()
 
 else:
 	st.info('Não há bobina em uso')
