@@ -1410,8 +1410,8 @@ if df_bobinas.shape[0] > 0:
 		bobinas_filtradas = df_bobinas.loc[(df_bobinas['data_entrada'] != '-') & (df_bobinas['data_saida'] != '-')]
 		bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
 		bobinas_filtradas['data_saida'] = pd.to_datetime(bobinas_filtradas['data_saida'])
-		
-		filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt == data_filtro) | (bobinas_filtradas['data_saida'] == data_filtro) | ((bobinas_filtradas['data_entrada'] <= data_filtro) & (bobinas_filtradas['data_saida'] >= data_filtro))]
+		st.write(bobinas_filtradas)
+		filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro) | (bobinas_filtradas['data_saida'].dt.date == data_filtro) | ((bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'].dt.date >= data_filtro))]
 		st.write(filtro_bobina)
 
 # botao para teste
