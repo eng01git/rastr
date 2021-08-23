@@ -741,34 +741,6 @@ imagem.image('lid_linha.png')
 
 # verifica se há bobinas no sistema para habilitar as demais funcionalidades do sistema
 if df_bobinas.shape[0] > 0:
-	# st.subheader('Histórico de paletes com e sem selante')
-	# with st.beta_expander('Paletes sem selante'):
-
-	# 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_sem, 0, 0, True)
-	# 	response = AgGrid(
-	# 		df_pal_sem,
-	# 		gridOptions=gridOptions,
-	# 		height=grid_height,
-	# 		width='100%',
-	# 		data_return_mode=return_mode_value,
-	# 		update_mode=update_mode_value,
-	# 		fit_columns_on_grid_load=fit_columns_on_grid_load,
-	# 		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-	# 		enable_enterprise_modules=enable_enterprise_modules)
-
-	# with st.beta_expander('Paletes com selante'):
-
-	# 	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_com, 0, 0, True)
-	# 	response = AgGrid(
-	# 		df_pal_com,
-	# 		gridOptions=gridOptions,
-	# 		height=grid_height,
-	# 		width='100%',
-	# 		data_return_mode=return_mode_value,
-	# 		update_mode=update_mode_value,
-	# 		fit_columns_on_grid_load=fit_columns_on_grid_load,
-	# 		allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-	# 		enable_enterprise_modules=enable_enterprise_modules)
 
 	###########################################
 	# Selecionar bobinas disponiveis para uso #
