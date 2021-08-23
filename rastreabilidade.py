@@ -1308,3 +1308,5 @@ if bobina_em_uso.shape[0] > 0:
 			#st.write()
 else:
 	st.info('Não há bobina em uso')
+
+st.write(df_pal_sem)
