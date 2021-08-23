@@ -3,7 +3,7 @@
   color: white;
   padding: 0.5rem;
   margin-bottom: 1rem;
-  
+  text-decoration: none;
 }
 .bold {
   padding-left: 1rem;
@@ -14,7 +14,7 @@
 }
 .blue {
   background-color: lightblue;
-  text-decoration: none;
+  
 }
 .gray {
   background-color: #9da0a8;
