@@ -687,7 +687,7 @@ sel_fifo_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 # organizacao da tela #
 #######################
 
-with st.beta_expander('Bobinas e selantes'):
+with st.beta_expander('Gerenciamento de bobinas e selantes'):
 	st.subheader('Inserir Bobinas')
 	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 	if uploaded_file is not None:
