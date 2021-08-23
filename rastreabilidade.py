@@ -1257,7 +1257,7 @@ if df_bobinas.shape[0] > 0:
 				st.info('Não foram consumidos paletes com selante')
 
 with st.beta_expander('Remover bobina ou selante'):
-	c0, c1, c2, c3, c4, c5 = st.beta_columns([2,1,1,2,1,1])
+	c0, c1, c2, c3, c4, c5 = st.beta_columns([3,1,1,3,1,1])
 
 	if bobina_em_uso.shape[0] > 0:
 		c0.text_input('Descreva o motivo da retirada da bobina')
