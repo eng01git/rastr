@@ -1296,7 +1296,9 @@ if bobina_em_uso.shape[0] > 0:
 			paletes_produzidos = int((peso_consumido) * 412 / 187200)
 			st.write(paletes_produzidos)
 
-
+			st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == val_em_uso])
+			df_pal_sem.drop((df_pal_sem.loc[df_pal_sem['numero_OT'] == val_em_uso]) & (df_pal_sem.loc[df_pal_sem['documento'] >= paletes_produzidos]))
+			st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == val_em_uso])
 			#data.paletes_gerados = data.paletes_gerados.astype('int')
 
 			# modifica os paletes da bobina
