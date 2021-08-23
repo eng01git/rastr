@@ -89,6 +89,7 @@ def trata_dados(data, tipo):
 	data.paletes_gerados = (data['peso_bobina']) * 412 / 187200
 	data.paletes_gerados = data.paletes_gerados.astype('int')
 	data.status = 'Disponível'
+	data.comentario = '-'
 	return data
 
 
@@ -290,10 +291,6 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	b64 = base64.b64encode(towrite).decode()  # some strings
 
 	# link para download e nome do arquivo
-
-	#t = "<div>Hello there my <span class='highlight blue'>name <span class='bold'>yo</span> </span> is <span class='highlight red'>Fanilo <span class='bold'>Name</span></span></div>"
-	#st.markdown(t, unsafe_allow_html=True)
-
 	linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></a>'
 	st.markdown(linko, unsafe_allow_html=True)
 
@@ -387,6 +384,7 @@ def adicionar_bobina():
 		dic['peso_bobina'] = s4.number_input('Peso da bobina', step=100, format='%i', value=9000, max_value=18000)
 		dic['codigo_SAP'] = s5.text_input('Código SAP')
 		dic['data_entrada'] = ''
+		dic['comentario'] = '-'
 		submitted = s6.form_submit_button('Adicionar bobina ao sistema')
 
 	if submitted:
@@ -461,6 +459,7 @@ def adicionar_selante():
 		dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
 		dic['lote_interno'] = s4.text_input('Lote interno')
 		dic['data_entrada'] = ''
+		dic['comentario'] = '-'
 		submitted = s5.form_submit_button('Adicionar selante ao sistema')
 
 	if submitted:
@@ -624,11 +623,11 @@ def config_grid(height, df, lim_min, lim_max, customizar):
 
 # definicao de colunas para leitura d dados do banco
 col_bobinas = ['numero_OT', 'data', 'tipo_bobina', 'codigo_bobina', 'peso_bobina', 'codigo_SAP', 'data_entrada',
-			   'paletes_gerados', 'status']
+			   'paletes_gerados', 'status', 'comentario']
 col_pal_sem = ['numero_OT', 'documento', 'tipo_tampa', 'data_gerado', 'data_estoque', 'data_consumo',
 			   'codigo_tampa_SAP', 'numero_palete']
 col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'data', 'data_entrada', 'paletes_gerados',
-			   'status']
+			   'status', 'comentario']
 col_pal_sel = ['numero_lote', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
 
 tipos_tampas = {'Tampa Prata Sem Selante': 40009011,
@@ -646,10 +645,10 @@ tipos_bobinas = {'Tampa Prata': 50490760,
 tipos_selantes = {'Selante': 50491194}
 
 # botao para teste
-# reset = st.button('Reset')
+reset = st.button('Reset')
 
-# if reset:
-#	caching.clear_cache()
+if reset:
+	caching.clear_cache()
 
 # leitura e exibicao dos dados das bobinas
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
@@ -1255,5 +1254,6 @@ if df_bobinas.shape[0] > 0:
 				st.info('Não foram consumidos paletes com selante')
 
 if bobina_em_uso.shape[0] > 0:
+	imagem
 	imagem.write('Tem bobina em uso')
 	
