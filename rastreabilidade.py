@@ -96,42 +96,30 @@ def trata_dados(data, tipo):
 
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
-	#try:
-	# tratamento da planilha de tampas prata
-	# st.subheader('Bobina Disponíveis: Tampa Prata')
-	df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
-	tratado_tp = trata_dados(df_tp, 1)
-	# st.write(tratado_tp.head(10))
+	try:
+		# tratamento da planilha de tampas prata
+		df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
+		tratado_tp = trata_dados(df_tp, 1)
 
-	# tratamento da planilha de tampass gold
-	# st.subheader('Bobina Disponíveis: Tampa Dourada')
-	df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
-	tratado_gd = trata_dados(df_gd, 2)
-	# st.write(tratado_gd.head(10))
+		# tratamento da planilha de tampass gold
+		df_gd = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Gold')
+		tratado_gd = trata_dados(df_gd, 2)
 
-	# tratamento da palnilha de tampas brancas
-	# st.subheader('Bobina Disponíveis: Tampa Branca')
-	df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
-	tratado_br = trata_dados(df_br, 3)
-	# st.write(tratado_br.head(10))
+		# tratamento da palnilha de tampas brancas
+		df_br = pd.read_excel(uploaded_file, sheet_name='BOBINA TAMPA BRANCA')
+		tratado_br = trata_dados(df_br, 3)
 
-	# tratamento da planilha de tampas de lacre azul
-	# st.subheader('Bobina Disponíveis: Tampa Lacre Azul')
-	df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
-	tratado_ta = trata_dados(df_ta, 4)
-	# st.write(tratado_ta.head(10))
+		# tratamento da planilha de tampas de lacre azul
+		df_ta = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Lacre Azul')
+		tratado_ta = trata_dados(df_ta, 4)
 
-	dados = tratado_tp.append(tratado_gd, ignore_index=True)
-	dados = dados.append(tratado_br, ignore_index=True)
-	dados = dados.append(tratado_ta, ignore_index=True)
-	
-	# st.subheader('Bobinas Filtradas')
-	# st.write(dados)
-
-	return dados
-	#except:
-	#	st.error('Arquivo não compatível')
-	#return None
+		dados = tratado_tp.append(tratado_gd, ignore_index=True)
+		dados = dados.append(tratado_br, ignore_index=True)
+		dados = dados.append(tratado_ta, ignore_index=True)
+		return dados
+	except:
+		st.error('Arquivo não compatível')
+	return None
 
 
 def insert_excel(df):
@@ -261,13 +249,13 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Sem selante'  # 'com/sem selante'
-		ws['A9'] = 'definir codigo produto'  # 'codigo produto'
+		ws['A9'] = str(data['codigo_SAP'])  # 'codigo produto'
 		ws['B13'] = str(data['numero_OT'])  # numero da bobina
 	else:
 		# Preenchimento dos valores
-		ws['A7'] = str(data['codigo_SAP'])  # 'tipo produto'
+		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Com selante'  # 'com/sem selante'
-		ws['A9'] = 'definir codigo produto'  # 'codigo produto'
+		ws['A9'] = str(data['codigo_SAP'])  # 'codigo produto'
 		ws['B13'] = str(data['numero_lote'])  # numero da bobina
 
 	# pega a hora que o palete foi para o estoque
