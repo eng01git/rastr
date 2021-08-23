@@ -444,7 +444,7 @@ def adicionar_selante():
 	with st.form('forms_selante'):
 		dic['status'] = 'Disponível'
 		dic['data'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-		s1, s2, s3, s4, s5 = st.beta_columns([2, 2, 2, 2, 1])
+		s1, s2, s3, s4, s5 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
 		dic['codigo_SAP'] = s2.text_input('Codigo SAP')
 		dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
