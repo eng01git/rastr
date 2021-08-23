@@ -1263,7 +1263,7 @@ with st.beta_expander('Remover bobina ou selante'):
 	st.subheader('Remover bobinas')
 	if bobina_em_uso.shape[0] > 0:
 		c0.text_input('Descreva o motivo da retirada da bobina')
-		c1.number_input('Quantos quilos restavam na bobina?')
+		c1.number_input('Peso restante', format='%i')
 		remover_bobina = c2.button('Remover bobina em uso')
 
 		if remover_bobina:
