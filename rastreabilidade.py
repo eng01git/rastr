@@ -1306,27 +1306,52 @@ if bobina_em_uso.shape[0] > 0:
 			# atualiza os paletes da bobina
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
 
+			# prepara dados para escrever no banco
+			dic_remove = {}
+			dic_remove = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_dict('records')
+
+			# Transforma dados do formulário em um dicionário
+			keys_values = dic_remove[0].items()
+			new_remove = {str(key): str(value) for key, value in keys_values}
+			documento_remove = new_remove['numero_lote']
+
+			# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
+			#new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
+
+			# Armazena no banco as alteracoes na selante
+			try:
+				doc_ref = db.collection("Bobina").document(documento_remove)
+				doc_ref.set(new_remove)
+				st.success('Formulário armazenado com sucesso!')
+			except:
+				st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
+				caching.clear_cache()
+
+
+
+
+
 			# valores a serem escritos
-			row = df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso]
+			# row = df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso]
 
-			# escrita dos dados no banco
-			rerun = False
-			# Armazena no banco
-			#try:
-			ref = db.collection('Bobina').document(str(row.iloc[0,0]))
-			row_string = row.astype(str)
-			ref.set(row_string.to_dict())
+			# # escrita dos dados no banco
+			# rerun = False
+			# # Armazena no banco
+			# #try:
+			# ref = db.collection('Bobina').document(str(row.iloc[0,0]))
+			# row_string = row.astype(str)
+			# ref.set(row_string.to_dict())
 
-			# Limpa cache
-			caching.clear_cache()
+			# # Limpa cache
+			# caching.clear_cache()
 
-			# flag para rodar novamente o script
-			rerun = True
-			#except:
-			#	st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
+			# # flag para rodar novamente o script
+			# rerun = True
+			# #except:
+			# #	st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
 
-			if rerun:
-				st.experimental_rerun()
+			# if rerun:
+			# 	st.experimental_rerun()
 else:
 	st.info('Não há bobina em uso')
 
