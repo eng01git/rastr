@@ -1224,7 +1224,7 @@ st.subheader('Remoção de bobinas e selantes da produção')
 
 with st.beta_expander('Remover bobina ou selante'):
 	# colunas para remoção de bobinas e colunas
-	t0, space1, t1 = st.beta_columns([11, 0.5, 11])
+	t0, space1, t1 = st.beta_columns([12, 0.5, 12])
 	c0, c1, c2, space2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,0.5,3.5,1.5,1])
 
 	# titulos
