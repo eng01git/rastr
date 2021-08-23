@@ -23,7 +23,7 @@
 
 a:link, a:visited {
   border-radius: 0.4rem;
-  background-color: #ffffff;
+  background-color: rgb(250, 234, 214);
   color: rgb(94, 94, 94);
   padding: 14px 25px;
   text-align: center;
@@ -32,5 +32,5 @@ a:link, a:visited {
 }
 
 a:hover, a:active {
-  background-color: rgb(250, 220, 181);
+  background-color: rgb(229, 253, 220);
 }
