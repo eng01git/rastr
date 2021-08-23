@@ -1291,7 +1291,7 @@ if bobina_em_uso.shape[0] > 0:
 			# peso incial da bobina
 			peso_inicial = df_bobinas.iloc[0,4]
 			st.write(peso_inicial)
-			peso_consumido = peso_inicial - peso_remover
+			peso_consumido = int(peso_inicial) - peso_remover
 			st.write(peso_consumido)
 			paletes_produzidos = int((peso_consumido) * 412 / 187200)
 			st.write(paletes_produzidos)
