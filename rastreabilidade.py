@@ -385,6 +385,7 @@ def adicionar_bobina():
 		dic['codigo_SAP'] = s5.text_input('Código SAP')
 		dic['data_entrada'] = ''
 		dic['comentario'] = '-'
+		dic['data_saida'] = '-'
 		submitted = s6.form_submit_button('Adicionar bobina ao sistema')
 
 	if submitted:
@@ -460,6 +461,7 @@ def adicionar_selante():
 		dic['lote_interno'] = s4.text_input('Lote interno')
 		dic['data_entrada'] = ''
 		dic['comentario'] = '-'
+		dic['data_saida'] = '-'
 		submitted = s5.form_submit_button('Adicionar selante ao sistema')
 
 	if submitted:
