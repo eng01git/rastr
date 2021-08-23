@@ -1409,3 +1409,8 @@ reset = st.button('Reset')
 
 if reset:
 	caching.clear_cache()
+
+with st.beta_expander('Análise de bobinas e selante por dia'):
+	data_filtro = st.date_input('Selecione a data que deseja filtrar')
+	filtro_bobina = df_bobinas.loc[(df_bobinas['data_entrada'] == data_filtro) | (df_bobinas['data_saida'] == data_filtro) | ((df_bobinas['data_entrada'] <= data_filtro) & (df_bobinas['data_saida'] >= data_filtro))]
+	st.write(filtro_bobina)
