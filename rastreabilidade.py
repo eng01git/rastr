@@ -1427,7 +1427,8 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 
 			st.subheader('Bobinas utilizadas na data selecionada')
 			st.write(filtro_bobina)
-		st.warning('Não há bobinas utilizadas na data selecionada')
+		else:
+			st.error('Não há bobinas utilizadas na data selecionada')
 
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
@@ -1446,9 +1447,10 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			filtro_selante['data_entrada'] = filtro_selante['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 			filtro_selante['data_saida'] = filtro_selante['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
 
-			st.subheader('selantes utilizadas na data selecionada')
+			st.subheader('Selantes utilizadas na data selecionada')
 			st.write(filtro_selante)
-		st.warning('Não há selantes utilizadas na data selecionada')
+		else:
+			st.error('Não há selantes utilizadas na data selecionada')
 
 # botao para teste
 reset = st.button('Reset')
