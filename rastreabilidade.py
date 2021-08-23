@@ -665,6 +665,9 @@ if df_bobinas.shape[0] > 0:
 else:
 	tipo_bobina_uso = 'Não há bobina em uso'
 
+#verifica se ha bobina em uso
+bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
+
 # dataframes do fifo sem selante
 ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'].astype(str) == tipo_bobina_uso)]
 ps_fifo_out = df_pal_sem[df_pal_sem['data_consumo'] != '-']
@@ -788,9 +791,6 @@ if df_bobinas.shape[0] > 0:
 		###################################
 		# Coloca anterior como finalizada #
 		###################################
-
-		#verifica se ha bobina em uso
-		bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
 
 		if bobina_em_uso.shape[0] > 0:
 
@@ -939,7 +939,6 @@ if df_bobinas.shape[0] > 0:
 				allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 				enable_enterprise_modules=enable_enterprise_modules)
 			st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
-
 
 		# consome paletes
 		#col2.write('Ultimos consumidos')
@@ -1255,3 +1254,5 @@ if df_bobinas.shape[0] > 0:
 			else:
 				st.info('Não foram consumidos paletes com selante')
 
+if bobina_em_uso.shape[0] > 0:
+	st.write('Tem bobina em uso')
