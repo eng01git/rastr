@@ -249,7 +249,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Sem selante'  # 'com/sem selante'
-		ws['A9'] = str(data['codigo_SAP'])  # 'codigo produto'
+		ws['A9'] = str(data['codigo_tampa_SAP'])  # 'codigo produto'
 		ws['B13'] = str(data['numero_OT'])  # numero da bobina
 	else:
 		# Preenchimento dos valores
