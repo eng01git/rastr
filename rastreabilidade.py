@@ -665,7 +665,10 @@ else:
 	tipo_bobina_uso = 'Não há bobina em uso'
 
 #verifica se ha bobina em uso
-bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
+bobina_em_uso = pd.DataFrame()
+
+if df_bobinas.shape[0] > 0:
+	bobina_em_uso = df_bobinas[df_bobinas['status'] == 'Em uso']
 
 # dataframes do fifo sem selante
 ps_fifo_in = df_pal_sem[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-') & (df_pal_sem['tipo_tampa'].astype(str) == tipo_bobina_uso)]
