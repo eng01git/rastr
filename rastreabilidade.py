@@ -687,7 +687,7 @@ sel_fifo_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 # organizacao da tela #
 #######################
 
-with st.beta_expander('Bobinas e selantes'):
+with st.beta_expander('**Bobinas e selantes**'):
 	st.subheader('Inserir Bobinas')
 	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 	if uploaded_file is not None:
@@ -1234,7 +1234,7 @@ st.subheader('Remoção de bobinas e selantes da produção')
 
 
 
-with st.beta_expander('Remover bobina ou selante'):
+with st.beta_expander('**Remover bobina ou selante**'):
 	# colunas para remoção de bobinas e colunas
 	t0, t1 = st.beta_columns(2)
 	c0, c1, c2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,3.5,1.5,1])
@@ -1376,7 +1376,7 @@ with st.beta_expander('Remover bobina ou selante'):
 # verifica se há bobinas no sistema para habilitar as demais funcionalidades do sistema
 if df_bobinas.shape[0] > 0:
 	st.subheader('Histórico de paletes com e sem selante')
-	with st.beta_expander('Paletes sem selante'):
+	with st.beta_expander('**Paletes sem selante**'):
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_sem, 0, 0, True)
 		response = AgGrid(
@@ -1390,7 +1390,7 @@ if df_bobinas.shape[0] > 0:
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
 
-	with st.beta_expander('Paletes com selante'):
+	with st.beta_expander('**Paletes com selante**'):
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_com, 0, 0, True)
 		response = AgGrid(
@@ -1405,7 +1405,7 @@ if df_bobinas.shape[0] > 0:
 			enable_enterprise_modules=enable_enterprise_modules)
 
 	st.subheader('Rastreio por data')
-	with st.beta_expander('Análise de bobinas e selante por dia'):
+	with st.beta_expander('**Análise de bobinas e selante por dia**'):
 		data_filtro = st.date_input('Selecione a data que deseja filtrar')
 
 		# bobinas que possuem data de entrada e de saída
@@ -1419,8 +1419,11 @@ if df_bobinas.shape[0] > 0:
 		filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro) | (bobinas_filtradas['data_saida'].dt.date == data_filtro) | ((bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'].dt.date >= data_filtro))]
 		
 		# transforma as datas de volta em strings para facilitar a visualizacao
+		filtro_bobina['data'] = filtro_bobina['data'].dt.strftime("%d/%m/%Y")
 		filtro_bobina['data_entrada'] = filtro_bobina['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 		filtro_bobina['data_saida'] = filtro_bobina['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
+
+		st.subheader('Bobinas utilizadas na data selecionada')
 		st.write(filtro_bobina)
 
 # botao para teste
