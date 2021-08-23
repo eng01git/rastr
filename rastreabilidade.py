@@ -1285,27 +1285,48 @@ if bobina_em_uso.shape[0] > 0:
 			val_em_uso = bobina_em_uso.iloc[0,0]
 
 			# modifica bobina selecionada para removida
-			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
-			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
 			# peso incial da bobina
 			peso_inicial = df_bobinas.iloc[0,4]
-			st.write(peso_inicial)
+
+			# calculo do peso consumido
 			peso_consumido = int(peso_inicial) - peso_remover
-			st.write(peso_consumido)
+
+			# paletes produzidos no total antes da remoção
 			paletes_produzidos = int((peso_consumido) * 412 / 187200)
-			st.write(paletes_produzidos)
 
-			st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == val_em_uso])
-			st.write()
+			# atualiza o total de paletes produzidos pela bobina
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'paletes_gerados'] = paletes_produzidos
+
+			# remove da lista da paletes os paletes que não foram gerados
 			df_pal_sem.drop(df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso) & (df_pal_sem['documento'] >= paletes_produzidos)].index, inplace=True)
-			#st.write(df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso) & (df_pal_sem['documento'] >= paletes_produzidos)])
-			st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == val_em_uso])
-			#data.paletes_gerados = data.paletes_gerados.astype('int')
 
-			# modifica os paletes da bobina
+			# atualiza os paletes da bobina
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
 
-			#st.write()
+			# valores a serem escritos
+			row = df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso]
+
+			# escrita dos dados no banco
+			rerun = False
+			# Armazena no banco
+			try:
+				ref = db.collection('Bobina').document(str(row.iloc[0,0]))
+				row_string = row.astype(str)
+				ref.set(row_string.to_dict())
+
+				# Limpa cache
+				caching.clear_cache()
+
+				# flag para rodar novamente o script
+				rerun = True
+			except:
+				st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
+
+			if rerun:
+				st.experimental_rerun()
 else:
 	st.info('Não há bobina em uso')
 
