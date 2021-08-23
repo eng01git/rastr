@@ -89,7 +89,7 @@ def trata_dados(data, tipo):
 	data.paletes_gerados = (data['peso_bobina']) * 412 / 187200
 	data.paletes_gerados = data.paletes_gerados.astype('int')
 	data.status = 'Disponível'
-	data.comentario = '-'
+	data['comentario'] = '-'
 	return data
 
 
