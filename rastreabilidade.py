@@ -1255,4 +1255,5 @@ if df_bobinas.shape[0] > 0:
 				st.info('Não foram consumidos paletes com selante')
 
 if bobina_em_uso.shape[0] > 0:
-	st.write('Tem bobina em uso')
+	imagem.write('Tem bobina em uso')
+	
