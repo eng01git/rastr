@@ -1090,9 +1090,9 @@ if df_bobinas.shape[0] > 0:
 
 			# Filtra paletes da selante em uso e atualiza valores
 			df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-			st.write(df_pal_com[df_pal_com['numero_lote'] == numero_selante])
+			#st.write(df_pal_com[df_pal_com['numero_lote'] == numero_selante])
 
-			st.write(df_pal_com['numero_palete'])
+			#st.write(df_pal_com['numero_palete'])
 
 			# Coloca o numero dos paletes
 			if (df_pal_com['numero_palete'] != '-').any():
@@ -1257,6 +1257,10 @@ if df_bobinas.shape[0] > 0:
 				st.info('Não foram consumidos paletes com selante')
 
 if bobina_em_uso.shape[0] > 0:
-	imagem
-	imagem.write('Tem bobina em uso')
+	imagem.text_input('Descreva o motivo da retirada da bobina')
+	imagem.number_input('Quantos quilos restavam na bobina?')
+	remover_bobina = imagem.button('Remover bobina')
+
+	if remover_bobina:
+		imagem.write('bobina removida')
 	
