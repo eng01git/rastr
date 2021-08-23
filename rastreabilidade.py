@@ -1318,7 +1318,7 @@ if bobina_em_uso.shape[0] > 0:
 			peso_inicial_sel = df_selantes.iloc[0,3]
 
 			# calculo do peso consumido
-			peso_consumido_sel = int(peso_inicial) - peso_remover_sel
+			peso_consumido_sel = int(peso_inicial_sel) - peso_remover_sel
 
 			# paletes produzidos no total antes da remoção
 			paletes_produzidos_sel = int((peso_consumido_sel) * 2857 / 187200)
