@@ -153,7 +153,7 @@ def insert_excel(df):
 			df_paletes_sem['data_gerado'] = str(row['data_entrada'])
 			df_paletes_sem['data_estoque'] = '-'
 			df_paletes_sem['data_consumo'] = '-'
-			df_paletes_sem['codigo_tampa_SAP'] = '-'
+			df_paletes_sem['codigo_tampa_SAP'] = str(row['codigo_SAP'])
 			df_paletes_sem['numero_palete'] = '-'
 
 			# for para iterar sobre todos os paletes e salvar
@@ -403,7 +403,7 @@ def adicionar_bobina():
 			df_paletes_sem['data_gerado'] = str(new_d['data_entrada'])
 			df_paletes_sem['data_estoque'] = '-'
 			df_paletes_sem['data_consumo'] = '-'
-			df_paletes_sem['codigo_tampa_SAP'] = '-'
+			df_paletes_sem['codigo_tampa_SAP'] = str(new_d['codigo_SAP'])
 			df_paletes_sem['numero_palete'] = '-'
 
 			# for para iterar sobre todos os paletes e salvar
