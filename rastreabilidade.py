@@ -1230,16 +1230,17 @@ if df_bobinas.shape[0] > 0:
 
 st.subheader('Remoção de bobinas e selantes da produção')
 
-# colunas para remoção de bobinas e colunas
-t0, t1 = st.beta_columns(2)
-c0, c1, c2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,3.5,1.5,1])
 
-# titulos
-t0.subheader('Remover bobinas')
-t1.subheader('Remover selante')
 
 
 with st.beta_expander('Remover bobina ou selante'):
+	# colunas para remoção de bobinas e colunas
+	t0, t1 = st.beta_columns(2)
+	c0, c1, c2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,3.5,1.5,1])
+
+	# titulos
+	t0.subheader('Remover bobinas')
+	t1.subheader('Remover selante')
 
 	if bobina_em_uso.shape[0] > 0:
 		# coleta os dados relativos a remoção da bobina
@@ -1301,7 +1302,7 @@ with st.beta_expander('Remover bobina ou selante'):
 
 			# comando para rodar novament o script
 			if rerun:
-				st.experimental_rerun()
+				c0.experimental_rerun()
 
 	else:
 		st.info('Não há bobina em uso')
@@ -1364,7 +1365,7 @@ with st.beta_expander('Remover bobina ou selante'):
 				st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
 				caching.clear_cache()
 	else:
-		st.info('Não há selante em uso')
+		c3.info('Não há selante em uso')
 
 
 # verifica se há bobinas no sistema para habilitar as demais funcionalidades do sistema
