@@ -1420,15 +1420,16 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			# filtra as bobinas de acordo com a data
 			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro) | (bobinas_filtradas['data_saida'].dt.date == data_filtro) | ((bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'].dt.date >= data_filtro))]
 			
-			# transforma as datas de volta em strings para facilitar a visualizacao
-			filtro_bobina['data'] = filtro_bobina['data'].dt.strftime("%d/%m/%Y")
-			filtro_bobina['data_entrada'] = filtro_bobina['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
-			filtro_bobina['data_saida'] = filtro_bobina['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
+			if filtro_bobina.shape[0] > 0:
+				# transforma as datas de volta em strings para facilitar a visualizacao
+				filtro_bobina['data'] = filtro_bobina['data'].dt.strftime("%d/%m/%Y")
+				filtro_bobina['data_entrada'] = filtro_bobina['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_bobina['data_saida'] = filtro_bobina['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
 
-			st.subheader('Bobinas utilizadas na data selecionada')
-			st.write(filtro_bobina)
-		else:
-			st.error('Não há bobinas utilizadas na data selecionada')
+				st.subheader('Bobinas utilizadas na data selecionada')
+				st.write(filtro_bobina)
+			else:
+				st.error('Não há bobinas utilizadas na data selecionada')
 
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
@@ -1442,15 +1443,16 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date == data_filtro) | (selantes_filtradas['data_saida'].dt.date == data_filtro) | ((selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'].dt.date >= data_filtro))]
 			
-			# transforma as datas de volta em strings para facilitar a visualizacao
-			filtro_selante['data'] = filtro_selante['data'].dt.strftime("%d/%m/%Y")
-			filtro_selante['data_entrada'] = filtro_selante['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
-			filtro_selante['data_saida'] = filtro_selante['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
+			if filtro_selante.shape[0] > 0:
+				# transforma as datas de volta em strings para facilitar a visualizacao
+				filtro_selante['data'] = filtro_selante['data'].dt.strftime("%d/%m/%Y")
+				filtro_selante['data_entrada'] = filtro_selante['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_selante['data_saida'] = filtro_selante['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
 
-			st.subheader('Selantes utilizadas na data selecionada')
-			st.write(filtro_selante)
-		else:
-			st.error('Não há selantes utilizadas na data selecionada')
+				st.subheader('Selantes utilizadas na data selecionada')
+				st.write(filtro_selante)
+			else:
+				st.error('Não há selantes utilizadas na data selecionada')
 
 # botao para teste
 reset = st.button('Reset')
