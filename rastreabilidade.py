@@ -1452,7 +1452,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 
 				st.write(filtro_selante)
 			else:
-				st.error('Não há selantes utilizadas na data selecionada')
+				st.error('Não há selantes utilizados na data selecionada')
 
 # botao para teste
 reset = st.button('Reset')
