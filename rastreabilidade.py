@@ -647,12 +647,6 @@ tipos_bobinas = {'Tampa Prata': 50490760,
 
 tipos_selantes = {'Selante': 50491194}
 
-# botao para teste
-reset = st.button('Reset')
-
-if reset:
-	caching.clear_cache()
-
 # leitura e exibicao dos dados das bobinas
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
@@ -1211,7 +1205,7 @@ if df_bobinas.shape[0] > 0:
 						st.experimental_rerun()
 
 			else:
-				st.error('Não há palete sem selante para consumir')
+				st.error('Não há palete com selante para consumir')
 
 			fifo_s_out_show = sel_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 			fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
@@ -1336,3 +1330,9 @@ if df_bobinas.shape[0] > 0:
 			fit_columns_on_grid_load=fit_columns_on_grid_load,
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
+
+# botao para teste
+reset = st.button('Reset')
+
+if reset:
+	caching.clear_cache()
