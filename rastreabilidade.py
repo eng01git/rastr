@@ -1310,9 +1310,9 @@ if bobina_em_uso.shape[0] > 0:
 			selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
 
 			# modifica bobina selecionada para removida
-			df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'status'] = 'Removida'
-			df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-			df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'comentario'] = comentario_peso_sel
+			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'status'] = 'Removida'
+			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'comentario'] = comentario_peso_sel
 
 			# peso incial da bobinaa
 			peso_inicial_sel = df_selantes.iloc[0,3]
@@ -1324,14 +1324,14 @@ if bobina_em_uso.shape[0] > 0:
 			paletes_produzidos_sel = int((peso_consumido_sel) * 2857 / 187200)
 
 			# atualiza o total de paletes produzidos pela bobina
-			df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'paletes_gerados'] = paletes_produzidos_sel
+			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'paletes_gerados'] = paletes_produzidos_sel
 
 			# remove da lista da paletes os paletes que não foram gerados
-			df_pal_com.drop(df_pal_com.loc[(df_pal_com['numero_lote'] == val_em_uso) & (df_pal_com['documento'] >= paletes_produzidos_sel)].index, inplace=True)
+			df_pal_com.drop(df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual) & (df_pal_com['documento'] >= paletes_produzidos_sel)].index, inplace=True)
 
 			# prepara dados para escrever no banco
 			dic_remove = {}
-			dic_remove = df_selantes.loc[(df_selantes['numero_lote'] == val_em_uso)].to_dict('records')
+			dic_remove = df_selantes.loc[(df_selantes['numero_lote'] == selante_atual)].to_dict('records')
 
 			# Transforma dados do formulário em um dicionário
 			keys_values = dic_remove[0].items()
@@ -1339,7 +1339,7 @@ if bobina_em_uso.shape[0] > 0:
 			documento_remove_sel = new_remove_sel['numero_lote']
 
 			# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
-			new_remove_sel['Paletes'] = df_pal_com.loc[(df_pal_com['numero_lote'] == val_em_uso)].to_csv()
+			new_remove_sel['Paletes'] = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual)].to_csv()
 
 			# flag para rodar novamente o script
 			rerun = False
