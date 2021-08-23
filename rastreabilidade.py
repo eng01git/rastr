@@ -1302,10 +1302,10 @@ with st.beta_expander('Remover bobina ou selante'):
 
 			# comando para rodar novament o script
 			if rerun:
-				c0.experimental_rerun()
+				st.experimental_rerun()
 
 	else:
-		st.info('Não há bobina em uso')
+		c0.info('Não há bobina em uso')
 
 	if selante_em_uso.shape[0] > 0:
 		# coleta os dados relativos a remoção do selante
@@ -1364,6 +1364,10 @@ with st.beta_expander('Remover bobina ou selante'):
 			except:
 				st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
 				caching.clear_cache()
+			
+			# comando para rodar novament o script
+			if rerun:
+				st.experimental_rerun()
 	else:
 		c3.info('Não há selante em uso')
 
