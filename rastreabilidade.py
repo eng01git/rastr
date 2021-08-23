@@ -90,6 +90,7 @@ def trata_dados(data, tipo):
 	data.paletes_gerados = data.paletes_gerados.astype('int')
 	data.status = 'Disponível'
 	data['comentario'] = '-'
+	data['data_saida'] = '-'
 	return data
 
 
