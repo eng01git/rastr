@@ -1282,13 +1282,25 @@ if bobina_em_uso.shape[0] > 0:
 			c0.write('Motivo: ' + comentario_remover + ' Peso restante: ' + str(peso_remover))
 
 			# seleciona a bobina em uso
-			#val_em_uso = bobina_em_uso.iloc[0,0]
+			val_em_uso = bobina_em_uso.iloc[0,0]
 
 			# modifica bobina selecionada para removida
 			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
 			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
+			# peso incial da bobina
+			peso_inicial = df_bobinas.iloc[0,4]
+			st.write(peso_inicial)
+			peso_consumido = peso_inicial - peso_remover
+			st.write(peso_consumido)
+			paletes_produzidos = int((peso_consumido) * 412 / 187200)
+			st.write(paletes_produzidos)
+
+
+			#data.paletes_gerados = data.paletes_gerados.astype('int')
+
 			# modifica os paletes da bobina
+
 			#st.write()
 else:
 	st.info('Não há bobina em uso')
