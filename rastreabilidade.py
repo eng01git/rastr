@@ -622,11 +622,11 @@ def config_grid(height, df, lim_min, lim_max, customizar):
 ##########################################################################################################
 
 # definicao de colunas para leitura d dados do banco
-col_bobinas = ['numero_OT', 'data', 'tipo_bobina', 'codigo_bobina', 'peso_bobina', 'codigo_SAP', 'data_entrada',
+col_bobinas = ['numero_OT', 'data', 'tipo_bobina', 'codigo_bobina', 'peso_bobina', 'codigo_SAP', 'data_entrada', 'data_saida'
 			   'paletes_gerados', 'status', 'comentario']
 col_pal_sem = ['numero_OT', 'documento', 'tipo_tampa', 'data_gerado', 'data_estoque', 'data_consumo',
 			   'codigo_tampa_SAP', 'numero_palete']
-col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'data', 'data_entrada', 'paletes_gerados',
+col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'data', 'data_entrada', 'data_saida', 'paletes_gerados',
 			   'status', 'comentario']
 col_pal_sel = ['numero_lote', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
 
@@ -801,7 +801,7 @@ if df_bobinas.shape[0] > 0:
 
 			# modifica bobina selecionada para finalizada
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Finalizada'
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
 			# prepara dados para escrever no banco
 			dic_fin = {}
@@ -1258,17 +1258,32 @@ if df_bobinas.shape[0] > 0:
 
 st.subheader('Remoção de bobinas e selantes da produção')
 with st.beta_expander('Remover bobina ou selante'):
+	# colunas
 	t0, t1 = st.beta_columns(2)
 	c0, c1, c2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,3.5,1.5,1])
 
+	# titulos
 	t0.subheader('Remover bobinas')
 	t1.subheader('Remover selante')
 
+	# verifica se há bobina em uso
 	if bobina_em_uso.shape[0] > 0:
-		c0.text_input('Descreva o motivo da retirada da bobina')
-		c1.number_input('Peso restante', format='%i', value=5000, step=1)
+
+		# coleta os dados relativos a remoção da bobina
+		comentario_remover = c0.text_input('Descreva o motivo da retirada da bobina')
+		peso_remover = c1.number_input('Peso restante', format='%i', value=5000, step=1)
 		remover_bobina = c2.button('Remover bobina em uso')
 
 		if remover_bobina:
-			c0.write('bobina removida')
+			c0.write('Motivo: ' + comentario_remover + ' Peso restante: ' + str(peso_remover))
+
+			# seleciona a bobina em uso
+			#val_em_uso = bobina_em_uso.iloc[0,0]
+
+			# modifica bobina selecionada para removida
+			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
+			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+
+			# modifica os paletes da bobina
+			#st.write()
 	
