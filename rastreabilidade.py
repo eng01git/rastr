@@ -1312,18 +1312,18 @@ if bobina_em_uso.shape[0] > 0:
 			# escrita dos dados no banco
 			rerun = False
 			# Armazena no banco
-			try:
-				ref = db.collection('Bobina').document(str(row.iloc[0,0]))
-				row_string = row.astype(str)
-				ref.set(row_string.to_dict())
+			#try:
+			ref = db.collection('Bobina').document(str(row.iloc[0,0]))
+			row_string = row.astype(str)
+			ref.set(row_string.to_dict())
 
-				# Limpa cache
-				caching.clear_cache()
+			# Limpa cache
+			caching.clear_cache()
 
-				# flag para rodar novamente o script
-				rerun = True
-			except:
-				st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
+			# flag para rodar novamente o script
+			rerun = True
+			#except:
+			#	st.error('Falha ao adicionar bobina, tente novamente ou entre em contato com suporte!')
 
 			if rerun:
 				st.experimental_rerun()
