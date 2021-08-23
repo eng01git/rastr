@@ -293,7 +293,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
 	# link para download e nome do arquivo
 	#linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></a>'
-	linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a>'
+	linko = f'<a1 href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a1>'
 	st.markdown(linko, unsafe_allow_html=True)
 
 
