@@ -1304,11 +1304,11 @@ if bobina_em_uso.shape[0] > 0:
 			df_pal_sem.drop(df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso) & (df_pal_sem['documento'] >= paletes_produzidos)].index, inplace=True)
 
 			# atualiza os paletes da bobina
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
+			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
 
 			# prepara dados para escrever no banco
 			dic_remove = {}
-			dic_remove = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_dict('records')
+			dic_remove = df_bobinas.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_dict('records')
 
 			# Transforma dados do formulário em um dicionário
 			keys_values = dic_remove[0].items()
@@ -1316,7 +1316,7 @@ if bobina_em_uso.shape[0] > 0:
 			documento_remove = new_remove['numero_OT']
 
 			# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
-			#new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
+			new_remove['Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
 
 			# Armazena no banco as alteracoes na selante
 			try:
