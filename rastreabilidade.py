@@ -1308,7 +1308,7 @@ if bobina_em_uso.shape[0] > 0:
 
 			# prepara dados para escrever no banco
 			dic_remove = {}
-			dic_remove = df_bobinas.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_dict('records')
+			dic_remove = df_bobinas.loc[(df_bobinas['numero_OT'] == val_em_uso)].to_dict('records')
 
 			# Transforma dados do formulário em um dicionário
 			keys_values = dic_remove[0].items()
