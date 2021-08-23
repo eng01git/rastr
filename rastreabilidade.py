@@ -1279,14 +1279,15 @@ if bobina_em_uso.shape[0] > 0:
 		remover_bobina = c2.button('Remover bobina em uso')
 
 		if remover_bobina:
-			c0.write('Motivo: ' + comentario_remover + ' Peso restante: ' + str(peso_remover))
+			comentario_peso = ('Motivo: ' + comentario_remover + ' Peso restante: ' + str(peso_remover))
 
 			# seleciona a bobina em uso
 			val_em_uso = bobina_em_uso.iloc[0,0]
 
 			# modifica bobina selecionada para removida
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S").
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'comentario'] = comentario_peso
 
 			# peso incial da bobina
 			peso_inicial = df_bobinas.iloc[0,4]
@@ -1302,9 +1303,6 @@ if bobina_em_uso.shape[0] > 0:
 
 			# remove da lista da paletes os paletes que não foram gerados
 			df_pal_sem.drop(df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso) & (df_pal_sem['documento'] >= paletes_produzidos)].index, inplace=True)
-
-			# atualiza os paletes da bobina
-			#df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
 
 			# prepara dados para escrever no banco
 			dic_remove = {}
