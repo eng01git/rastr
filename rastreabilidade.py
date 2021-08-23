@@ -1313,7 +1313,7 @@ if bobina_em_uso.shape[0] > 0:
 			# Transforma dados do formulário em um dicionário
 			keys_values = dic_remove[0].items()
 			new_remove = {str(key): str(value) for key, value in keys_values}
-			documento_remove = new_remove['numero_lote']
+			documento_remove = new_remove['numero_OT']
 
 			# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
 			#new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
