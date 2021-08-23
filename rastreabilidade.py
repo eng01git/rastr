@@ -1286,10 +1286,10 @@ if bobina_em_uso.shape[0] > 0:
 
 			# modifica bobina selecionada para removida
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S").
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'comentario'] = comentario_peso
 
-			# peso incial da bobina
+			# peso incial da bobinaa
 			peso_inicial = df_bobinas.iloc[0,4]
 
 			# calculo do peso consumido
