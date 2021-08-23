@@ -622,7 +622,7 @@ def config_grid(height, df, lim_min, lim_max, customizar):
 ##########################################################################################################
 
 # definicao de colunas para leitura d dados do banco
-col_bobinas = ['numero_OT', 'data', 'tipo_bobina', 'codigo_bobina', 'peso_bobina', 'codigo_SAP', 'data_entrada', 'data_saida'
+col_bobinas = ['numero_OT', 'data', 'tipo_bobina', 'codigo_bobina', 'peso_bobina', 'codigo_SAP', 'data_entrada', 'data_saida',
 			   'paletes_gerados', 'status', 'comentario']
 col_pal_sem = ['numero_OT', 'documento', 'tipo_tampa', 'data_gerado', 'data_estoque', 'data_consumo',
 			   'codigo_tampa_SAP', 'numero_palete']
