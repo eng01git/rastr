@@ -1254,7 +1254,7 @@ if bobina_em_uso.shape[0] > 0:
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'comentario'] = comentario_peso
 
 			# peso incial da bobinaa
-			peso_inicial = df_bobinas.iloc[0,4]
+			peso_inicial = bobina_em_uso.iloc[0,4]
 
 			# calculo do peso consumido
 			peso_consumido = int(peso_inicial) - peso_remover
@@ -1307,7 +1307,7 @@ if bobina_em_uso.shape[0] > 0:
 			comentario_peso_sel = ('Motivo: ' + comentario_remover_sel + ' Peso restante: ' + str(peso_remover_sel))
 
 			# verificar selante em uso
-			selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
+			selante_atual = selante_em_uso.iloc[0,0]
 
 			# modifica bobina selecionada para removida
 			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'status'] = 'Removida'
@@ -1315,7 +1315,7 @@ if bobina_em_uso.shape[0] > 0:
 			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'comentario'] = comentario_peso_sel
 
 			# peso incial da bobinaa
-			peso_inicial_sel = df_selantes.iloc[0,3]
+			peso_inicial_sel = selante_em_uso.iloc[0,3]
 
 			# calculo do peso consumido
 			peso_consumido_sel = int(peso_inicial_sel) - peso_remover_sel
