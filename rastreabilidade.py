@@ -250,13 +250,21 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Sem selante'  # 'com/sem selante'
-		ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
+
+		codigo  = str(data['tipo_tampa']) + ' Sem Selante'
+		#ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
+		ws['A9'] = tipos_tampas[codigo]
 		ws['B13'] = str(data['numero_OT'])  # numero da bobina
+	
+	# com selante
 	else:
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Com selante'  # 'com/sem selante'
-		ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
+		
+		codigo  = str(data['tipo_tampa']) + ' Com Selante'
+		#ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
+		ws['A9'] = tipos_tampas[codigo]
 		ws['B13'] = str(data['numero_lote'])  # numero da bobina
 
 	# pega a hora que o palete foi para o estoque
