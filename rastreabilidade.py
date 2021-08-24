@@ -1472,7 +1472,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 		modificar_sap_sem = botao.button('Apontamento de codigo SAP diário')
 
 		if modificar_sap_sem:
-			df_pal_sem.iloc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro.index, 6] = codigo_sap_sem
+			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
 			st.write(df_pal_sem)
 	else:
