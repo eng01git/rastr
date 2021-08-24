@@ -1227,11 +1227,6 @@ if df_bobinas.shape[0] > 0:
 			else:
 				st.info('Não foram consumidos paletes com selante')
 
-
-
-
-
-
 if telas == 'Remover bobinas ou selantes':
 	st.subheader('Remoção de bobinas e selantes da produção')
 	# colunas para remoção de bobinas e colunas
@@ -1402,6 +1397,7 @@ if telas == 'Histórico de paletes com selante':
 				enable_enterprise_modules=enable_enterprise_modules)
 
 if telas == 'Detalhamento de bobinas e selantes por data':
+	st.subheader('Detalhamento de bobinas por data')
 
 	data_filtro = st.date_input('Selecione a data que deseja filtrar')
 	if df_bobinas.shape[0] > 0:
@@ -1451,8 +1447,9 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				st.error('Não há selantes utilizados na data selecionada')
 
 if telas == 'Apontamento de código SAP':
-	data_filtro = st.date_input('Selecione a data que deseja filtrar')
+	
 	st.subheader('Apontamento de Código SAP')
+	data_filtro = st.date_input('Selecione a data que deseja filtrar')
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
