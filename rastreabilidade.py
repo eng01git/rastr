@@ -816,7 +816,7 @@ if df_bobinas.shape[0] > 0:
 			maximo_index = int(df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete'].max()) + 1
 			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + maximo_index
 		else:
-			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento']
+			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + 1000
 
 		# Escreve o dataframe dos paletes na bobina para escrita em banco
 		new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
@@ -1436,6 +1436,8 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 				st.write(filtro_selante)
 			else:
 				st.error('Não há selantes utilizados na data selecionada')
+
+	
 
 # botao para teste
 reset = st.button('Reset')
