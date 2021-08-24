@@ -1474,11 +1474,12 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 		if modificar_sap_sem:
 			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
-			unicos = df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique()
-			st.write(list(unicos))
+			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique())
 			
+			st.write(unicos)
 
-			# for index, rows in df_pal_sem_filtrado.iterrows:
+			for items in unicos:
+				st.info(items)
 
 			# 	# prepara dados para escrever no banco
 			# 	dic_sap = {}
