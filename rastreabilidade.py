@@ -1475,7 +1475,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
 			unicos = df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique()
-			st.write(unicos)
+			st.write(list(unicos))
 			
 
 			# for index, rows in df_pal_sem_filtrado.iterrows:
