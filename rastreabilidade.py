@@ -1400,6 +1400,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	st.subheader('Detalhamento de bobinas por data')
 
 	data_filtro = st.date_input('Selecione a data que deseja filtrar')
+	st.subheader('Bobinas utilizadas na data selecionada')
 	if df_bobinas.shape[0] > 0:
 		# bobinas que possuem data de entrada e de saída
 		bobinas_filtradas = df_bobinas.loc[(df_bobinas['data_entrada'] != '-') & (df_bobinas['data_saida'] != '-')]
@@ -1412,7 +1413,6 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			# filtra as bobinas de acordo com a data
 			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro) | (bobinas_filtradas['data_saida'].dt.date == data_filtro) | ((bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'].dt.date >= data_filtro))]
 			
-			st.subheader('Bobinas utilizadas na data selecionada')
 			if filtro_bobina.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				filtro_bobina['data'] = filtro_bobina['data'].dt.strftime("%d/%m/%Y")
@@ -1422,10 +1422,16 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				st.write(filtro_bobina)
 			else:
 				st.error('Não há bobinas utilizadas na data selecionada')
+		else:
+			st.error('Não há bobinas utilizadas na data selecionada')
+	else:
+		st.error('Não há bobinas utilizadas na data selecionada')
 
+	st.subheader('Selantes utilizados na data selecionada')
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
 		selantes_filtradas = df_selantes.loc[(df_selantes['data_entrada'] != '-') & (df_selantes['data_saida'] != '-')]
+
 
 		if selantes_filtradas.shape[0] > 0:
 			# converte os valores de string para datetime
@@ -1435,7 +1441,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date == data_filtro) | (selantes_filtradas['data_saida'].dt.date == data_filtro) | ((selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'].dt.date >= data_filtro))]
 			
-			st.subheader('Selantes utilizadas na data selecionada')
+			
 			if filtro_selante.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				filtro_selante['data'] = filtro_selante['data'].dt.strftime("%d/%m/%Y")
@@ -1445,6 +1451,10 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				st.write(filtro_selante)
 			else:
 				st.error('Não há selantes utilizados na data selecionada')
+		else:
+			st.error('Não há selantes utilizados na data selecionada')
+	else:
+		st.error('Não há selantes utilizados na data selecionada')
 
 if telas == 'Apontamento de código SAP':
 	
