@@ -20,11 +20,7 @@ from google.oauth2 import service_account
 # Configurações da página
 ###############################################################################
 
-st.set_page_config(
-	page_title="Rastreabilidade",
-	layout="wide",
-)
-
+st.set_page_config(page_title="Rastreabilidade",layout="wide")
 
 ###############################################################################
 # Configurando acesso ao firebase
@@ -48,7 +44,6 @@ tz = pytz.timezone('America/Bahia')
 
 
 def trata_dados(data, tipo):
-
 	# tratamento da planilha de tampas prata
 	data.rename(columns={data.columns[0]: "remove"}, inplace=True)
 	data.dropna(subset=['remove'], inplace=True)
@@ -281,7 +276,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
 	# link para download e nome do arquivo
 	#linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></a>'
-	linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a>'
+	linko = f'<div style="width: 100%"><a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a></div>'
 	st.markdown(linko, unsafe_allow_html=True)
 
 
