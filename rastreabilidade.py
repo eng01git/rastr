@@ -371,7 +371,7 @@ def adicionar_bobina():
 		dic['data_entrada'] = ''
 		dic['comentario'] = '-'
 		dic['data_saida'] = '-'
-		submitted = s6.form_submit_button('** Adicionar bobina ao sistema **')
+		submitted = s6.form_submit_button('Adicionar bobina ao sistema')
 
 	if submitted:
 		# verifica se ja existe bobina com o numero de lote inserido
