@@ -1432,7 +1432,6 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 		# selantes que possuem data de entrada e de saída
 		selantes_filtradas = df_selantes.loc[(df_selantes['data_entrada'] != '-') & (df_selantes['data_saida'] != '-')]
 
-
 		if selantes_filtradas.shape[0] > 0:
 			# converte os valores de string para datetime
 			selantes_filtradas['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'])
@@ -1440,7 +1439,6 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date == data_filtro) | (selantes_filtradas['data_saida'].dt.date == data_filtro) | ((selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'].dt.date >= data_filtro))]
-			
 			
 			if filtro_selante.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
