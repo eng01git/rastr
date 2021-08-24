@@ -1475,14 +1475,14 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			# flag para rodar novamente o script
 			rerun = False
 
+			# atribui o codigo sap aos paletes
 			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
+			# verifica as bobinas que pertecem os paletes
 			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique())
-			
-			st.write(unicos)
 
+			# itera sobre as bobinas
 			for items in unicos:
-				st.info(items)
 
 				# prepara dados para escrever no banco
 				dic_sap = {}
@@ -1516,7 +1516,70 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 
 	st.subheader('Apontamento de Codigo SAP para paletes sem selante')
 
-	
+	# seleciona as linhas que possuem data de estoque
+	df_pal_com_filtrado = df_pal_com[df_pal_com['data_estoque'] != '-']
+
+	# transforma coluna no tipo datetime
+	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
+
+	# filtra pela data selecionada
+	if df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
+
+		# escreve os valores filtrados
+		st.write(df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro])
+
+		# organiza as colunas
+		valor, botao = st.beta_columns([9,1])
+
+		# campo para incluir o codigo SAP do palete
+		codigo_sap_com = valor.text_input('Digite o código SAP para apontamento')
+
+		# botao para modificar o codigo SAP
+		modificar_sap_com = botao.button('Apontamento de codigo SAP diário')
+
+		if modificar_sap_com:
+			# flag para rodar novamente o script
+			rerun = False
+
+			# atribui o codigo sap aos paletes
+			df_pal_com.iloc[(df_pal_com_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_com
+
+			# verifica as bobinas que pertecem os paletes
+			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro, 'numero_lote'].unique())
+
+			# itera sobre as bobinas
+			for items in unicos:
+
+				# prepara dados para escrever no banco
+				dic_sap = {}
+				dic_sap = df_bobinas.loc[(df_bobinas['numero_lote'] == items)].to_dict('records')
+
+				# Transforma dados do formulário em um dicionário
+				keys_values = dic_sap[0].items()
+				new_sap = {str(key): str(value) for key, value in keys_values}
+				documento_sap = new_sap['numero_lote']
+
+				# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
+				new_sap['Paletes'] = df_pal_com.loc[(df_pal_com['numero_lote'] == items)].to_csv()
+
+				# Armazena no banco as alteracoes da bobina
+				try:
+					doc_ref = db.collection("Selante").document(documento_sap)
+					doc_ref.set(new_sap)
+					st.success('Modificação armazenada com sucesso!')
+					rerun = True
+				except:
+					st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
+					caching.clear_cache()
+
+			# comando para rodar novament o script
+			if rerun:
+				st.experimental_rerun()
+
+			st.write(df_pal_com)
+	else:
+		st.error('Não há paletes para serem apontados para data selecionada')
+
 
 
 
