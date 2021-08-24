@@ -16,6 +16,12 @@ from openpyxl import load_workbook, Workbook
 from google.cloud import firestore
 from google.oauth2 import service_account
 
+# botao para teste
+reset = st.button('Reset')
+
+if reset:
+	caching.clear_cache()
+
 ###############################################################################
 # Configurações da página
 ###############################################################################
@@ -1435,9 +1441,5 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 
 	
 
-# botao para teste
-reset = st.button('Reset')
 
-if reset:
-	caching.clear_cache()
 
