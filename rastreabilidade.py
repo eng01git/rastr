@@ -22,11 +22,6 @@ from google.oauth2 import service_account
 
 st.set_page_config(page_title="Rastreabilidade",layout="wide")
 
-# botao para teste
-reset = st.button('Reset')
-
-if reset:
-	caching.clear_cache()
 ###############################################################################
 # Configurando acesso ao firebase
 ###############################################################################
@@ -685,7 +680,7 @@ sel_fifo_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 # organizacao da tela #
 #######################
 
-with st.beta_expander('Gerenciamento de bobinas e selantes'):
+with st.beta_expander('Gerenciamento de bobinas'):
 	st.subheader('Inserir Bobinas')
 	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 	if uploaded_file is not None:
@@ -712,7 +707,8 @@ with st.beta_expander('Gerenciamento de bobinas e selantes'):
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
 
-#with st.beta_expander('Selante'):
+with st.beta_expander('Gerenciamento de selantes'):
+
 	st.subheader('Inserir Selante')
 	adicionar_selante()
 
@@ -721,7 +717,7 @@ with st.beta_expander('Gerenciamento de bobinas e selantes'):
 		st11, st22 = st.beta_columns([99, 1])
 
 		st.subheader('Detalhamento dos selantes')
-		#st.write(df_selantes)
+
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(199, df_selantes, 0, 0, True)
 		response = AgGrid(
 			df_selantes,
@@ -738,6 +734,14 @@ with st.beta_expander('Gerenciamento de bobinas e selantes'):
 col2, imagem, col4 = st.beta_columns([3, 10, 3])
 imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_bobina_uso), unsafe_allow_html=True)
 imagem.image('lid_linha.png')
+
+recursos = ['Remover bobinas ou selantes', 
+'Histórico de paletes sem selante',
+'Histórico de paletes com selante',
+'Apontamento de código SAP',
+'Detalhamento de bobinas e selantes por data'
+]
+telas = imagem.radio('Selecione o recurso que deseja utilizar', recursos)
 
 # verifica se há bobinas no sistema para habilitar as demais funcionalidades do sistema
 if df_bobinas.shape[0] > 0:
@@ -1228,7 +1232,7 @@ st.subheader('Remoção de bobinas e selantes da produção')
 
 
 
-with st.beta_expander('Remover bobina ou selante'):
+if telas == 'Remover bobinas ou selantes':
 	# colunas para remoção de bobinas e colunas
 	t0, space1, t1 = st.beta_columns([12, 0.5, 12])
 	c0, c1, c2, space2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,0.5,3.5,1.5,1])
@@ -1366,12 +1370,9 @@ with st.beta_expander('Remover bobina ou selante'):
 	else:
 		c3.info('Não há selante em uso')
 
-
-# verifica se há bobinas no sistema para habilitar as demais funcionalidades do sistema
-if df_bobinas.shape[0] > 0:
-	st.subheader('Histórico de paletes com e sem selante')
-	with st.beta_expander('Paletes sem selante'):
-
+if telas == 'Histórico de paletes sem selante':
+	if df_bobinas.shape[0] > 0:
+		st.subheader('Histórico de paletes sem selante')
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_sem, 0, 0, True)
 		response = AgGrid(
 			df_pal_sem,
@@ -1384,22 +1385,22 @@ if df_bobinas.shape[0] > 0:
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
 
-	with st.beta_expander('Paletes com selante'):
+if telas == 'Histórico de paletes com selante':
+	if df_selantes.shape[0] > 0:
+			st.subheader('Histórico de paletes com selante')
+			gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_com, 0, 0, True)
+			response = AgGrid(
+				df_pal_com,
+				gridOptions=gridOptions,
+				height=grid_height,
+				width='100%',
+				data_return_mode=return_mode_value,
+				update_mode=update_mode_value,
+				fit_columns_on_grid_load=fit_columns_on_grid_load,
+				allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+				enable_enterprise_modules=enable_enterprise_modules)
 
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_com, 0, 0, True)
-		response = AgGrid(
-			df_pal_com,
-			gridOptions=gridOptions,
-			height=grid_height,
-			width='100%',
-			data_return_mode=return_mode_value,
-			update_mode=update_mode_value,
-			fit_columns_on_grid_load=fit_columns_on_grid_load,
-			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-			enable_enterprise_modules=enable_enterprise_modules)
-
-st.subheader('Rastreio por data')
-with st.beta_expander('Análise de bobinas e selante por dia'):
+if telas == 'Detalhamento de bobinas e selantes por data':
 
 	data_filtro = st.date_input('Selecione a data que deseja filtrar')
 	if df_bobinas.shape[0] > 0:
@@ -1448,8 +1449,9 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			else:
 				st.error('Não há selantes utilizados na data selecionada')
 
-st.subheader('Apontamento de Código SAP')
-with st.beta_expander('Apontamento de Código SAP'):
+if telas == 'Apontamento de código SAP':
+	data_filtro = st.date_input('Selecione a data que deseja filtrar')
+	st.subheader('Apontamento de Código SAP')
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
@@ -1582,6 +1584,9 @@ with st.beta_expander('Apontamento de Código SAP'):
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
+# botao para teste
+reset = st.button('Reset')
 
-
+if reset:
+	caching.clear_cache()
 
