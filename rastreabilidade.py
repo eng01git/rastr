@@ -1016,6 +1016,8 @@ if df_bobinas.shape[0] > 0:
 				# modifica selante selecionada para finalizada
 				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'status'] = 'Finalizada'
 				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+
 
 				# prepara dados para escrever no banco
 				dic_fin = {}
