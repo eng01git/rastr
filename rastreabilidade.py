@@ -1474,7 +1474,42 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 		if modificar_sap_sem:
 			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
-			st.write(df_pal_sem)
+			unicos = df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique()
+			st.write(unicos)
+			
+
+			# for index, rows in df_pal_sem_filtrado.iterrows:
+
+			# 	# prepara dados para escrever no banco
+			# 	dic_sap = {}
+			# 	dic_sap = df_bobinas.loc[(df_bobinas['numero_OT'] == val_em_uso)].to_dict('records')
+
+			# 	# Transforma dados do formulário em um dicionário
+			# 	keys_values = dic_remove[0].items()
+			# 	new_remove = {str(key): str(value) for key, value in keys_values}
+			# 	documento_remove = new_remove['numero_OT']
+
+			# 	# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
+			# 	new_remove['Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == val_em_uso)].to_csv()
+
+			# 	# flag para rodar novamente o script
+			# 	rerun = False
+
+			# 	# Armazena no banco as alteracoes da bobina
+			# 	try:
+			# 		doc_ref = db.collection("Bobina").document(documento_remove)
+			# 		doc_ref.set(new_remove)
+			# 		st.success('Modificação armazenada com sucesso!')
+			# 		rerun = True
+			# 	except:
+			# 		st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
+			# 		caching.clear_cache()
+
+			# 	# comando para rodar novament o script
+			# 	if rerun:
+			# 		st.experimental_rerun()
+
+			# 	st.write(df_pal_sem)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
