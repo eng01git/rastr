@@ -1466,10 +1466,10 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 		valor, botao = st.beta_columns([9,1])
 
 		# campo para incluir o codigo SAP do palete
-		codigo_sap_sem = valor.text_input('Digite o código SAP para apontamento')
+		codigo_sap_sem = valor.text_input('Digite o código SAP para apontamento (sem selante)')
 
 		# botao para modificar o codigo SAP
-		modificar_sap_sem = botao.button('Apontamento de codigo SAP diário')
+		modificar_sap_sem = botao.button('Apontamento de codigo SAP (sem selante)')
 
 		if modificar_sap_sem:
 			# flag para rodar novamente o script
@@ -1532,10 +1532,10 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 		valor, botao = st.beta_columns([9,1])
 
 		# campo para incluir o codigo SAP do palete
-		codigo_sap_com = valor.text_input('Digite o código SAP para apontamento')
+		codigo_sap_com = valor.text_input('Digite o código SAP para apontamento (com selante)')
 
 		# botao para modificar o codigo SAP
-		modificar_sap_com = botao.button('Apontamento de codigo SAP diário')
+		modificar_sap_com = botao.button('Apontamento de codigo SAP (com selante)')
 
 		if modificar_sap_com:
 			# flag para rodar novamente o script
