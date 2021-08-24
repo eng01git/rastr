@@ -1449,17 +1449,32 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 				st.error('Não há selantes utilizados na data selecionada')
 
 	st.subheader('Apontamento de Codigo SAP para paletes sem selante')
+
+	# seleciona as linhas que possuem data de estoque
 	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
+
+	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
-	st.write(df_pal_sem_filtrado)
+
+	# filtra pela data selecionada
 	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
+
+		# escreve os valores filtrados
 		st.write(df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro])
+
+		# organiza as colunas
 		valor, botao = st.beta_columns([9,1])
+
+		# campo para incluir o codigo SAP do palete
 		codigo_sap_sem = valor.text_input('Digite o código SAP para apontamento')
+
+		# botao para modificar o codigo SAP
 		modificar_sap_sem = botao.button('Apontamento de codigo SAP diário')
 
 		if modificar_sap_sem:
-			df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'], ['codigo_SAP']] = codigo_sap_sem
+			df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, ['codigo_SAP']] = codigo_sap_sem
+
+			st.write(df_pal_sem)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
