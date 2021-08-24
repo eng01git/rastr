@@ -1552,7 +1552,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 
 				# prepara dados para escrever no banco
 				dic_sap = {}
-				dic_sap = df_bobinas.loc[(df_bobinas['numero_lote'] == items)].to_dict('records')
+				dic_sap = df_selantes.loc[(df_selantes['numero_lote'] == items)].to_dict('records')
 
 				# Transforma dados do formulário em um dicionário
 				keys_values = dic_sap[0].items()
