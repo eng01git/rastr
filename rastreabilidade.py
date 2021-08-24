@@ -1542,7 +1542,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_com.iloc[(df_pal_com_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_com
+			df_pal_com.iloc[(df_pal_com_filtrado['data_estoque'].dt.date == data_filtro).index, 3] = codigo_sap_com
 
 			# verifica as bobinas que pertecem os paletes
 			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro, 'numero_lote'].unique())
