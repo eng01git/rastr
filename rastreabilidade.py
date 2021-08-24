@@ -1227,12 +1227,13 @@ if df_bobinas.shape[0] > 0:
 			else:
 				st.info('Não foram consumidos paletes com selante')
 
-st.subheader('Remoção de bobinas e selantes da produção')
+
 
 
 
 
 if telas == 'Remover bobinas ou selantes':
+	st.subheader('Remoção de bobinas e selantes da produção')
 	# colunas para remoção de bobinas e colunas
 	t0, space1, t1 = st.beta_columns([12, 0.5, 12])
 	c0, c1, c2, space2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,0.5,3.5,1.5,1])
