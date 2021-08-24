@@ -1472,6 +1472,9 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 		modificar_sap_sem = botao.button('Apontamento de codigo SAP diário')
 
 		if modificar_sap_sem:
+			# flag para rodar novamente o script
+			rerun = False
+
 			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
 			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique())
@@ -1493,9 +1496,6 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 				# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
 				new_sap['Paletes'] = df_pal_sem.loc[(df_pal_sem['numero_OT'] == items)].to_csv()
 
-				# flag para rodar novamente o script
-				rerun = False
-
 				# Armazena no banco as alteracoes da bobina
 				try:
 					doc_ref = db.collection("Bobina").document(documento_sap)
@@ -1506,11 +1506,11 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 					st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
 					caching.clear_cache()
 
-				# comando para rodar novament o script
-				if rerun:
-					st.experimental_rerun()
+			# comando para rodar novament o script
+			if rerun:
+				st.experimental_rerun()
 
-				st.write(df_pal_sem)
+			st.write(df_pal_sem)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
