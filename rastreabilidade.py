@@ -1454,7 +1454,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 	st.write(df_pal_sem_filtrado)
 	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
 		st.write(df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro])
-		valor, botao = st.beta_columns(2)
+		valor, botao = st.beta_columns([9,1])
 		codigo_sap_sem = valor.text_input('Digite o código SAP para apontamento')
 		modificar_sap_sem = botao.button('Apontar código SAP')
 
