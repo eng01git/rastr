@@ -148,8 +148,9 @@ def insert_excel(df):
 			df_paletes_sem['data_gerado'] = str(row['data_entrada'])
 			df_paletes_sem['data_estoque'] = '-'
 			df_paletes_sem['data_consumo'] = '-'
-			df_paletes_sem['codigo_tampa_SAP'] = str(row['codigo_SAP'])
+			df_paletes_sem['codigo_SAP'] = '-'
 			df_paletes_sem['numero_palete'] = '-'
+			df_paletes_sem['codigo_bobina'] = str(row['codigo_SAP'])
 
 			# for para iterar sobre todos os paletes e salvar
 			for index, rows in df_paletes_sem.iterrows():
@@ -244,13 +245,13 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Sem selante'  # 'com/sem selante'
-		ws['A9'] = str(data['codigo_tampa_SAP'])  # 'codigo produto'
+		ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
 		ws['B13'] = str(data['numero_OT'])  # numero da bobina
 	else:
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Com selante'  # 'com/sem selante'
-		ws['A9'] = str(data['codigo_SAP'])  # 'codigo produto'
+		ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
 		ws['B13'] = str(data['numero_lote'])  # numero da bobina
 
 	# pega a hora que o palete foi para o estoque
@@ -398,8 +399,9 @@ def adicionar_bobina():
 			df_paletes_sem['data_gerado'] = str(new_d['data_entrada'])
 			df_paletes_sem['data_estoque'] = '-'
 			df_paletes_sem['data_consumo'] = '-'
-			df_paletes_sem['codigo_tampa_SAP'] = str(new_d['codigo_SAP'])
+			df_paletes_sem['codigo_tampa_SAP'] = '-'
 			df_paletes_sem['numero_palete'] = '-'
+			df_paletes_sem['codigo_bobina'] =  str(new_d['codigo_SAP'])
 
 			# for para iterar sobre todos os paletes e salvar
 			for index, row in df_paletes_sem.iterrows():
@@ -439,15 +441,14 @@ def adicionar_selante():
 	with st.form('forms_selante'):
 		dic['status'] = 'Disponível'
 		dic['data'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-		s1, s2, s3, s4, s5 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
+		s1, s2, s3, s4, s5 = st.beta_columns([3.3, 3.3, 3.3, 0.1, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
-		dic['codigo_SAP'] = s2.text_input('Codigo SAP')
-		dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
-		dic['lote_interno'] = s4.text_input('Lote interno')
-		dic['data_entrada'] = ''
+		dic['codigo_SAP'] = '50491194'
+		dic['peso_vedante'] = s2.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
+		dic['lote_interno'] = s3.text_input('Lote interno')
+		dic['data_entrada'] = '-'
 		dic['comentario'] = '-'
 		dic['data_saida'] = '-'
-		dic['tipo_tampa'] = '-'
 		submitted = s5.form_submit_button('Adicionar selante ao sistema')
 
 	if submitted:
@@ -471,13 +472,14 @@ def adicionar_selante():
 			# cria dataframe e preenche com os dados da selante
 			df_paletes_selante = pd.DataFrame(columns=col_pal_sel, index=list(range(qtd_paletes)))
 			df_paletes_selante['numero_lote'] = str(new_d['numero_lote'])
-			df_paletes_selante['codigo_SAP'] = str(new_d['codigo_SAP'])
+			df_paletes_selante['codigo_SAP'] = '-'
 			df_paletes_selante['data_gerado'] = str(new_d['data_entrada'])
-			df_paletes_selante['tipo_tampa']
+			df_paletes_selante['tipo_tampa'] = '-'
 			df_paletes_selante['data_estoque'] = '-'
 			df_paletes_selante['data_consumo'] = '-'
 			df_paletes_selante['lote_semi'] = '-'
 			df_paletes_selante['numero_palete'] = '-'
+			df_paletes_selante['codigo_bobina'] = '-'
 
 			# for para iterar sobre todos os paletes e salvar
 			for index, row in df_paletes_selante.iterrows():
@@ -613,7 +615,7 @@ def config_grid(height, df, lim_min, lim_max, customizar):
 col_bobinas = ['numero_OT', 'data', 'tipo_bobina', 'codigo_bobina', 'peso_bobina', 'codigo_SAP', 'data_entrada', 'data_saida',
 			   'paletes_gerados', 'status', 'comentario']
 col_pal_sem = ['numero_OT', 'documento', 'tipo_tampa', 'data_gerado', 'data_estoque', 'data_consumo',
-			   'codigo_tampa_SAP', 'numero_palete']
+			   'codigo_SAP', 'numero_palete']
 col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'data', 'data_entrada', 'data_saida', 'paletes_gerados',
 			   'status', 'comentario']
 col_pal_sel = ['numero_lote', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
@@ -792,6 +794,7 @@ if df_bobinas.shape[0] > 0:
 
 		st.write(numero_bobina)
 		st.write(df_bobinas['numero_OT'])
+
 		# modifica bobina selecionada para uso
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
@@ -807,7 +810,6 @@ if df_bobinas.shape[0] > 0:
 
 		# Filtra paletes da bobina em uso e atualiza valores
 		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-		#st.write(df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina])
 
 		st.write(df_pal_sem['numero_palete'])
 
@@ -816,7 +818,8 @@ if df_bobinas.shape[0] > 0:
 			maximo_index = int(df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete'].max()) + 1
 			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + maximo_index
 		else:
-			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + 1000
+			# modificar o valor no final para adequar a realidade da linha rodando
+			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + 1000 
 
 		# Escreve o dataframe dos paletes na bobina para escrita em banco
 		new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
@@ -844,7 +847,7 @@ if df_bobinas.shape[0] > 0:
 	# Adiciona paletes
 	with col2:
 		st.subheader('Sem selante')
-		#col2.write('Ultimos gerados')
+
 		if (ps_fifo_in.shape[0] < 5) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
 			add_palete_sem = col2.button('Gerar palete TP sem Selante')
 			if add_palete_sem:
@@ -903,7 +906,6 @@ if df_bobinas.shape[0] > 0:
 			st.info(':exclamation: **Próximo palete: ' + str(fifo_in_show.iloc[0, 0]) + '**')
 
 		# consome paletes
-		#col2.write('Ultimos consumidos')
 		if ps_fifo_in.shape[0] > 0:
 			# download da etiqueta
 			download_etiqueta(ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 0)
@@ -911,9 +913,6 @@ if df_bobinas.shape[0] > 0:
 			con_palete_sem = col2.button('Consumir palete TP sem Selante')
 			if con_palete_sem:
 				# observa o indice do primeiro elemento do fifo
-				#numero_palete = df_pal_sem.loc[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-'), 'numero_palete'].min()
-				#st.write(df_pal_sem.loc[(df_pal_sem['data_estoque'] != '-') & (df_pal_sem['data_consumo'] == '-'), 'numero_palete'].min())
-
 				numero_palete_aux = ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
 				numero_palete = numero_palete_aux.iloc[7]
 
@@ -1047,9 +1046,6 @@ if df_bobinas.shape[0] > 0:
 
 			# Filtra paletes da selante em uso e atualiza valores
 			df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
-			#st.write(df_pal_com[df_pal_com['numero_lote'] == numero_selante])
-
-			#st.write(df_pal_com['numero_palete'])
 
 			# Coloca o numero dos paletes
 			if (df_pal_com['numero_palete'] != '-').any():
@@ -1084,7 +1080,7 @@ if df_bobinas.shape[0] > 0:
 		# Adiciona paletes
 		with col4:
 			st.subheader('Com selante')
-			#col4.write('Ultimos gerados')
+
 			if (sel_fifo_in.shape[0] < 5) & (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0):
 				add_palete_sem = col4.button('Gerar palete TP com Selante')
 				if add_palete_sem:
