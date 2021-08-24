@@ -407,7 +407,7 @@ def adicionar_bobina():
 			df_paletes_sem['data_gerado'] = str(new_d['data_entrada'])
 			df_paletes_sem['data_estoque'] = '-'
 			df_paletes_sem['data_consumo'] = '-'
-			df_paletes_sem['codigo_tampa_SAP'] = '-'
+			df_paletes_sem['codigo_SAP'] = '-'
 			df_paletes_sem['numero_palete'] = '-'
 			df_paletes_sem['codigo_bobina'] =  str(new_d['codigo_SAP'])
 
