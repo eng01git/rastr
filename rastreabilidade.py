@@ -1474,7 +1474,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 		if modificar_sap_sem:
 			df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, ['codigo_SAP']] = codigo_sap_sem
 
-			st.write(df_pal_sem)
+			st.write(df_pal_sem_filtrado)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
