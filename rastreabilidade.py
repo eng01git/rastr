@@ -1449,14 +1449,15 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 				st.error('Não há selantes utilizados na data selecionada')
 
 	st.subheader('Apontamento de Codigo SAP para paletes sem selante')
-	if df_pal_sem[df_pal_sem['data_estoque'].dt.date == data_filtro].shape[0] > 0:
-		st.write(df_pal_sem[df_pal_sem['data_estoque'].dt.date == data_filtro])
+	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-')
+	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
+		st.write(df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro])
 		valor, botao = st.columns(2)
 		codigo_sap_sem = valor.text_input('Digite o código SAP para apontamento')
 		modificar_sap_sem = botao.button('Apontar código SAP')
 
 		if modificar_sap_sem:
-			df_pal_sem.loc[df_pal_sem['data_estoque'], ['codigo_SAP']] = codigo_sap_sem
+			df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'], ['codigo_SAP']] = codigo_sap_sem
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
