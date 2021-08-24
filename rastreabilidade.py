@@ -1463,16 +1463,16 @@ if telas == 'Apontamento de código SAP':
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
-	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
+	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
+	df_pal_sem_filtrado['data_consumo'] = pd.to_datetime(df_pal_sem_filtrado['data_consumo'])
 
 	# filtra pela data selecionada
-	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
+	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
 
 		# escreve os valores filtrados
-		st.write(df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro])
+		st.write(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
 
 		# organiza as colunas
 		valor, botao = st.beta_columns([9,1])
@@ -1488,10 +1488,10 @@ if telas == 'Apontamento de código SAP':
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
+			df_pal_sem.iloc[(df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
 			# verifica as bobinas que pertecem os paletes
-			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique())
+			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro, 'numero_OT'].unique())
 
 			# itera sobre as bobinas
 			for items in unicos:
@@ -1529,16 +1529,16 @@ if telas == 'Apontamento de código SAP':
 	st.subheader('Paletes com selante')
 
 	# seleciona as linhas que possuem data de estoque
-	df_pal_com_filtrado = df_pal_com[df_pal_com['data_estoque'] != '-']
+	df_pal_com_filtrado = df_pal_com[df_pal_com['data_consumo'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
+	df_pal_com_filtrado['data_consumo'] = pd.to_datetime(df_pal_com_filtrado['data_consumo'])
 
 	# filtra pela data selecionada
-	if df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
+	if df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
 
 		# escreve os valores filtrados
-		st.write(df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro])
+		st.write(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
 
 		# organiza as colunas
 		valor, botao = st.beta_columns([9,1])
@@ -1554,10 +1554,10 @@ if telas == 'Apontamento de código SAP':
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_com.iloc[(df_pal_com_filtrado['data_estoque'].dt.date == data_filtro).index, 3] = codigo_sap_com
+			df_pal_com.iloc[(df_pal_com_filtrado['data_consumo'].dt.date == data_filtro).index, 3] = codigo_sap_com
 
 			# verifica as bobinas que pertecem os paletes
-			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro, 'numero_lote'].unique())
+			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro, 'numero_lote'].unique())
 
 			# itera sobre as bobinas
 			for items in unicos:
