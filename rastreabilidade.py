@@ -1448,7 +1448,9 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 			else:
 				st.error('Não há selantes utilizados na data selecionada')
 
-	st.subheader('Apontamento de Codigo SAP para paletes sem selante')
+st.subheader('Apontamento de Código SAP')
+with st.beta_expander('Apontamento de Código SAP'):
+	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
 	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
@@ -1514,7 +1516,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
-	st.subheader('Apontamento de Codigo SAP para paletes sem selante')
+	st.subheader('Paletes com selante')
 
 	# seleciona as linhas que possuem data de estoque
 	df_pal_com_filtrado = df_pal_com[df_pal_com['data_estoque'] != '-']
