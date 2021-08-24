@@ -1450,7 +1450,7 @@ with st.beta_expander('Análise de bobinas e selante por dia'):
 
 	st.subheader('Apontamento de Codigo SAP para paletes sem selante')
 	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
-	df_pal_sem_filtrado['data_saida'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
+	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 	st.write(df_pal_sem_filtrado)
 	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
 		st.write(df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro])
