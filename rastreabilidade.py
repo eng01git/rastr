@@ -165,7 +165,11 @@ def insert_excel(df):
 			row_string = row.astype(str)
 			batch.set(ref, row_string.to_dict())
 		
-		inserir = st.button('Inserir os dados no sistema?')
+		inserir = False
+		if df_paletes_sem.isnull.sum().sum() > 0:
+			st.error('Estão faltando dados na planilha, por favor corrigir')
+		else:
+			inserir = st.button('Inserir os dados no sistema?')
 		
 		if inserir:
 			# escreve os dados no servidor
