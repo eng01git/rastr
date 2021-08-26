@@ -1012,6 +1012,7 @@ if df_bobinas.shape[0] > 0:
 	if df_selantes.shape[0] > 0:
 		# Verifica selantes disponiveis
 		df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
+		df_selantes_disp = pd.to_datetime(df_selantes_disp['data'])
 
 		# cria selectbox para selecionar selantes
 		numero_selante_full = st11.selectbox('Selecione a próxima selante:', list((df_selantes_disp['numero_lote'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
