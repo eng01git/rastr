@@ -1446,12 +1446,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				# combina os dados de entrada e os de saida
 				resultado = filtro_bobina.append(filtro_bobina_s)
 				
-
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
 				resultado['data'] = pd.to_datetime(resultado['data'])
+
+				# ordena os valores pela data de entrada
 				resultado = resultado.sort_values(by='data_entrada')
+
+				# remove os dados duplicados de acordo com a coluna numero_ot
 				resultado = resultado.drop_duplicates(subset='numero_OT')
+
+				# organiza os dados para exibição
+				resultado['data_saida'] = resultado['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y"))
 				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 
