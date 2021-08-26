@@ -1416,16 +1416,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			filtro_bobina_s = bobinas_filtradas_s.loc[bobinas_filtradas_s['data_saida'].dt.time == data_filtro]
 			
 			if (filtro_bobina.shape[0] > 0) or (filtro_bobina_s.shape[0] > 0):
-				# transforma as datas de volta em strings para facilitar a visualizacao
-				filtro_bobina['data'] = filtro_bobina['data'].dt.strftime("%d/%m/%Y")
-				filtro_bobina['data_entrada'] = filtro_bobina['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
-
-				filtro_bobina_s['data'] = filtro_bobina_s['data'].dt.strftime("%d/%m/%Y")
-				filtro_bobina_s['data_entrada'] = filtro_bobina_s['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
-
+				
+				# combina os dados de entrada e os de saida
 				resultado = filtro_bobina.append(filtro_bobina_s)
 				resultado = resultado.drop_duplicates()
 				resultado = resultado.sort_values(by='data_entrada')
+
+				# transforma as datas de volta em strings para facilitar a visualizacao
+				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
+				resultado['data'] = pd.to_datetime(resultado['data'])
+				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
+				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+				
 				st.write(resultado)
 			else:
 				st.error('Não há bobinas utilizadas na data selecionada')
