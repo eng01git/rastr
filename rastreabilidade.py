@@ -1403,23 +1403,30 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	st.subheader('Bobinas utilizadas na data selecionada')
 	if df_bobinas.shape[0] > 0:
 		# bobinas que possuem data de entrada e de saída
-		bobinas_filtradas = df_bobinas.loc[(df_bobinas['data_entrada'] != '-') & (df_bobinas['data_saida'] != '-')]
+		bobinas_filtradas = df_bobinas.loc[(df_bobinas['data_entrada'] != '-') ] 
+		bobinas_filtradas_s = df_bobinas.loc[df_bobinas['data_saida'] != '-']
 
-		if bobinas_filtradas.shape[0] > 0:
+		if (bobinas_filtradas.shape[0] > 0) or (bobinas_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
 			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
-			bobinas_filtradas['data_saida'] = pd.to_datetime(bobinas_filtradas['data_saida'])
+			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
 
 			# filtra as bobinas de acordo com a data
-			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro) | (bobinas_filtradas['data_saida'].dt.date == data_filtro) | ((bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'].dt.date >= data_filtro))]
+			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro)]
+			filtro_bobina_s = bobinas_filtradas_s.loc[bobinas_filtradas_s['data_saida'].dt.time == data_filtro]
 			
-			if filtro_bobina.shape[0] > 0:
+			if (filtro_bobina.shape[0] > 0) or (filtro_bobina_s.shape[0] > 0):
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				filtro_bobina['data'] = filtro_bobina['data'].dt.strftime("%d/%m/%Y")
 				filtro_bobina['data_entrada'] = filtro_bobina['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
-				filtro_bobina['data_saida'] = filtro_bobina['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
 
-				st.write(filtro_bobina)
+				filtro_bobina_s['data'] = filtro_bobina_s['data'].dt.strftime("%d/%m/%Y")
+				filtro_bobina_s['data_entrada'] = filtro_bobina_s['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+
+				resultado = filtro_bobina.append(filtro_bobina_s)
+				resultado = resultado.drop_duplicates()
+				resultado = resultado.sort_values(by='data_entrada')
+				st.write(resultado)
 			else:
 				st.error('Não há bobinas utilizadas na data selecionada')
 		else:
