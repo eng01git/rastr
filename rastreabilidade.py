@@ -1435,7 +1435,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (bobinas_filtradas.shape[0] > 0) or (bobinas_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
+			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'], format='%H:%M %d-%m-%Y')
 			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
 
 			# filtra as bobinas de acordo com a data
