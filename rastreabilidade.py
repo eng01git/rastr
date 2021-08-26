@@ -349,7 +349,8 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 
 		df['data'] = pd.to_datetime(df['data'])
 		df['data'] = df['data'].dt.strftime('%H:%M %d-%m-%Y')
-		
+		df['data_entrada'] = df['data_entrada'].apply((lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y")))
+
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
 
