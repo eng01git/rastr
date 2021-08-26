@@ -1117,7 +1117,8 @@ if df_bobinas.shape[0] > 0:
 					df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')] = teste
 
 					# verificar selante em uso
-					numero_palete = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
+					numero_palete = maximo_index
+					#df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
 
 					# atualiza valores de data de estoque e o tipo de tampa
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
