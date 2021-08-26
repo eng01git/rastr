@@ -325,6 +325,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 		# Transforma string em tipo data
 
 		df['data'] = pd.to_datetime(df['data'])
+		df['data_entrada'] = pd.to_datetime(df['data_entrada'], errors='ignore')
 
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
@@ -1435,7 +1436,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (bobinas_filtradas.shape[0] > 0) or (bobinas_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'], format='%H:%M %d-%m-%Y')
+			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
 			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
 
 			# filtra as bobinas de acordo com a data
