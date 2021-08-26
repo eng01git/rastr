@@ -1024,7 +1024,6 @@ if df_bobinas.shape[0] > 0:
 				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
-
 				# prepara dados para escrever no banco
 				dic_fin = {}
 				dic_fin = df_selantes.loc[df_selantes['numero_lote'] == val_em_uso].to_dict('records')
@@ -1068,12 +1067,12 @@ if df_bobinas.shape[0] > 0:
 			# Filtra paletes da selante em uso e atualiza valores
 			df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
-			# Coloca o numero dos paletes
-			if (df_pal_com['numero_palete'] != '-').any():
-				maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
-				df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento'] + maximo_index
-			else:
-				df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento']
+			# # Coloca o numero dos paletes
+			# if (df_pal_com['numero_palete'] != '-').any():
+			# 	maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
+			# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento'] + maximo_index
+			# else:
+			# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento']
 
 			# Escreve o dataframe dos paletes na selante para escrita em banco
 			new_uso['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == numero_selante].to_csv()
@@ -1106,8 +1105,17 @@ if df_bobinas.shape[0] > 0:
 				add_palete_sem = col4.button('Gerar palete TP com Selante')
 				if add_palete_sem:
 
-					# verificar selante em uso
+					# identifica o ultimo numero de palete utilizado
+					maximo_index = 0
+					if (df_pal_com['numero_palete'] != '-').any():
+						maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
+
+					# atribuir numero ao palete
 					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
+					palete_selante_atual = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-')].sort_values(by='documento')
+					palete_selante_atual.iloc[0,9] = maximo_index
+
+					# verificar selante em uso
 					numero_palete = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
 
 					# atualiza valores de data de estoque e o tipo de tampa
@@ -1163,7 +1171,6 @@ if df_bobinas.shape[0] > 0:
 				st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
 
 			# consome paletes
-			#col4.write('Ultimos consumidos')
 			if sel_fifo_in.shape[0] > 0:
 				# download das etiquetas
 				download_etiqueta(sel_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0], 1)
@@ -1202,7 +1209,7 @@ if df_bobinas.shape[0] > 0:
 						flag_rerun = True
 
 					except:
-						st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+						st.error('Falha ao atualizar informações do palete, tente novamente ou entre em contato com suporte!')
 
 					if flag_rerun:
 						st.experimental_rerun()
