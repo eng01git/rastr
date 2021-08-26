@@ -1594,7 +1594,19 @@ if telas == 'Apontamento de código SAP':
 		#df_pal_sem_filtrado['data_consumo'] = df_pal_sem_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
 
 		# escreve os valores filtrados
-		st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
+		#st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
+		
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(100, df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
+		response = AgGrid(
+			df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro],
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 
 		# organiza as colunas
 		valor, botao = st.beta_columns([9,1])
@@ -1664,9 +1676,9 @@ if telas == 'Apontamento de código SAP':
 		#df_pal_com_filtrado['data_consumo'] = df_pal_com_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
 
 		# escreve os valores filtrados
-		st.table(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
+		#st.table(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
 
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(400, df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(100, df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
 		response = AgGrid(
 			df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro],
 			gridOptions=gridOptions,
