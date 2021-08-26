@@ -1468,7 +1468,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 
 				#st.table(resultado)
-				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(125, resultado, 0, 0, True)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, resultado, 0, 0, True)
 				response = AgGrid(
 					resultado,
 					gridOptions=gridOptions,
@@ -1506,7 +1506,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
 				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
 
-				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(125, filtro_pal_sem, 0, 0, True)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_sem, 0, 0, True)
 				response = AgGrid(
 					filtro_pal_sem,
 					gridOptions=gridOptions,
@@ -1560,7 +1560,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 				
 				#st.table(resultado_c)
-				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(125, resultado_c, 0, 0, True)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, resultado_c, 0, 0, True)
 				response = AgGrid(
 					resultado_c,
 					gridOptions=gridOptions,
@@ -1599,7 +1599,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
 
 				#st.table(filtro_pal_com)
-				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(125, filtro_pal_com, 0, 0, True)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_com, 0, 0, True)
 				response = AgGrid(
 					filtro_pal_com,
 					gridOptions=gridOptions,
