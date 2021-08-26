@@ -1451,7 +1451,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
 				resultado['data'] = pd.to_datetime(resultado['data'])
 				resultado = resultado.sort_values(by='data_entrada')
-				resultado = resultado.drop_duplicates()
+				resultado = resultado.drop_duplicates(subset='numero_OT')
 				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 
@@ -1515,7 +1515,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
 				resultado_c['data'] = pd.to_datetime(resultado_c['data'])
 				resultado_c = resultado_c.sort_values(by='data_entrada')
-				resultado_c = resultado_c.drop_duplicates()
+				resultado_c = resultado_c.drop_duplicates(subset='numero_lote')
 				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
 				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 				
