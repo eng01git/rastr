@@ -1467,7 +1467,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 
-				st.table(resultado)
+				#st.table(resultado)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, resultado, 0, 0, True)
+				response = AgGrid(
+					resultado,
+					gridOptions=gridOptions,
+					height=grid_height,
+					width='100%',
+					data_return_mode=return_mode_value,
+					update_mode=update_mode_value,
+					fit_columns_on_grid_load=fit_columns_on_grid_load,
+					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+					enable_enterprise_modules=enable_enterprise_modules)
 			else:
 				st.error('Não há bobinas utilizadas na data selecionada')
 		else:
@@ -1495,7 +1506,17 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
 				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
 
-				st.table(filtro_pal_sem)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, filtro_pal_sem, 0, 0, True)
+				response = AgGrid(
+					filtro_pal_sem,
+					gridOptions=gridOptions,
+					height=grid_height,
+					width='100%',
+					data_return_mode=return_mode_value,
+					update_mode=update_mode_value,
+					fit_columns_on_grid_load=fit_columns_on_grid_load,
+					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+					enable_enterprise_modules=enable_enterprise_modules)
 			else:
 				st.error('Não há paletes sem selante utilizados na data selecionada')
 		else:
@@ -1538,7 +1559,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
 				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 				
-				st.table(resultado_c)
+				#st.table(resultado_c)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, resultado_c, 0, 0, True)
+				response = AgGrid(
+					resultado_c,
+					gridOptions=gridOptions,
+					height=grid_height,
+					width='100%',
+					data_return_mode=return_mode_value,
+					update_mode=update_mode_value,
+					fit_columns_on_grid_load=fit_columns_on_grid_load,
+					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+					enable_enterprise_modules=enable_enterprise_modules)
 			else:
 				st.error('Não há selantes utilizadas na data selecionada')
 		else:
@@ -1566,7 +1598,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
 				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
 
-				st.table(filtro_pal_com)
+				#st.table(filtro_pal_com)
+				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, filtro_pal_com, 0, 0, True)
+				response = AgGrid(
+					filtro_pal_com,
+					gridOptions=gridOptions,
+					height=grid_height,
+					width='100%',
+					data_return_mode=return_mode_value,
+					update_mode=update_mode_value,
+					fit_columns_on_grid_load=fit_columns_on_grid_load,
+					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+					enable_enterprise_modules=enable_enterprise_modules)
 			else:
 				st.error('Não há paletes com selante utilizados na data selecionada')
 		else:
@@ -1596,7 +1639,7 @@ if telas == 'Apontamento de código SAP':
 		# escreve os valores filtrados
 		#st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
 		
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(100, df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
 		response = AgGrid(
 			df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro],
 			gridOptions=gridOptions,
@@ -1678,7 +1721,7 @@ if telas == 'Apontamento de código SAP':
 		# escreve os valores filtrados
 		#st.table(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
 
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(100, df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
 		response = AgGrid(
 			df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro],
 			gridOptions=gridOptions,
