@@ -1010,7 +1010,7 @@ if df_bobinas.shape[0] > 0:
 	###########################################
 	# Selecionar selantes disponiveis para uso#
 	###########################################
-	if df_selantes.shape[0] > 0:
+	if df_selantes[df_selantes['status'] == 'Disponível'].shape[0] > 0:
 		# Verifica selantes disponiveis
 		df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
 		df_selantes_disp = pd.to_datetime(df_selantes_disp['data'])
