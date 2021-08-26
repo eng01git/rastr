@@ -1591,8 +1591,8 @@ if telas == 'Apontamento de código SAP':
 	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
 		
 		# modifica o formato da data
-		df_pal_sem_filtrado['data_consumo'] = df_pal_sem_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
-		
+		#df_pal_sem_filtrado['data_consumo'] = df_pal_sem_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
+
 		# escreve os valores filtrados
 		st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
 
@@ -1661,7 +1661,7 @@ if telas == 'Apontamento de código SAP':
 	if df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
 
 		# modifica o formato da data
-		df_pal_com_filtrado['data_consumo'] = df_pal_com_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
+		#df_pal_com_filtrado['data_consumo'] = df_pal_com_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
 
 		# escreve os valores filtrados
 		st.table(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
