@@ -1108,7 +1108,8 @@ if df_bobinas.shape[0] > 0:
 					# identifica o ultimo numero de palete utilizado
 					maximo_index = 0
 					if (df_pal_com['numero_palete'] != '-').any():
-						maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
+						maximo_index_aux = df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete']
+						maximo_index = int(maximo_index_aux.astype('int').max()) + 1
 
 					# atribuir numero ao palete
 					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
