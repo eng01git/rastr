@@ -1113,7 +1113,7 @@ if df_bobinas.shape[0] > 0:
 					# atribuir numero ao palete
 					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
 					teste = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')]
-					teste.iloc[0, teste.columns.get_indexer['numero_palete']] = maximo_index
+					teste.iloc[0, teste.columns.get_indexer('numero_palete')] = maximo_index
 					df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')] = teste
 
 					# verificar selante em uso
