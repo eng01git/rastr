@@ -1427,7 +1427,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado['data'] = pd.to_datetime(resultado['data'])
 				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
-				
+
 				st.write(resultado)
 			else:
 				st.error('Não há bobinas utilizadas na data selecionada')
@@ -1493,32 +1493,41 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 		st.error('Não há paletes com selante utilizados na data selecionada')
 	
 
-	st.subheader('Selantes utilizados na data selecionada')
+		st.subheader('selantes utilizadas na data selecionada')
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
-		selantes_filtradas = df_selantes.loc[(df_selantes['data_entrada'] != '-') & (df_selantes['data_saida'] != '-')]
+		selantes_filtradas = df_selantes.loc[(df_selantes['data_entrada'] != '-') ] 
+		selantes_filtradas_s = df_selantes.loc[df_selantes['data_saida'] != '-']
 
-		if selantes_filtradas.shape[0] > 0:
+		if (selantes_filtradas.shape[0] > 0) or (selantes_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
 			selantes_filtradas['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'])
-			selantes_filtradas['data_saida'] = pd.to_datetime(selantes_filtradas['data_saida'])
+			selantes_filtradas_s['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'])
 
 			# filtra as selantes de acordo com a data
-			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date == data_filtro) | (selantes_filtradas['data_saida'].dt.date == data_filtro) | ((selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'].dt.date >= data_filtro))]
+			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date == data_filtro)]
+			filtro_selante_s = selantes_filtradas_s.loc[selantes_filtradas_s['data_saida'].dt.time == data_filtro]
 			
-			if filtro_selante.shape[0] > 0:
-				# transforma as datas de volta em strings para facilitar a visualizacao
-				filtro_selante['data'] = filtro_selante['data'].dt.strftime("%d/%m/%Y")
-				filtro_selante['data_entrada'] = filtro_selante['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
-				filtro_selante['data_saida'] = filtro_selante['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
+			if (filtro_selante.shape[0] > 0) or (filtro_selante_s.shape[0] > 0):
+				
+				# combina os dados de entrada e os de saida
+				resultado_c = filtro_selante.append(filtro_selante_s)
+				resultado_c = resultado_c.drop_duplicates()
+				resultado_c = resultado_c.sort_values(by='data_entrada')
 
-				st.write(filtro_selante)
+				# transforma as datas de volta em strings para facilitar a visualizacao
+				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
+				resultado_c['data'] = pd.to_datetime(resultado_c['data'])
+				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
+				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+				
+				st.write(resultado_c)
 			else:
-				st.error('Não há selantes utilizados na data selecionada')
+				st.error('Não há selantes utilizadas na data selecionada')
 		else:
-			st.error('Não há selantes utilizados na data selecionada')
+			st.error('Não há selantes utilizadas na data selecionada')
 	else:
-		st.error('Não há selantes utilizados na data selecionada')
+		st.error('Não há selantes utilizadas na data selecionada')
 
 if telas == 'Apontamento de código SAP':
 	
