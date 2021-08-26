@@ -1514,8 +1514,15 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
 				resultado_c['data'] = pd.to_datetime(resultado_c['data'])
+
+				# organiza pela data de entrada
 				resultado_c = resultado_c.sort_values(by='data_entrada')
+
+				# remove os duplicados filtrando pelo numero do lote
 				resultado_c = resultado_c.drop_duplicates(subset='numero_lote')
+
+				# organiza os dados para exibição
+				resultado_c['data_saida'] = resultado_c['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y"))
 				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
 				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 				
