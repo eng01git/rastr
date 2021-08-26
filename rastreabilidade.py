@@ -188,6 +188,7 @@ def local_css(file_name):
 	with open(file_name) as f:
 		st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
 
+
 local_css("style.css")	
 
 
@@ -260,7 +261,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 		codigo  = str(data['tipo_tampa']) + ' Com Selante'
 		#ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
 		ws['A9'] = tipos_tampas[codigo]
-		ws['B13'] = str(data['numero_lote'])  # numero da bobina
+		ws['B13'] = str(data['numero_OT'])  # numero da bobina
 
 	# pega a hora que o palete foi para o estoque
 	horario = datetime.time(data['data_estoque'])
@@ -488,6 +489,7 @@ def adicionar_selante():
 			df_paletes_selante['lote_semi'] = '-'
 			df_paletes_selante['numero_palete'] = '-'
 			df_paletes_selante['codigo_bobina'] = '-'
+			df_paletes_selante['numero_OT'] = '-'
 
 			# for para iterar sobre todos os paletes e salvar
 			for index, row in df_paletes_selante.iterrows():
@@ -626,7 +628,7 @@ col_pal_sem = ['numero_OT', 'documento', 'tipo_tampa', 'data_gerado', 'data_esto
 			   'codigo_SAP', 'numero_palete']
 col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'data', 'data_entrada', 'data_saida', 'paletes_gerados',
 			   'status', 'comentario']
-col_pal_sel = ['numero_lote', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
+col_pal_sel = ['numero_lote', 'numero_OT', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
 
 tipos_tampas = {'Tampa Prata Sem Selante': 40009011,
 		'Tampa Prata Com Selante': 40009012,
@@ -1111,6 +1113,7 @@ if df_bobinas.shape[0] > 0:
 					# atualiza valores de data de estoque e o tipo de tampa
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'tipo_tampa'] = tipo_bobina_uso
+					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'numero_OT'] = bobina_em_uso.iloc[0,0]
 
 					# prepara dados para escrever no banco
 					dic_fifo_s_in = {}
@@ -1158,8 +1161,6 @@ if df_bobinas.shape[0] > 0:
 					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 					enable_enterprise_modules=enable_enterprise_modules)
 				st.success(':exclamation: **Próximo palete: ' + str(fifo_s_in_show.iloc[0, 0]) + '**')
-
-				
 
 			# consome paletes
 			#col4.write('Ultimos consumidos')
@@ -1464,7 +1465,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	else:
 		st.error('Não há paletes sem selante utilizados na data selecionada')
 
-	st.subheader('selantes utilizadas na data selecionada')
+	st.subheader('Selantes utilizadas na data selecionada')
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
 		selantes_filtradas = df_selantes.loc[(df_selantes['data_entrada'] != '-') ] 
@@ -1626,7 +1627,7 @@ if telas == 'Apontamento de código SAP':
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_com.iloc[(df_pal_com_filtrado['data_consumo'].dt.date == data_filtro).index, 3] = codigo_sap_com
+			df_pal_com.iloc[(df_pal_com_filtrado['data_consumo'].dt.date == data_filtro).index, 4] = codigo_sap_com
 
 			# verifica as bobinas que pertecem os paletes
 			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro, 'numero_lote'].unique())
