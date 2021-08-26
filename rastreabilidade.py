@@ -1518,7 +1518,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
 				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 				
-				st.dataframe(resultado_c)
+				st.table(resultado_c)
 			else:
 				st.error('Não há selantes utilizadas na data selecionada')
 		else:
@@ -1546,7 +1546,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
 				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
 
-				st.dataframe(filtro_pal_com)
+				st.table(filtro_pal_com)
 			else:
 				st.error('Não há paletes com selante utilizados na data selecionada')
 		else:
@@ -1570,7 +1570,7 @@ if telas == 'Apontamento de código SAP':
 	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
 
 		# escreve os valores filtrados
-		st.write(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
+		st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
 
 		# organiza as colunas
 		valor, botao = st.beta_columns([9,1])
@@ -1636,7 +1636,7 @@ if telas == 'Apontamento de código SAP':
 	if df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
 
 		# escreve os valores filtrados
-		st.write(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
+		st.table(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
 
 		# organiza as colunas
 		valor, botao = st.beta_columns([9,1])
