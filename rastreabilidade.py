@@ -325,7 +325,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 		# Transforma string em tipo data
 
 		df['data'] = pd.to_datetime(df['data'])
-		df['data_entrada'] = pd.to_datetime(df['data_entrada'], errors='ignore')
+		df['data_entrada'] = pd.to_datetime(df['data_entrada'], errors='ignore').strftime('%H:%M %d-%m-%Y')
 
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
@@ -653,8 +653,6 @@ tipos_selantes = {'Selante': 50491194}
 # leitura e exibicao dos dados das bobinas
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
-
-df_bobinas['data_entrada'] = df_bobinas['data_entrada'].dt.strftime('%H:%M %d-%m-%Y')
 
 # define a bobina em uso
 if df_bobinas.shape[0] > 0:
