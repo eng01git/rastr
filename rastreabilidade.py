@@ -832,13 +832,13 @@ if df_bobinas.shape[0] > 0:
 
 		st.write(df_pal_sem['numero_palete'])
 
-		# Coloca o numero dos paletes
-		if (df_pal_sem['numero_palete'] != '-').any():
-			maximo_index = int(df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete'].max()) + 1
-			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + maximo_index
-		else:
-			# modificar o valor no final para adequar a realidade da linha rodando
-			df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + 1000 
+		# # Coloca o numero dos paletes
+		# if (df_pal_sem['numero_palete'] != '-').any():
+		# 	maximo_index = int(df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete'].max()) + 1
+		# 	df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + maximo_index
+		# else:
+		# 	# modificar o valor no final para adequar a realidade da linha rodando
+		# 	df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + 1000 
 
 		# Escreve o dataframe dos paletes na bobina para escrita em banco
 		new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
@@ -871,10 +871,22 @@ if df_bobinas.shape[0] > 0:
 			add_palete_sem = col2.button('Gerar palete TP sem Selante')
 			if add_palete_sem:
 
-				# verificar bobina em uso
-				bobina_atual = df_bobinas[df_bobinas['status'] == 'Em uso']['numero_OT']
-				numero_palete = df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-'), 'numero_palete'].min()
+				# identifica o ultimo numero de palete utilizado
+				maximo_index_s = 1000
+				if (df_pal_sem['numero_palete'] != '-').any():
+					maximo_index_aux = df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete']
+					maximo_index_s = int(maximo_index_aux.astype('int').max()) + 1
 
+				# atribuir numero ao palete
+				bobina_atual = df_bobinas[df_bobinas['status'] == 'Em uso']['numero_OT']
+				df_temp = df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-') & (df_pal_sem['numero_palete'] == '-')]
+				df_temp.iloc[0, 7] = maximo_index_s
+				df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-') & (df_pal_sem['numero_palete'] == '-')] = df_temp
+
+				# verificar selante em uso
+				numero_palete = maximo_index_s
+
+				# atualiza data de estoque do palete
 				df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
 
 				# prepara dados para escrever no banco
@@ -1113,13 +1125,12 @@ if df_bobinas.shape[0] > 0:
 
 					# atribuir numero ao palete
 					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
-					teste = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')]
-					teste.iloc[0, 9] = maximo_index
-					df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')] = teste
+					df_temp = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')]
+					df_temp.iloc[0, 9] = maximo_index
+					df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')] = df_temp
 
 					# verificar selante em uso
 					numero_palete = maximo_index
-					#df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-'), 'numero_palete'].min()
 
 					# atualiza valores de data de estoque e o tipo de tampa
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
