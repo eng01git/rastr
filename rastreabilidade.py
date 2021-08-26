@@ -1435,6 +1435,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 		if p_sem_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
 			p_sem_filtrado['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'])
+			p_sem_filtrado['data_gerado'] = pd.to_datetime(p_sem_filtrado['data_gerado'])
+			p_sem_filtrado['data_estoque'] = pd.to_datetime(p_sem_filtrado['data_estoque'])
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_sem = p_sem_filtrado.loc[(p_sem_filtrado['data_consumo'].dt.date == data_filtro)]
@@ -1461,6 +1463,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 		if p_com_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
 			p_com_filtrado['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'])
+			p_com_filtrado['data_gerado'] = pd.to_datetime(p_com_filtrado['data_gerado'])
+			p_com_filtrado['data_estoque'] = pd.to_datetime(p_com_filtrado['data_estoque'])
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_com = p_com_filtrado.loc[(p_com_filtrado['data_consumo'].dt.date == data_filtro)]
