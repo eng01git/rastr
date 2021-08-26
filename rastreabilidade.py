@@ -1440,6 +1440,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			# filtra as bobinas de acordo com a data
 			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro)]
 			filtro_bobina_s = bobinas_filtradas_s.loc[bobinas_filtradas_s['data_saida'].dt.time == data_filtro]
+			filtro_bobina_s['data_saida'] = filtro_bobina_s['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
 			
 			if (filtro_bobina.shape[0] > 0) or (filtro_bobina_s.shape[0] > 0):
 				
@@ -1504,6 +1505,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date == data_filtro)]
 			filtro_selante_s = selantes_filtradas_s.loc[selantes_filtradas_s['data_saida'].dt.time == data_filtro]
+			filtro_selante_s['data_saida'] = filtro_selante_s['data_saida'].dt.strftime("%H:%M %d/%m/%Y")
 			
 			if (filtro_selante.shape[0] > 0) or (filtro_selante_s.shape[0] > 0):
 				
