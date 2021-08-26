@@ -1482,7 +1482,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
 				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
 
-				st.dataframe(filtro_pal_sem)
+				st.table(filtro_pal_sem)
 			else:
 				st.error('Não há paletes sem selante utilizados na data selecionada')
 		else:
