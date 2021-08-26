@@ -760,6 +760,7 @@ if df_bobinas.shape[0] > 0:
 	# Verifica bobinas disponiveis
 	df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
+	df_bobinas_disp['data'] = pd.to_datetime(df_bobinas_disp['data'])
 
 	# cria selectbox para selecionar bobinas
 	numero_bobina_full = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
@@ -1015,7 +1016,7 @@ if df_bobinas.shape[0] > 0:
 		df_selantes_disp = pd.to_datetime(df_selantes_disp['data'])
 
 		# cria selectbox para selecionar selantes
-		numero_selante_full = st11.selectbox('Selecione a próxima selante:', list((df_selantes_disp['numero_lote'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
+		numero_selante_full = st11.selectbox('Selecione o próximo selante:', list((df_selantes_disp['numero_lote'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
 		numero_selante = numero_selante_full.split()[0]
 		#numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
 
