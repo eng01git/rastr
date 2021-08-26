@@ -1454,7 +1454,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 
-				st.dataframe(resultado)
+				st.table(resultado)
 			else:
 				st.error('Não há bobinas utilizadas na data selecionada')
 		else:
