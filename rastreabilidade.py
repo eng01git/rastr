@@ -1172,7 +1172,7 @@ if df_bobinas.shape[0] > 0:
 				if con_palete_sem:
 					# observa o indice do primeiro elemento do fifo_s
 					numero_palete_aux = sel_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
-					numero_palete = numero_palete_aux.iloc[8]
+					numero_palete = numero_palete_aux.iloc[9]
 
 					# atualiza a data de consumo do palete consumido
 					df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
