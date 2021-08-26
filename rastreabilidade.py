@@ -1427,6 +1427,59 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	else:
 		st.error('Não há bobinas utilizadas na data selecionada')
 
+	st.subheader('Paletes sem selante utilizados na data selecionada')
+	if df_pal_sem.shape[0] > 0:
+		# bobinas que possuem data de entrada e de saída
+		p_sem_filtrado = df_pal_sem.loc[df_pal_sem['data_consumo'] != '-']
+
+		if p_sem_filtrado.shape[0] > 0:
+			# converte os valores de string para datetime
+			p_sem_filtrado['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'])
+
+			# filtra as bobinas de acordo com a data
+			filtro_pal_sem = p_sem_filtrado.loc[(p_sem_filtrado['data_consumo'].dt.date == data_filtro)]
+
+			if filtro_pal_sem.shape[0] > 0:
+				# transforma as datas de volta em strings para facilitar a visualizacao
+				filtro_pal_sem['data_gerado'] = filtro_pal_sem['data_gerado'].dt.strftime("%d/%m/%Y")
+				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
+
+				st.write(filtro_pal_sem)
+			else:
+				st.error('Não há paletes sem selante utilizados na data selecionada')
+		else:
+			st.error('Não há paletes sem selante utilizados na data selecionada')
+	else:
+		st.error('Não há paletes sem selante utilizados na data selecionada')
+
+	st.subheader('Paletes com selante utilizados na data selecionada')
+	if df_pal_com.shape[0] > 0:
+		# bobinas que possuem data de entrada e de saída
+		p_com_filtrado = df_pal_com.loc[df_pal_com['data_consumo'] != '-']
+
+		if p_com_filtrado.shape[0] > 0:
+			# converte os valores de string para datetime
+			p_com_filtrado['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'])
+
+			# filtra as bobinas de acordo com a data
+			filtro_pal_com = p_com_filtrado.loc[(p_com_filtrado['data_consumo'].dt.date == data_filtro)]
+
+			if filtro_pal_com.shape[0] > 0:
+				# transforma as datas de volta em strings para facilitar a visualizacao
+				filtro_pal_com['data_gerado'] = filtro_pal_com['data_gerado'].dt.strftime("%d/%m/%Y")
+				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
+
+				st.write(filtro_pal_com)
+			else:
+				st.error('Não há paletes com selante utilizados na data selecionada')
+		else:
+			st.error('Não há paletes com selante utilizados na data selecionada')
+	else:
+		st.error('Não há paletes com selante utilizados na data selecionada')
+	
+
 	st.subheader('Selantes utilizados na data selecionada')
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
