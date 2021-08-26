@@ -1448,11 +1448,11 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				# combina os dados de entrada e os de saida
 				resultado = filtro_bobina.append(filtro_bobina_s)
 				resultado = resultado.drop_duplicates()
-				resultado = resultado.sort_values(by='data_entrada')
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
 				resultado['data'] = pd.to_datetime(resultado['data'])
+				resultado = resultado.sort_values(by='data_entrada')
 				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 
@@ -1513,11 +1513,12 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				# combina os dados de entrada e os de saida
 				resultado_c = filtro_selante.append(filtro_selante_s)
 				resultado_c = resultado_c.drop_duplicates()
-				resultado_c = resultado_c.sort_values(by='data_entrada')
+				
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
 				resultado_c['data'] = pd.to_datetime(resultado_c['data'])
+				resultado_c = resultado_c.sort_values(by='data_entrada')
 				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
 				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 				
