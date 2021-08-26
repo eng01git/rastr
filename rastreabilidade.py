@@ -1636,7 +1636,7 @@ if telas == 'Apontamento de código SAP':
 	if df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
 
 		# escreve os valores filtrados
-		st.write(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
+		st.dataframe(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
 
 		# organiza as colunas
 		valor, botao = st.beta_columns([9,1])
