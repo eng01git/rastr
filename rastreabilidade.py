@@ -1111,51 +1111,51 @@ if df_bobinas.shape[0] > 0:
 				else:
 					st.info('Não havia selante em uso!')
 
-			#####################################
-			# Coloca selante selecionada em uso #
-			#####################################
+				#####################################
+				# Coloca selante selecionada em uso #
+				#####################################
 
-			# modifica selante selecionada para uso
-			df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'status'] = 'Em uso'
-			df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				# modifica selante selecionada para uso
+				df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'status'] = 'Em uso'
+				df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 
-			# prepara dados para escrever no banco
-			dic_selante_uso = {}
-			dic_selante_uso = df_selantes.loc[df_selantes['numero_lote'] == numero_selante].to_dict('records')
+				# prepara dados para escrever no banco
+				dic_selante_uso = {}
+				dic_selante_uso = df_selantes.loc[df_selantes['numero_lote'] == numero_selante].to_dict('records')
 
-			# Transforma dados do formulário em um dicionário
-			keys_values = dic_selante_uso[0].items()
-			new_uso = {str(key): str(value) for key, value in keys_values}
-			documento = new_uso['numero_lote']
+				# Transforma dados do formulário em um dicionário
+				keys_values = dic_selante_uso[0].items()
+				new_uso = {str(key): str(value) for key, value in keys_values}
+				documento = new_uso['numero_lote']
 
-			# Filtra paletes da selante em uso e atualiza valores
-			df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				# Filtra paletes da selante em uso e atualiza valores
+				df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 
-			# # Coloca o numero dos paletes
-			# if (df_pal_com['numero_palete'] != '-').any():
-			# 	maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
-			# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento'] + maximo_index
-			# else:
-			# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento']
+				# # Coloca o numero dos paletes
+				# if (df_pal_com['numero_palete'] != '-').any():
+				# 	maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
+				# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento'] + maximo_index
+				# else:
+				# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento']
 
-			# Escreve o dataframe dos paletes na selante para escrita em banco
-			new_uso['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == numero_selante].to_csv()
+				# Escreve o dataframe dos paletes na selante para escrita em banco
+				new_uso['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == numero_selante].to_csv()
 
-			# Flag de rerun da aplicacao
-			flag_rerun = False
+				# Flag de rerun da aplicacao
+				flag_rerun = False
 
-			# Armazena no banco as alteracoes na selante
-			try:
-				doc_ref = db.collection("Selante").document(documento)
-				doc_ref.set(new_uso)
-				st.success('Formulário armazenado com sucesso!')
-				flag_rerun = True
-			except:
-				st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
-				caching.clear_cache()
+				# Armazena no banco as alteracoes na selante
+				try:
+					doc_ref = db.collection("Selante").document(documento)
+					doc_ref.set(new_uso)
+					st.success('Formulário armazenado com sucesso!')
+					flag_rerun = True
+				except:
+					st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
+					caching.clear_cache()
 
-			if flag_rerun:
-				st.experimental_rerun()
+				if flag_rerun:
+					st.experimental_rerun()
 
 		##############################
 		# fifo_s paletes com selante #
