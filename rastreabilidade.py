@@ -175,7 +175,7 @@ def insert_excel_selante(df):
 			df_paletes_com = pd.DataFrame(columns=col_pal_sel, index=list(range(qtd_paletes)))
 			df_paletes_com['numero_lote'] = str(row['numero_lote'])
 			df_paletes_com['lote_semi'] = str(row['lote_interno'])
-			df_paletes_com['data_gerado'] = str(row['data_entrada'])
+			df_paletes_com['data_gerado'] = '-'
 			df_paletes_com['data_estoque'] = '-'
 			df_paletes_com['data_consumo'] = '-'
 			df_paletes_com['codigo_SAP'] = '-'
