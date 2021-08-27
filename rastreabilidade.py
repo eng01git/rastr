@@ -113,7 +113,7 @@ def upload_excel(uploaded_file):
 		# dados = dados.append(tratado_ta, ignore_index=True)
 	df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
 	df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-	df.tipo_bobina = df.tipo_bobina.apply(lambda x: tipos_bobinas2[x])
+	df.tipo_bobina = df.codigo_bobina.apply(lambda x: tipos_bobinas2[x])
 	df.data_entrada = '-'
 	df.data_saida = '-'
 	df.paletes_gerados = (df['peso_bobina']) * 412 / 187200
