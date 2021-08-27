@@ -1672,7 +1672,7 @@ if telas == 'Apontamento de código SAP':
 	
 
 	# filtra pela data selecionada
-	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'].dt.date >= data_inicio) & (df_pal_sem_filtrado['data_estoque'].dt.date <= data_fim)].shape[0] > 0:
+	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
 		
 		# modifica o formato da data
 		#df_pal_sem_filtrado['data_consumo'] = df_pal_sem_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
@@ -1680,9 +1680,9 @@ if telas == 'Apontamento de código SAP':
 		# escreve os valores filtrados
 		#st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
 		
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro], 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
-			df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro],
+			df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)],
 			gridOptions=gridOptions,
 			height=grid_height,
 			width='100%',
