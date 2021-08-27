@@ -377,7 +377,7 @@ def adicionar_bobina():
 	with st.form('forms_Bobina'):
 		dic['status'] = 'Disponível'
 		dic['data'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-		s1, s2, s3, s4, s6 = st.beta_columns([3, 3, 2, 2, 1])
+		s1, s2, s3, s4, s6 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_OT'] = s1.text_input('Número OT')
 		dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
 		dic['codigo_bobina'] = tipos_bobinas[dic['tipo_bobina']]
