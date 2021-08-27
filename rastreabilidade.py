@@ -1024,64 +1024,65 @@ if df_bobinas.shape[0] > 0:
 	###########################################
 	# Selecionar selantes disponiveis para uso#
 	###########################################
-	if df_selantes[df_selantes['status'] == 'Disponível'].shape[0] > 0:
+	if df_selantes.shape[0] > 0:
 		# Verifica selantes disponiveis
-		df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
-		df_selantes_disp['data'] = pd.to_datetime(df_selantes_disp['data'])
-		df_selantes_disp.sort_values(by=['data'], inplace=True)
+		df_selantes_disp = pd.DataFrame()
+		if df_selantes[df_selantes['status'] == 'Disponível'].shape[0] > 0:
+			df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
+			df_selantes_disp['data'] = pd.to_datetime(df_selantes_disp['data'])
+			df_selantes_disp.sort_values(by=['data'], inplace=True)
 
-		# cria selectbox para selecionar selantes
-		numero_selante_full = st11.selectbox('Selecione o próximo selante:', list((df_selantes_disp['numero_lote'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
-		numero_selante = numero_selante_full.split()[0]
-		#numero_selante = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['numero_lote']))
+			# cria selectbox para selecionar selantes
+			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list((df_selantes_disp['numero_lote'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
+			numero_selante = numero_selante_full.split()[0]
 
-		# parte do principio que nenhuma selante foi selecionada
-		selecionar_selante = False
+			# parte do principio que nenhuma selante foi selecionada
+			selecionar_selante = False
 
-		# verifica se foi selecionada alguma selante
-		if numero_selante != None:
-			selecionar_selante = st11.button('Utilizar o selante selecionado?')
-		else:
-			st11.info('Não há selantes disponiveis')
-
-		if selecionar_selante:
-
-			###################################
-			# Coloca anterior como finalizada #
-			###################################
-
-			if selante_em_uso.shape[0] > 0:
-
-				# seleciona a selante em uso
-				val_em_uso = selante_em_uso.iloc[0,0]
-
-				# modifica selante selecionada para finalizada
-				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'status'] = 'Finalizada'
-				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-				df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-
-				# prepara dados para escrever no banco
-				dic_fin = {}
-				dic_fin = df_selantes.loc[df_selantes['numero_lote'] == val_em_uso].to_dict('records')
-
-				# Transforma dados do formulário em um dicionário
-				keys_values = dic_fin[0].items()
-				new_fin = {str(key): str(value) for key, value in keys_values}
-				documento = new_fin['numero_lote']
-
-				# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
-				new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
-
-				# Armazena no banco as alteracoes na selante
-				try:
-					doc_ref = db.collection("Selante").document(documento)
-					doc_ref.set(new_fin)
-					st.success('Formulário armazenado com sucesso!')
-				except:
-					st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
-					caching.clear_cache()
+			# verifica se foi selecionada alguma selante
+			if numero_selante != None:
+				selecionar_selante = st11.button('Utilizar o selante selecionado?')
 			else:
-				st.info('Não havia selante em uso!')
+				st11.info('Não há selantes disponiveis')
+
+			if selecionar_selante:
+
+				###################################
+				# Coloca anterior como finalizada #
+				###################################
+
+				if selante_em_uso.shape[0] > 0:
+
+					# seleciona a selante em uso
+					val_em_uso = selante_em_uso.iloc[0,0]
+
+					# modifica selante selecionada para finalizada
+					df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'status'] = 'Finalizada'
+					df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+					df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+
+					# prepara dados para escrever no banco
+					dic_fin = {}
+					dic_fin = df_selantes.loc[df_selantes['numero_lote'] == val_em_uso].to_dict('records')
+
+					# Transforma dados do formulário em um dicionário
+					keys_values = dic_fin[0].items()
+					new_fin = {str(key): str(value) for key, value in keys_values}
+					documento = new_fin['numero_lote']
+
+					# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
+					new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
+
+					# Armazena no banco as alteracoes na selante
+					try:
+						doc_ref = db.collection("Selante").document(documento)
+						doc_ref.set(new_fin)
+						st.success('Formulário armazenado com sucesso!')
+					except:
+						st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
+						caching.clear_cache()
+				else:
+					st.info('Não havia selante em uso!')
 
 			#####################################
 			# Coloca selante selecionada em uso #
