@@ -91,7 +91,7 @@ def trata_dados(data, tipo):
 
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
-	try:
+	#try:
 		# # tratamento da planilha de tampas prata
 		# df_tp = pd.read_excel(uploaded_file, sheet_name='Bobina Tampa Prata')
 		# tratado_tp = trata_dados(df_tp, 1)
@@ -111,20 +111,20 @@ def upload_excel(uploaded_file):
 		# dados = tratado_tp.append(tratado_gd, ignore_index=True)
 		# dados = dados.append(tratado_br, ignore_index=True)
 		# dados = dados.append(tratado_ta, ignore_index=True)
-		df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
-		df.columns = df.iloc[0]
-		df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-		df.tipo_bobina = tipos_bobinas2[df.codigo_bobina]
-		df.data_entrada = '-'
-		df.data_saida = '-'
-		df.paletes_gerados = (df['peso_bobina']) * 412 / 187200
-		df.paletes_gerados = df.paletes_gerados.astype('int')
-		df.status = 'Disponível'
-		df['comentario'] = '-'
-		return df
-	except:
-		st.error('Arquivo não compatível')
-	return None
+	df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
+	df.columns = df.iloc[0]
+	df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+	df.tipo_bobina = tipos_bobinas2[df.codigo_bobina]
+	df.data_entrada = '-'
+	df.data_saida = '-'
+	df.paletes_gerados = (df['peso_bobina']) * 412 / 187200
+	df.paletes_gerados = df.paletes_gerados.astype('int')
+	df.status = 'Disponível'
+	df['comentario'] = '-'
+	return df
+	#except:
+		#st.error('Arquivo não compatível')
+	#return None
 
 
 def insert_excel(df):
