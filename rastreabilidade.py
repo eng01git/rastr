@@ -1659,9 +1659,6 @@ if telas == 'Apontamento de código SAP':
 	data_time_filtro = datetime.combine(data_filtro, time())
 	data_inicio = data_time_filtro - timedelta(hours=6)
 	data_fim = data_time_filtro + timedelta(hours=18)
-	st.write(data_time_filtro)
-	st.write(data_inicio)
-	st.write(data_fim)
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
@@ -1669,16 +1666,9 @@ if telas == 'Apontamento de código SAP':
 
 	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
-	
 
 	# filtra pela data selecionada
 	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
-		
-		# modifica o formato da data
-		#df_pal_sem_filtrado['data_consumo'] = df_pal_sem_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
-
-		# escreve os valores filtrados
-		#st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
 		
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
@@ -1706,10 +1696,10 @@ if telas == 'Apontamento de código SAP':
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
+			df_pal_sem.iloc[((df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)).index, 6] = codigo_sap_sem
 
 			# verifica as bobinas que pertecem os paletes
-			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique())
+			unicos = list(df_pal_sem_filtrado.loc[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim), 'numero_OT'].unique())
 
 			# itera sobre as bobinas
 			for items in unicos:
@@ -1754,17 +1744,11 @@ if telas == 'Apontamento de código SAP':
 	
 
 	# filtra pela data selecionada
-	if df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
+	if df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
 
-		# modifica o formato da data
-		#df_pal_com_filtrado['data_consumo'] = df_pal_com_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
-
-		# escreve os valores filtrados
-		#st.table(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
-
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro], 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
-			df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro],
+			df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)],
 			gridOptions=gridOptions,
 			height=grid_height,
 			width='100%',
@@ -1788,10 +1772,10 @@ if telas == 'Apontamento de código SAP':
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_com.iloc[(df_pal_com_filtrado['data_estoque'].dt.date == data_filtro).index, 4] = codigo_sap_com
+			df_pal_com.iloc[((df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)).index, 4] = codigo_sap_com
 
 			# verifica as bobinas que pertecem os paletes
-			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro, 'numero_lote'].unique())
+			unicos = list(df_pal_com_filtrado.loc[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim), 'numero_lote'].unique())
 
 			# itera sobre as bobinas
 			for items in unicos:
