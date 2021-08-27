@@ -112,6 +112,7 @@ def upload_excel(uploaded_file):
 		# dados = dados.append(tratado_br, ignore_index=True)
 		# dados = dados.append(tratado_ta, ignore_index=True)
 		df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
+		df.columns = df.iloc[0]
 		df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 		df.tipo_bobina = tipos_bobinas2[df.codigo_bobina]
 		df.data_entrada = '-'
