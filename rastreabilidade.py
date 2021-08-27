@@ -1131,13 +1131,6 @@ if df_bobinas.shape[0] > 0:
 				# Filtra paletes da selante em uso e atualiza valores
 				df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 
-				# # Coloca o numero dos paletes
-				# if (df_pal_com['numero_palete'] != '-').any():
-				# 	maximo_index = int(df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete'].max()) + 1
-				# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento'] + maximo_index
-				# else:
-				# 	df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'numero_palete'] = df_pal_com['documento']
-
 				# Escreve o dataframe dos paletes na selante para escrita em banco
 				new_uso['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == numero_selante].to_csv()
 
