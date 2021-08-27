@@ -1672,7 +1672,7 @@ if telas == 'Apontamento de código SAP':
 	
 
 	# filtra pela data selecionada
-	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
+	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'].dt.date >= data_inicio) & (df_pal_sem_filtrado['data_estoque'].dt.date <= data_fim)].shape[0] > 0:
 		
 		# modifica o formato da data
 		#df_pal_sem_filtrado['data_consumo'] = df_pal_sem_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
