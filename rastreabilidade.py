@@ -377,12 +377,12 @@ def adicionar_bobina():
 	with st.form('forms_Bobina'):
 		dic['status'] = 'Disponível'
 		dic['data'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-		s1, s2, s4, s6 = st.beta_columns([4, 4, 2, 1])
+		s1, s2, s3, s4, s6 = st.beta_columns([3, 3, 2, 2, 1])
 		dic['numero_OT'] = s1.text_input('Número OT')
 		dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
 		dic['codigo_bobina'] = tipos_bobinas[dic['tipo_bobina']]
-		dic['peso_bobina'] = s4.number_input('Peso da bobina', step=100, format='%i', value=9000, max_value=18000)
-		dic['codigo_SAP'] = tipos_bobinas[dic['tipo_bobina']]
+		dic['peso_bobina'] = s3.number_input('Peso da bobina', step=100, format='%i', value=9000, max_value=18000)
+		dic['codigo_SAP'] = s4.text_input('Código SAP')
 		dic['data_entrada'] = ''
 		dic['comentario'] = '-'
 		dic['data_saida'] = '-'
@@ -455,11 +455,11 @@ def adicionar_selante():
 	with st.form('forms_selante'):
 		dic['status'] = 'Disponível'
 		dic['data'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-		s1, s2, s3, s4, s5 = st.beta_columns([3.3, 3.3, 3.3, 0.1, 1])
+		s1, s2, s3, s4, s5 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
-		dic['codigo_SAP'] = '50491194'
-		dic['peso_vedante'] = s2.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
-		dic['lote_interno'] = s3.text_input('Lote interno')
+		dic['codigo_SAP'] = s2.text_input('Código SAP')
+		dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
+		dic['lote_interno'] = s4.text_input('Lote interno')
 		dic['data_entrada'] = '-'
 		dic['comentario'] = '-'
 		dic['data_saida'] = '-'
@@ -1624,14 +1624,14 @@ if telas == 'Apontamento de código SAP':
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
-	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_consumo'] != '-']
+	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_sem_filtrado['data_consumo'] = pd.to_datetime(df_pal_sem_filtrado['data_consumo'])
+	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 	
 
 	# filtra pela data selecionada
-	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
+	if df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
 		
 		# modifica o formato da data
 		#df_pal_sem_filtrado['data_consumo'] = df_pal_sem_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
@@ -1639,9 +1639,9 @@ if telas == 'Apontamento de código SAP':
 		# escreve os valores filtrados
 		#st.table(df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro])
 		
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro], 0, 0, True)
 		response = AgGrid(
-			df_pal_sem_filtrado[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro],
+			df_pal_sem_filtrado[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro],
 			gridOptions=gridOptions,
 			height=grid_height,
 			width='100%',
@@ -1665,10 +1665,10 @@ if telas == 'Apontamento de código SAP':
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_sem.iloc[(df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro).index, 6] = codigo_sap_sem
+			df_pal_sem.iloc[(df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro).index, 6] = codigo_sap_sem
 
 			# verifica as bobinas que pertecem os paletes
-			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_consumo'].dt.date == data_filtro, 'numero_OT'].unique())
+			unicos = list(df_pal_sem_filtrado.loc[df_pal_sem_filtrado['data_estoque'].dt.date == data_filtro, 'numero_OT'].unique())
 
 			# itera sobre as bobinas
 			for items in unicos:
@@ -1706,14 +1706,14 @@ if telas == 'Apontamento de código SAP':
 	st.subheader('Paletes com selante')
 
 	# seleciona as linhas que possuem data de estoque
-	df_pal_com_filtrado = df_pal_com[df_pal_com['data_consumo'] != '-']
+	df_pal_com_filtrado = df_pal_com[df_pal_com['data_estoque'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_com_filtrado['data_consumo'] = pd.to_datetime(df_pal_com_filtrado['data_consumo'])
+	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
 	
 
 	# filtra pela data selecionada
-	if df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro].shape[0] > 0:
+	if df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro].shape[0] > 0:
 
 		# modifica o formato da data
 		#df_pal_com_filtrado['data_consumo'] = df_pal_com_filtrado['data_consumo'].dt.strftime('%H:%M %d-%m-%Y')
@@ -1721,9 +1721,9 @@ if telas == 'Apontamento de código SAP':
 		# escreve os valores filtrados
 		#st.table(df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro])
 
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro], 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro], 0, 0, True)
 		response = AgGrid(
-			df_pal_com_filtrado[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro],
+			df_pal_com_filtrado[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro],
 			gridOptions=gridOptions,
 			height=grid_height,
 			width='100%',
@@ -1747,10 +1747,10 @@ if telas == 'Apontamento de código SAP':
 			rerun = False
 
 			# atribui o codigo sap aos paletes
-			df_pal_com.iloc[(df_pal_com_filtrado['data_consumo'].dt.date == data_filtro).index, 4] = codigo_sap_com
+			df_pal_com.iloc[(df_pal_com_filtrado['data_estoque'].dt.date == data_filtro).index, 4] = codigo_sap_com
 
 			# verifica as bobinas que pertecem os paletes
-			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_consumo'].dt.date == data_filtro, 'numero_lote'].unique())
+			unicos = list(df_pal_com_filtrado.loc[df_pal_com_filtrado['data_estoque'].dt.date == data_filtro, 'numero_lote'].unique())
 
 			# itera sobre as bobinas
 			for items in unicos:
