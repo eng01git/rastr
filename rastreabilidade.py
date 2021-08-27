@@ -35,7 +35,6 @@ creds = service_account.Credentials.from_service_account_info(key_dict)
 db = firestore.Client(credentials=creds, project="lid-rastr")
 
 # Ajustando fuso
-
 tz = pytz.timezone('America/Bahia')
 
 ##############################################################################
@@ -43,7 +42,7 @@ tz = pytz.timezone('America/Bahia')
 ##############################################################################
 
 
-def upload_excel(uploaded_file, tipo):
+def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	#try:
 	df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
@@ -52,6 +51,22 @@ def upload_excel(uploaded_file, tipo):
 	df.data_entrada = '-'
 	df.data_saida = '-'
 	df.paletes_gerados = (df['peso_bobina']) * 412 / 187200
+	df.paletes_gerados = df.paletes_gerados.astype('int')
+	df.status = 'Disponível'
+	df['comentario'] = '-'
+	return df
+	#except:
+		#st.error('Arquivo não compatível')
+	#return None
+
+def upload_excel_selante(uploaded_file):
+	# Leitura dos dados do arquivo excel
+	#try:
+	df = pd.read_excel(uploaded_file, sheet_name='Selantes')
+	df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+	df.data_entrada = '-'
+	df.data_saida = '-'
+	df.paletes_gerados = (df['peso_vedante']) * 412 / 187200
 	df.paletes_gerados = df.paletes_gerados.astype('int')
 	df.status = 'Disponível'
 	df['comentario'] = '-'
@@ -125,6 +140,78 @@ def insert_excel(df):
 		return None
 	else:
 		st.info('Todas as bobinas filtradas da planilha já estão inseridas no sistema!')
+		return None
+	#except:
+	#	st.error('Dados não inseridos no banco')
+	#	return None
+	#pass
+
+
+def insert_excel_selante(df):
+	#try:
+	# verifica se há selantes no sistema
+	if df_selantes.shape[0]:
+		# lista de selantes ja inclusas no sistema
+		selantes_antigas = df_selantes.numero_lote
+
+		df.numero_lote = df.numero_lote.astype(str)
+
+		# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
+		st.subheader('selantes a serem inseridas')
+		
+		df = df[~df['numero_lote'].isin(list(selantes_antigas))]
+
+	# Se houver variáveis a serem incluídas e faz a inclusão
+	if df.shape[0] > 0:
+		st.write('Confira os dados antes de inserí-los no sistema. Valores "nan" indicam que faltam dados e a planilha deve ser corrigida.')
+		st.write(df)
+		batch = db.batch()
+		for index, row in df.iterrows():
+
+			# Define a quantidade de paletes que podem ser gerados pela selante
+			qtd_paletes = row.paletes_gerados
+
+			# cria dataframe e preenche com os dados da selante
+			df_paletes_com = pd.DataFrame(columns=col_pal_com, index=list(range(qtd_paletes)))
+			df_paletes_com['numero_lote'] = str(row['numero_lote'])
+			df_paletes_com['lote_semi'] = str(row['lote_semi'])
+			df_paletes_com['data_gerado'] = str(row['data_entrada'])
+			df_paletes_com['data_estoque'] = '-'
+			df_paletes_com['data_consumo'] = '-'
+			df_paletes_com['codigo_SAP'] = '-'
+			df_paletes_com['numero_palete'] = '-'
+			df_paletes_com['tipo_tampa'] = '-'
+			df_paletes_com['numero_OT'] = '-'
+
+			# for para iterar sobre todos os paletes e salvar
+			for index, rows in df_paletes_com.iterrows():
+				if index < 10:
+						index_str = '0' + str(index)
+				else:
+						index_str = str(index)
+				rows['documento'] = index_str
+
+			row['Paletes'] = df_paletes_com.to_csv()
+			ref = db.collection('Selante').document(str(row['numero_lote']))
+			row_string = row.astype(str)
+			batch.set(ref, row_string.to_dict())
+		
+		inserir = False
+		if df.isnull().sum().sum() > 0:
+			st.error('Estão faltando dados na planilha, por favor corrigir')
+		else:
+			inserir = st.button('Inserir os dados no sistema?')
+		
+		if inserir:
+			# escreve os dados no servidor
+			batch.commit()	
+
+			# Limpa cache
+			caching.clear_cache()		
+			return df
+		return None
+	else:
+		st.info('Todas as selantes filtradas da planilha já estão inseridas no sistema!')
 		return None
 	#except:
 	#	st.error('Dados não inseridos no banco')
@@ -666,6 +753,11 @@ with st.beta_expander('Gerenciamento de bobinas'):
 with st.beta_expander('Gerenciamento de selantes'):
 
 	st.subheader('Inserir Selante')
+	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
+	if uploaded_file is not None:
+		data_excel = upload_excel_selante(uploaded_file)
+		df_excel = insert_excel_selante(data_excel)
+		df_selantes = df_selantes.append(df_excel)
 	adicionar_selante()
 
 	if df_selantes.shape[0] > 0:
