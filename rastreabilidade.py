@@ -753,7 +753,7 @@ with st.beta_expander('Gerenciamento de bobinas'):
 with st.beta_expander('Gerenciamento de selantes'):
 
 	st.subheader('Inserir Selante')
-	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
+	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload ")
 	if uploaded_file is not None:
 		data_excel = upload_excel_selante(uploaded_file)
 		df_excel = insert_excel_selante(data_excel)
