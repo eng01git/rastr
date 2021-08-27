@@ -1656,6 +1656,9 @@ if telas == 'Apontamento de código SAP':
 	
 	st.subheader('Apontamento de Código SAP')
 	data_filtro = st.date_input('Selecione a data que deseja filtrar')
+	#data_inicio = 
+	#data_fim = 
+	st.write(data_filtro)
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
