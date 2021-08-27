@@ -9,7 +9,7 @@ import json
 import smtplib
 import time
 import datetime
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 import pytz
 from io import BytesIO
 from openpyxl import load_workbook, Workbook
@@ -1656,9 +1656,11 @@ if telas == 'Apontamento de código SAP':
 	
 	st.subheader('Apontamento de Código SAP')
 	data_filtro = st.date_input('Selecione a data que deseja filtrar')
-	#data_inicio = 
-	#data_fim = 
+	data_inicio = data_filtro - timedelta(hours=6)
+	data_fim = data_filtro + timedelta(hours=18)
 	st.write(data_filtro)
+	st.write(data_inicio)
+	st.write(data_fim)
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
