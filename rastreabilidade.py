@@ -800,7 +800,7 @@ if df_bobinas.shape[0] > 0:
 
 	# Verifica bobinas disponiveis
 	df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
-	df_bobinas_disp.loc['data'] = pd.to_datetime(df_bobinas_disp['data'])
+	df_bobinas_disp['data'] = pd.to_datetime(df_bobinas_disp['data'])
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 	# cria selectbox para selecionar bobinas
@@ -1056,7 +1056,7 @@ if df_bobinas.shape[0] > 0:
 		df_selantes_disp = pd.DataFrame()
 		if df_selantes[df_selantes['status'] == 'Disponível'].shape[0] > 0:
 			df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
-			df_selantes_disp.loc['data'] = pd.to_datetime(df_selantes_disp['data'])
+			df_selantes_disp['data'] = pd.to_datetime(df_selantes_disp['data'])
 			df_selantes_disp.sort_values(by=['data'], inplace=True)
 
 			# cria selectbox para selecionar selantes
@@ -1475,13 +1475,10 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (bobinas_filtradas.shape[0] > 0) or (bobinas_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			bobinas_filtradas.loc['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
-			bobinas_filtradas_s.loc['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
+			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
+			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
 
 			# filtra as bobinas de acordo com a data
-			#filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro)]
-			filtro_bobina_s = bobinas_filtradas_s.loc[bobinas_filtradas_s['data_saida'].dt.date == data_filtro]
-
 			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'] == '-')]
 			filtro_bobina_s = bobinas_filtradas_s.loc[(bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas_s['data_saida'].dt.date >= data_filtro)]
 
@@ -1491,8 +1488,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado = filtro_bobina.append(filtro_bobina_s)
 				
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				resultado.loc['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
-				resultado.loc['data'] = pd.to_datetime(resultado['data'])
+				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
+				resultado['data'] = pd.to_datetime(resultado['data'])
 
 				# ordena os valores pela data de entrada
 				resultado = resultado.sort_values(by='data_entrada')
@@ -1531,9 +1528,9 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if p_sem_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
-			p_sem_filtrado.loc.loc['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'])
-			p_sem_filtrado.loc.loc['data_gerado'] = pd.to_datetime(p_sem_filtrado['data_gerado'])
-			p_sem_filtrado.loc.loc['data_estoque'] = pd.to_datetime(p_sem_filtrado['data_estoque'])
+			p_sem_filtrado['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'])
+			p_sem_filtrado['data_gerado'] = pd.to_datetime(p_sem_filtrado['data_gerado'])
+			p_sem_filtrado['data_estoque'] = pd.to_datetime(p_sem_filtrado['data_estoque'])
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_sem = p_sem_filtrado.loc[(p_sem_filtrado['data_consumo'].dt.date == data_filtro)]
@@ -1570,8 +1567,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (selantes_filtradas.shape[0] > 0) or (selantes_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			selantes_filtradas.loc['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'])
-			selantes_filtradas_s.loc['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'])
+			selantes_filtradas['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'])
+			selantes_filtradas_s['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'])
 
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'] == '-')]
@@ -1583,8 +1580,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c = filtro_selante.append(filtro_selante_s)
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				resultado_c.loc['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
-				resultado_c.loc['data'] = pd.to_datetime(resultado_c['data'])
+				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
+				resultado_c['data'] = pd.to_datetime(resultado_c['data'])
 
 				# organiza pela data de entrada
 				resultado_c = resultado_c.sort_values(by='data_entrada')
@@ -1623,18 +1620,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if p_com_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
-			p_com_filtrado.loc['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'])
-			p_com_filtrado.loc['data_gerado'] = pd.to_datetime(p_com_filtrado['data_gerado'])
-			p_com_filtrado.loc['data_estoque'] = pd.to_datetime(p_com_filtrado['data_estoque'])
+			p_com_filtrado['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'])
+			p_com_filtrado['data_gerado'] = pd.to_datetime(p_com_filtrado['data_gerado'])
+			p_com_filtrado['data_estoque'] = pd.to_datetime(p_com_filtrado['data_estoque'])
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_com = p_com_filtrado.loc[(p_com_filtrado['data_consumo'].dt.date == data_filtro)]
 
 			if filtro_pal_com.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				filtro_pal_com.loc['data_gerado'] = filtro_pal_com['data_gerado'].dt.strftime("%d/%m/%Y")
-				filtro_pal_com.loc['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
-				filtro_pal_com.loc['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_pal_com['data_gerado'] = filtro_pal_com['data_gerado'].dt.strftime("%d/%m/%Y")
+				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
 
 				#st.table(filtro_pal_com)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_com, 0, 0, True)
@@ -1668,7 +1665,7 @@ if telas == 'Apontamento de código SAP':
 	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_sem_filtrado.loc['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
+	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 
 	# filtra pela data selecionada
 	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
@@ -1743,7 +1740,7 @@ if telas == 'Apontamento de código SAP':
 	df_pal_com_filtrado = df_pal_com[df_pal_com['data_estoque'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_com_filtrado.loc['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
+	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
 	
 
 	# filtra pela data selecionada
