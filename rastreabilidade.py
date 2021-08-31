@@ -1572,8 +1572,10 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date == data_filtro)]
+			st.write(filtro_selante)
 			filtro_selante_s = selantes_filtradas_s.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas_s['data_saida'].dt.date >= data_filtro)]
-			
+			st.write(filtro_selante_s)
+
 			if (filtro_selante.shape[0] > 0) or (filtro_selante_s.shape[0] > 0):
 				
 				# combina os dados de entrada e os de saida
