@@ -1470,8 +1470,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	st.subheader('Bobinas utilizadas na data selecionada')
 	if df_bobinas.shape[0] > 0:
 		# bobinas que possuem data de entrada e de saída
-		bobinas_filtradas = df_bobinas.loc[(df_bobinas['data_entrada'] != '-') ] 
-		bobinas_filtradas_s = df_bobinas.loc[df_bobinas['data_saida'] != '-']
+		bobinas_filtradas = df_bobinas[(df_bobinas['data_entrada'] != '-') ] 
+		bobinas_filtradas_s = df_bobinas[df_bobinas['data_saida'] != '-']
 
 		if (bobinas_filtradas.shape[0] > 0) or (bobinas_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
@@ -1565,8 +1565,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	st.subheader('Selantes utilizadas na data selecionada')
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
-		selantes_filtradas = df_selantes.loc[(df_selantes['data_entrada'] != '-') ] 
-		selantes_filtradas_s = df_selantes.loc[df_selantes['data_saida'] != '-']
+		selantes_filtradas = df_selantes[(df_selantes['data_entrada'] != '-') ] 
+		selantes_filtradas_s = df_selantes[df_selantes['data_saida'] != '-']
 
 		if (selantes_filtradas.shape[0] > 0) or (selantes_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
@@ -1619,7 +1619,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	st.subheader('Paletes com selante utilizados na data selecionada')
 	if df_pal_com.shape[0] > 0:
 		# bobinas que possuem data de entrada e de saída
-		p_com_filtrado = df_pal_com.loc[df_pal_com['data_consumo'] != '-']
+		p_com_filtrado = df_pal_com[df_pal_com['data_consumo'] != '-']
 
 		if p_com_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
