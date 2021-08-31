@@ -66,6 +66,7 @@ def upload_excel_selante(uploaded_file):
 		df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 		df.data_entrada = '-'
 		df.data_saida = '-'
+		df.lote_interno = '-'
 		df.paletes_gerados = (df['peso_vedante']) * 2857 / 187200
 		df.paletes_gerados = df.paletes_gerados.astype('int')
 		df.status = 'Disponível'
