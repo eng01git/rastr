@@ -1571,7 +1571,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			selantes_filtradas_s['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'])
 
 			# filtra as selantes de acordo com a data
-			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas_s['data_saida'].dt.date == '-')]
+			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'].dt.date == '-')]
 			st.write(filtro_selante)
 			filtro_selante_s = selantes_filtradas_s.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas_s['data_saida'].dt.date >= data_filtro)]
 			st.write(filtro_selante_s)
