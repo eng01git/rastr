@@ -1527,7 +1527,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	st.subheader('Paletes sem selante utilizados na data selecionada')
 	if df_pal_sem.shape[0] > 0:
 		# bobinas que possuem data de entrada e de saída
-		p_sem_filtrado = df_pal_sem.loc[df_pal_sem['data_consumo'] != '-']
+		p_sem_filtrado = df_pal_sem[df_pal_sem['data_consumo'] != '-']
 
 		if p_sem_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
