@@ -1559,7 +1559,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 	else:
 		st.error('Não há paletes sem selante utilizados na data selecionada')
 
-	st.subheader('Selantes utilizadas na data selecionada')
+	st.subheader('Selantes utilizados na data selecionada')
 	if df_selantes.shape[0] > 0:
 		# selantes que possuem data de entrada e de saída
 		selantes_filtradas = df_selantes.loc[(df_selantes['data_entrada'] != '-') ] 
@@ -1607,11 +1607,11 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 					allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 					enable_enterprise_modules=enable_enterprise_modules)
 			else:
-				st.error('Não há selantes utilizadas na data selecionada')
+				st.error('Não há Selantes utilizados na data selecionada')
 		else:
-			st.error('Não há selantes utilizadas na data selecionada')
+			st.error('Não há Selantes utilizados na data selecionada')
 	else:
-		st.error('Não há selantes utilizadas na data selecionada')
+		st.error('Não há Selantes utilizados na data selecionada')
 
 	st.subheader('Paletes com selante utilizados na data selecionada')
 	if df_pal_com.shape[0] > 0:
