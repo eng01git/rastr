@@ -1479,9 +1479,12 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
 
 			# filtra as bobinas de acordo com a data
-			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro)]
-			filtro_bobina_s = bobinas_filtradas_s.loc[bobinas_filtradas_s['data_saida'].dt.date == data_filtro]
-			
+			#filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date == data_filtro)]
+			#filtro_bobina_s = bobinas_filtradas_s.loc[bobinas_filtradas_s['data_saida'].dt.date == data_filtro]
+
+			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'] == '-')]
+			filtro_bobina_s = bobinas_filtradas_s.loc[(bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas_s['data_saida'].dt.date >= data_filtro)]
+
 			if (filtro_bobina.shape[0] > 0) or (filtro_bobina_s.shape[0] > 0):
 				
 				# combina os dados de entrada e os de saida
@@ -1572,9 +1575,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'] == '-')]
-			st.write(filtro_selante)
 			filtro_selante_s = selantes_filtradas_s.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas_s['data_saida'].dt.date >= data_filtro)]
-			st.write(filtro_selante_s)
 
 			if (filtro_selante.shape[0] > 0) or (filtro_selante_s.shape[0] > 0):
 				
