@@ -61,19 +61,19 @@ def upload_excel(uploaded_file):
 
 def upload_excel_selante(uploaded_file):
 	# Leitura dos dados do arquivo excel
-	try:
-		df = pd.read_excel(uploaded_file, sheet_name='Selantes')
-		df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-		df.data_entrada = '-'
-		df.data_saida = '-'
-		df.paletes_gerados = (df['peso_vedante']) * 2857 / 187200
-		df.paletes_gerados = df.paletes_gerados.astype('int')
-		df.status = 'Disponível'
-		df['comentario'] = '-'
-		return df
-	except:
-		st.error('Arquivo não compatível')
-	return None
+	#try:
+	df = pd.read_excel(uploaded_file, sheet_name='Selantes')
+	df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+	df.data_entrada = '-'
+	df.data_saida = '-'
+	df.paletes_gerados = (df['peso_vedante']) * 2857 / 187200
+	df.paletes_gerados = df.paletes_gerados.astype('int')
+	df.status = 'Disponível'
+	df['comentario'] = '-'
+	return df
+	#except:
+		#st.error('Arquivo não compatível')
+	#return None
 
 
 def insert_excel(df):
