@@ -65,7 +65,7 @@ def upload_excel_selante(uploaded_file):
 		df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 		df.data_entrada = '-'
 		df.data_saida = '-'
-		df.lote_interno = '-'
+		#df.lote_interno = '-'
 		df.paletes_gerados = (df['peso_vedante']) * 2857 / 187200
 		df.paletes_gerados = df.paletes_gerados.astype('int')
 		df.status = 'Disponível'
@@ -152,14 +152,14 @@ def insert_excel_selante(df):
 		# verifica se há selantes no sistema
 		if df_selantes.shape[0]:
 			# lista de selantes ja inclusas no sistema
-			selantes_antigas = df_selantes.numero_lote
+			selantes_antigas = df_selantes.lote_interno
 
-			df.numero_lote = df.numero_lote.astype(str)
+			df.lote_interno = df.lote_interno.astype(str)
 
 			# Filtrando os dados (tempo maior que 30 e eventos incluídos em tipo)
 			st.subheader('selantes a serem inseridas')
 			
-			df = df[~df['numero_lote'].isin(list(selantes_antigas))]
+			df = df[~df['lote_interno'].isin(list(selantes_antigas))]
 
 		# Se houver variáveis a serem incluídas e faz a inclusão
 		if df.shape[0] > 0:
@@ -192,7 +192,7 @@ def insert_excel_selante(df):
 					rows['documento'] = index_str
 
 				row['Paletes'] = df_paletes_com.to_csv()
-				ref = db.collection('Selante').document(str(row['numero_lote']))
+				ref = db.collection('Selante').document(str(row['lote_interno']))
 				row_string = row.astype(str)
 				batch.set(ref, row_string.to_dict())
 			
@@ -396,7 +396,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 		# Ordena as colunas
 		df = df[colunas]
 		df2 = df2[colunas_pal]
-		df2['numero_lote'] = df2['numero_lote'].astype('str')
+		df2['lote_interno'] = df2['lote_interno'].astype('str')
 
 	return df, df2
 
@@ -498,7 +498,7 @@ def adicionar_selante():
 
 	if submitted:
 		# verifica se ja existe selante com o numero de lote inserido
-		if df_pal_com[df_pal_com['numero_lote'] == (dic['numero_lote'])].shape[0] == 0:
+		if df_pal_com[df_pal_com['lote_interno'] == (dic['lote_interno'])].shape[0] == 0:
 			# Transforma dados do formulário em um dicionário
 			keys_values = dic.items()
 			new_d = {str(key): str(value) for key, value in keys_values}
@@ -540,7 +540,7 @@ def adicionar_selante():
 			rerun = False
 			# Armazena no banco
 			try:
-				doc_ref = db.collection("Selante").document(new_d['numero_lote'])
+				doc_ref = db.collection("Selante").document(new_d['lote_interno'])
 				doc_ref.set(new_d)
 				st.success('Selante adicionada com sucesso!')
 
@@ -1060,7 +1060,7 @@ if df_bobinas.shape[0] > 0:
 			df_selantes_disp.sort_values(by=['data'], inplace=True)
 
 			# cria selectbox para selecionar selantes
-			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(( df_selantes_disp['codigo_SAP'].astype(str) + ' / ' + df_selantes_disp['numero_lote'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
+			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(( df_selantes_disp['codigo_SAP'].astype(str) + ' / ' + df_selantes_disp['lote_interno'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
 			numero_selante = numero_selante_full.split()[0]
 
 			# parte do principio que nenhuma selante foi selecionada
@@ -1081,24 +1081,24 @@ if df_bobinas.shape[0] > 0:
 				if selante_em_uso.shape[0] > 0:
 
 					# seleciona a selante em uso
-					val_em_uso = selante_em_uso.iloc[0,0]
+					val_em_uso = selante_em_uso.iloc[0,1]
 
 					# modifica selante selecionada para finalizada
-					df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'status'] = 'Finalizada'
-					df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-					df_selantes.loc[df_selantes['numero_lote'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'status'] = 'Finalizada'
+					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 
 					# prepara dados para escrever no banco
 					dic_fin = {}
-					dic_fin = df_selantes.loc[df_selantes['numero_lote'] == val_em_uso].to_dict('records')
+					dic_fin = df_selantes.loc[df_selantes['lote_interno'] == val_em_uso].to_dict('records')
 
 					# Transforma dados do formulário em um dicionário
 					keys_values = dic_fin[0].items()
 					new_fin = {str(key): str(value) for key, value in keys_values}
-					documento = new_fin['numero_lote']
+					documento = new_fin['lote_interno']
 
 					# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
-					new_fin['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == val_em_uso].to_csv()
+					new_fin['Paletes'] = df_pal_com[df_pal_com['lote_interno'] == val_em_uso].to_csv()
 
 					# Armazena no banco as alteracoes na selante
 					try:
@@ -1116,23 +1116,23 @@ if df_bobinas.shape[0] > 0:
 				#####################################
 
 				# modifica selante selecionada para uso
-				df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'status'] = 'Em uso'
-				df_selantes.loc[df_selantes['numero_lote'] == numero_selante, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'status'] = 'Em uso'
+				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 
 				# prepara dados para escrever no banco
 				dic_selante_uso = {}
-				dic_selante_uso = df_selantes.loc[df_selantes['numero_lote'] == numero_selante].to_dict('records')
+				dic_selante_uso = df_selantes.loc[df_selantes['lote_interno'] == numero_selante].to_dict('records')
 
 				# Transforma dados do formulário em um dicionário
 				keys_values = dic_selante_uso[0].items()
 				new_uso = {str(key): str(value) for key, value in keys_values}
-				documento = new_uso['numero_lote']
+				documento = new_uso['lote_interno']
 
 				# Filtra paletes da selante em uso e atualiza valores
-				df_pal_com.loc[df_pal_com['numero_lote'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				df_pal_com.loc[df_pal_com['lote_interno'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 
 				# Escreve o dataframe dos paletes na selante para escrita em banco
-				new_uso['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == numero_selante].to_csv()
+				new_uso['Paletes'] = df_pal_com[df_pal_com['lote_interno'] == numero_selante].to_csv()
 
 				# Flag de rerun da aplicacao
 				flag_rerun = False
@@ -1169,10 +1169,10 @@ if df_bobinas.shape[0] > 0:
 						maximo_index = int(maximo_index_aux.astype('int').max()) + 1
 
 					# atribuir numero ao palete
-					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['numero_lote']
-					df_temp = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')]
+					selante_atual = df_selantes[df_selantes['status'] == 'Em uso']['lote_interno']
+					df_temp = df_pal_com.loc[(df_pal_com['lote_interno'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')]
 					df_temp.iloc[0, 9] = maximo_index
-					df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')] = df_temp
+					df_pal_com.loc[(df_pal_com['lote_interno'] == selante_atual.iloc[0]) & (df_pal_com['data_estoque'] == '-') & (df_pal_com['numero_palete'] == '-')] = df_temp
 
 					# verificar selante em uso
 					numero_palete = maximo_index
@@ -1184,15 +1184,15 @@ if df_bobinas.shape[0] > 0:
 
 					# prepara dados para escrever no banco
 					dic_fifo_s_in = {}
-					dic_fifo_s_in = df_selantes.loc[df_selantes['numero_lote'] == selante_atual.iloc[0]].to_dict('records')
+					dic_fifo_s_in = df_selantes.loc[df_selantes['lote_interno'] == selante_atual.iloc[0]].to_dict('records')
 
 					# Transforma dados do formulário em um dicionário
 					keys_values = dic_fifo_s_in[0].items()
 					new_fifo_s_in = {str(key): str(value) for key, value in keys_values}
-					documento = new_fifo_s_in['numero_lote']
+					documento = new_fifo_s_in['lote_interno']
 
 					# Escreve o dataframe dos paletes na selante para escrita em banco
-					new_fifo_s_in['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == selante_atual.iloc[0]].to_csv()
+					new_fifo_s_in['Paletes'] = df_pal_com[df_pal_com['lote_interno'] == selante_atual.iloc[0]].to_csv()
 
 					# Flag de rerun da aplicacao
 					flag_rerun = False
@@ -1244,19 +1244,19 @@ if df_bobinas.shape[0] > 0:
 					df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
 
 					#identifica o numero da selante do palete
-					selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'numero_lote']
+					selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'lote_interno']
 
 					# prepara dados para escrever no banco
 					dic_fifo_s_out = {}
-					dic_fifo_s_out = df_selantes.loc[df_selantes['numero_lote'] == selante_consumo.iloc[0]].to_dict('records')
+					dic_fifo_s_out = df_selantes.loc[df_selantes['lote_interno'] == selante_consumo.iloc[0]].to_dict('records')
 
 					# Transforma dados do formulário em um dicionário
 					keys_values = dic_fifo_s_out[0].items()
 					new_fifo_s_out = {str(key): str(value) for key, value in keys_values}
-					documento = new_fifo_s_out['numero_lote']
+					documento = new_fifo_s_out['lote_interno']
 
 					# Escreve o dataframe dos paletes na selante para escrita em banco
-					new_fifo_s_out['Paletes'] = df_pal_com[df_pal_com['numero_lote'] == selante_consumo.iloc[0]].to_csv()
+					new_fifo_s_out['Paletes'] = df_pal_com[df_pal_com['lote_interno'] == selante_consumo.iloc[0]].to_csv()
 
 					# Flag de rerun da aplicacao
 					flag_rerun = False
@@ -1380,12 +1380,12 @@ if telas == 'Remover bobinas ou selantes':
 			comentario_peso_sel = ('Motivo: ' + comentario_remover_sel + ' Peso restante: ' + str(peso_remover_sel))
 
 			# verificar selante em uso
-			selante_atual = selante_em_uso.iloc[0,0]
+			selante_atual = selante_em_uso.iloc[0,1]
 
 			# modifica bobina selecionada para removida
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'status'] = 'Removida'
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'comentario'] = comentario_peso_sel
+			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'status'] = 'Removida'
+			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'comentario'] = comentario_peso_sel
 
 			# peso incial da bobinaa
 			peso_inicial_sel = selante_em_uso.iloc[0,3]
@@ -1397,22 +1397,22 @@ if telas == 'Remover bobinas ou selantes':
 			paletes_produzidos_sel = int((peso_consumido_sel) * 2857 / 187200)
 
 			# atualiza o total de paletes produzidos pela bobina
-			df_selantes.loc[df_selantes['numero_lote'] == selante_atual, 'paletes_gerados'] = paletes_produzidos_sel
+			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'paletes_gerados'] = paletes_produzidos_sel
 
 			# remove da lista da paletes os paletes que não foram gerados
-			df_pal_com.drop(df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual) & (df_pal_com['documento'] >= paletes_produzidos_sel)].index, inplace=True)
+			df_pal_com.drop(df_pal_com.loc[(df_pal_com['lote_interno'] == selante_atual) & (df_pal_com['documento'] >= paletes_produzidos_sel)].index, inplace=True)
 
 			# prepara dados para escrever no banco
 			dic_remove = {}
-			dic_remove = df_selantes.loc[(df_selantes['numero_lote'] == selante_atual)].to_dict('records')
+			dic_remove = df_selantes.loc[(df_selantes['lote_interno'] == selante_atual)].to_dict('records')
 
 			# Transforma dados do formulário em um dicionário
 			keys_values = dic_remove[0].items()
 			new_remove_sel = {str(key): str(value) for key, value in keys_values}
-			documento_remove_sel = new_remove_sel['numero_lote']
+			documento_remove_sel = new_remove_sel['lote_interno']
 
 			# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
-			new_remove_sel['Paletes'] = df_pal_com.loc[(df_pal_com['numero_lote'] == selante_atual)].to_csv()
+			new_remove_sel['Paletes'] = df_pal_com.loc[(df_pal_com['lote_interno'] == selante_atual)].to_csv()
 
 			# flag para rodar novamente o script
 			rerun = False
@@ -1587,7 +1587,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c = resultado_c.sort_values(by='data_entrada')
 
 				# remove os duplicados filtrando pelo numero do lote
-				resultado_c = resultado_c.drop_duplicates(subset='numero_lote')
+				resultado_c = resultado_c.drop_duplicates(subset='lote_interno')
 
 				# organiza os dados para exibição
 				#resultado_c['data_saida'] = resultado_c['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y"))
@@ -1775,22 +1775,22 @@ if telas == 'Apontamento de código SAP':
 			df_pal_com.iloc[((df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)).index, 4] = codigo_sap_com
 
 			# verifica as bobinas que pertecem os paletes
-			unicos = list(df_pal_com_filtrado.loc[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim), 'numero_lote'].unique())
+			unicos = list(df_pal_com_filtrado.loc[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim), 'lote_interno'].unique())
 
 			# itera sobre as bobinas
 			for items in unicos:
 
 				# prepara dados para escrever no banco
 				dic_sap = {}
-				dic_sap = df_selantes.loc[(df_selantes['numero_lote'] == items)].to_dict('records')
+				dic_sap = df_selantes.loc[(df_selantes['lote_interno'] == items)].to_dict('records')
 
 				# Transforma dados do formulário em um dicionário
 				keys_values = dic_sap[0].items()
 				new_sap = {str(key): str(value) for key, value in keys_values}
-				documento_sap = new_sap['numero_lote']
+				documento_sap = new_sap['lote_interno']
 
 				# escreve o dataframe dos paletes na selante para escrita em banco (não altera valor, mas escreve para não perder os dados)
-				new_sap['Paletes'] = df_pal_com.loc[(df_pal_com['numero_lote'] == items)].to_csv()
+				new_sap['Paletes'] = df_pal_com.loc[(df_pal_com['lote_interno'] == items)].to_csv()
 
 				# Armazena no banco as alteracoes da bobina
 				try:
