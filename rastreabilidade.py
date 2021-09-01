@@ -396,7 +396,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 		# Ordena as colunas
 		df = df[colunas]
 		df2 = df2[colunas_pal]
-		df2['lote_interno'] = df2['lote_interno'].astype('str')
+		df2['lote_semi'] = df2['lote_semi'].astype('str')
 
 	return df, df2
 
@@ -522,7 +522,7 @@ def adicionar_selante():
 			df_paletes_selante['tipo_tampa'] = '-'
 			df_paletes_selante['data_estoque'] = '-'
 			df_paletes_selante['data_consumo'] = '-'
-			df_paletes_selante['lote_semi'] = '-'
+			df_paletes_selante['lote_semi'] = str(new_d['lote_interno'])
 			df_paletes_selante['numero_palete'] = '-'
 			df_paletes_selante['codigo_bobina'] = '-'
 			df_paletes_selante['numero_OT'] = '-'
