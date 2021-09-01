@@ -1812,7 +1812,11 @@ if telas == 'Apontamento de código SAP':
 
 # botao para teste
 reset = st.button('Reset')
+rerun = False
 
 if reset:
+	rerun = True
 	caching.clear_cache()
+	if rerun:
+				st.experimental_rerun()
 
