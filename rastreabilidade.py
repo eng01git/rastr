@@ -766,8 +766,6 @@ with st.beta_expander('Gerenciamento de selantes'):
 		st11, st22 = st.beta_columns([99, 1])
 
 		st.subheader('Detalhamento dos selantes')
-		df_selantes['data'] = pd.to_datetime(df_selantes['data'])
-		df_selantes['data'] = df_selantes['data'].dt.strftime('%H:%M %d-%m-%Y')
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(199, df_selantes, 0, 0, True)
 		response = AgGrid(
@@ -807,7 +805,7 @@ if df_bobinas.shape[0] > 0:
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 	# cria selectbox para selecionar bobinas
-	numero_bobina_full = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Data: ' + df_bobinas_disp['data'].dt.strftime("%d/%m/%Y") + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
+	numero_bobina_full = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
 	numero_bobina = numero_bobina_full.split()[0]
 
 	# parte do principio que nenhuma bobina foi selecionada
@@ -1063,7 +1061,7 @@ if df_bobinas.shape[0] > 0:
 			df_selantes_disp.sort_values(by=['data'], inplace=True)
 
 			# cria selectbox para selecionar selantes
-			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['lote_interno'].astype(str) + ' / ' + ( df_selantes_disp['codigo_SAP'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
+			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['lote_interno'].astype(str) + ' / ' +  df_selantes_disp['numero_lote'].astype(str)))
 			numero_selante = numero_selante_full.split()[0]
 
 			# parte do principio que nenhuma selante foi selecionada
