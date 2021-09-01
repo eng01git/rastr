@@ -1060,7 +1060,7 @@ if df_bobinas.shape[0] > 0:
 			df_selantes_disp.sort_values(by=['data'], inplace=True)
 
 			# cria selectbox para selecionar selantes
-			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(( df_selantes_disp['codigo_SAP'].astype(str) + ' / ' + df_selantes_disp['lote_interno'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
+			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['lote_interno'].astype(str) + ' / ' + ( df_selantes_disp['codigo_SAP'].astype(str) + ' / Data: ' + df_selantes_disp['data'].dt.strftime("%d/%m/%Y"))))
 			numero_selante = numero_selante_full.split()[0]
 
 			# parte do principio que nenhuma selante foi selecionada
