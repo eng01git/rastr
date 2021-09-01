@@ -174,7 +174,7 @@ def insert_excel_selante(df):
 				# cria dataframe e preenche com os dados da selante
 				df_paletes_com = pd.DataFrame(columns=col_pal_sel, index=list(range(qtd_paletes)))
 				df_paletes_com['numero_lote'] = str(row['numero_lote'])
-				df_paletes_com['lote_semi'] = str(row['lote_interno'])
+				df_paletes_com['lote_interno'] = str(row['lote_interno'])
 				df_paletes_com['data_gerado'] = '-'
 				df_paletes_com['data_estoque'] = '-'
 				df_paletes_com['data_consumo'] = '-'
@@ -396,7 +396,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 		# Ordena as colunas
 		df = df[colunas]
 		df2 = df2[colunas_pal]
-		df2['lote_semi'] = df2['lote_semi'].astype('str')
+		df2['lote_interno'] = df2['lote_interno'].astype('str')
 
 	return df, df2
 
@@ -522,7 +522,7 @@ def adicionar_selante():
 			df_paletes_selante['tipo_tampa'] = '-'
 			df_paletes_selante['data_estoque'] = '-'
 			df_paletes_selante['data_consumo'] = '-'
-			df_paletes_selante['lote_semi'] = str(new_d['lote_interno'])
+			df_paletes_selante['lote_interno'] = str(new_d['lote_interno'])
 			df_paletes_selante['numero_palete'] = '-'
 			df_paletes_selante['codigo_bobina'] = '-'
 			df_paletes_selante['numero_OT'] = '-'
@@ -664,7 +664,7 @@ col_pal_sem = ['numero_OT', 'documento', 'tipo_tampa', 'data_gerado', 'data_esto
 			   'codigo_SAP', 'numero_palete']
 col_selante = ['numero_lote', 'lote_interno', 'codigo_SAP', 'peso_vedante', 'data', 'data_entrada', 'data_saida', 'paletes_gerados',
 			   'status', 'comentario']
-col_pal_sel = ['numero_lote', 'numero_OT', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_semi', 'numero_palete']
+col_pal_sel = ['numero_lote', 'numero_OT', 'documento', 'tipo_tampa', 'codigo_SAP', 'data_gerado', 'data_estoque', 'data_consumo', 'lote_interno', 'numero_palete']
 
 tipos_tampas = {'Tampa Prata Sem Selante': 40009011,
 		'Tampa Prata Com Selante': 40009012,
