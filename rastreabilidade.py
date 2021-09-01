@@ -766,11 +766,12 @@ with st.beta_expander('Gerenciamento de selantes'):
 		st11, st22 = st.beta_columns([99, 1])
 
 		st.subheader('Detalhamento dos selantes')
-		
+		df_selantes['data'] = pd.to_datetime(df_selantes['data'])
+		df_selantes['data'] = df_selantes['data'].dt.strftime('%H:%M %d-%m-%Y')
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(199, df_selantes, 0, 0, True)
 		response = AgGrid(
-			df_selantes['data'].dt.strftime('%H:%M %d-%m-%Y'),
+			df_selantes,
 			gridOptions=gridOptions,
 			height=grid_height,
 			width='100%',
