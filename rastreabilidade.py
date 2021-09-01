@@ -914,7 +914,7 @@ if df_bobinas.shape[0] > 0:
 	with col2:
 		st.subheader('Sem selante')
 
-		if (ps_fifo_in.shape[0] < 5) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
+		if (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
 			add_palete_sem = col2.button('Gerar palete TP sem Selante')
 			if add_palete_sem:
 
@@ -1158,7 +1158,7 @@ if df_bobinas.shape[0] > 0:
 		with col4:
 			st.subheader('Com selante')
 
-			if (sel_fifo_in.shape[0] < 5) & (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0):
+			if (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
 				add_palete_sem = col4.button('Gerar palete TP com Selante')
 				if add_palete_sem:
 
