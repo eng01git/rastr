@@ -800,7 +800,7 @@ if df_bobinas.shape[0] > 0:
 
 	# Verifica bobinas disponiveis
 	df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
-	df_bobinas_disp['data'] = pd.to_datetime(df_bobinas_disp['data'])
+	#df_bobinas_disp['data'] = pd.to_datetime(df_bobinas_disp['data'])
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 	# cria selectbox para selecionar bobinas
@@ -1056,7 +1056,7 @@ if df_bobinas.shape[0] > 0:
 		df_selantes_disp = pd.DataFrame()
 		if df_selantes[df_selantes['status'] == 'Disponível'].shape[0] > 0:
 			df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
-			df_selantes_disp['data'] = pd.to_datetime(df_selantes_disp['data'])
+			#df_selantes_disp['data'] = pd.to_datetime(df_selantes_disp['data'])
 			df_selantes_disp.sort_values(by=['data'], inplace=True)
 
 			# cria selectbox para selecionar selantes
@@ -1499,7 +1499,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 				# organiza os dados para exibição
 				#resultado['data_saida'] = resultado['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y"))
-				resultado['data'] = resultado['data'] #.dt.strftime("%d/%m/%Y")
+				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 
 				#st.table(resultado)
@@ -1591,7 +1591,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 				# organiza os dados para exibição
 				#resultado_c['data_saida'] = resultado_c['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y"))
-				resultado_c['data'] = resultado_c['data'] #.dt.strftime("%d/%m/%Y")
+				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
 				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
 				
 				#st.table(resultado_c)
