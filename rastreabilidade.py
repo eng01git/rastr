@@ -919,7 +919,7 @@ if df_bobinas.shape[0] > 0:
 			if add_palete_sem:
 
 				# identifica o ultimo numero de palete utilizado
-				maximo_index_s = 1000
+				maximo_index_s = 570
 				if (df_pal_sem['numero_palete'] != '-').any():
 					maximo_index_aux = df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete']
 					maximo_index_s = int(maximo_index_aux.astype('int').max()) + 1
@@ -1163,7 +1163,7 @@ if df_bobinas.shape[0] > 0:
 				if add_palete_sem:
 
 					# identifica o ultimo numero de palete utilizado
-					maximo_index = 0
+					maximo_index = 675
 					if (df_pal_com['numero_palete'] != '-').any():
 						maximo_index_aux = df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete']
 						maximo_index = int(maximo_index_aux.astype('int').max()) + 1
