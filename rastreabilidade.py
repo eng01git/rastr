@@ -1475,8 +1475,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (bobinas_filtradas.shape[0] > 0) or (bobinas_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
-			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
+			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'], format='%H:%M %d-%m-%Y')
+			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'], format='%H:%M %d-%m-%Y')
 
 			# filtra as bobinas de acordo com a data
 			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'] == '-')]
@@ -1488,8 +1488,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado = filtro_bobina.append(filtro_bobina_s)
 				
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
-				resultado['data'] = pd.to_datetime(resultado['data'])
+				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'], format='%H:%M %d-%m-%Y')
+				resultado['data'] = pd.to_datetime(resultado['data'], format='%H:%M %d-%m-%Y')
 
 				# ordena os valores pela data de entrada
 				resultado = resultado.sort_values(by='data_entrada')
@@ -1498,9 +1498,9 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado = resultado.drop_duplicates(subset='numero_OT')
 
 				# organiza os dados para exibição
-				#resultado['data_saida'] = resultado['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y"))
-				resultado['data'] = resultado['data'].dt.strftime("%d/%m/%Y")
-				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+				#resultado['data_saida'] = resultado['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d-%m-%Y"))
+				resultado['data'] = resultado['data'].dt.strftime("%d-%m-%Y")
+				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d-%m-%Y")
 
 				#st.table(resultado)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, resultado, 0, 0, True)
@@ -1528,18 +1528,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if p_sem_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
-			p_sem_filtrado['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'])
-			p_sem_filtrado['data_gerado'] = pd.to_datetime(p_sem_filtrado['data_gerado'])
-			p_sem_filtrado['data_estoque'] = pd.to_datetime(p_sem_filtrado['data_estoque'])
+			p_sem_filtrado['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'], format='%H:%M %d-%m-%Y')
+			p_sem_filtrado['data_gerado'] = pd.to_datetime(p_sem_filtrado['data_gerado'], format='%H:%M %d-%m-%Y')
+			p_sem_filtrado['data_estoque'] = pd.to_datetime(p_sem_filtrado['data_estoque'], format='%H:%M %d-%m-%Y')
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_sem = p_sem_filtrado.loc[(p_sem_filtrado['data_consumo'].dt.date == data_filtro)]
 
 			if filtro_pal_sem.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				filtro_pal_sem['data_gerado'] = filtro_pal_sem['data_gerado'].dt.strftime("%d/%m/%Y")
-				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
-				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_pal_sem['data_gerado'] = filtro_pal_sem['data_gerado'].dt.strftime("%d-%m-%Y")
+				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque'].dt.strftime("%H:%M %d-%m-%Y")
+				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo'].dt.strftime("%H:%M %d-%m-%Y")
 
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_sem, 0, 0, True)
 				response = AgGrid(
@@ -1567,8 +1567,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (selantes_filtradas.shape[0] > 0) or (selantes_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			selantes_filtradas['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'])
-			selantes_filtradas_s['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'])
+			selantes_filtradas['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'], format='%H:%M %d-%m-%Y')
+			selantes_filtradas_s['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'], format='%H:%M %d-%m-%Y')
 
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'] == '-')]
@@ -1580,8 +1580,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c = filtro_selante.append(filtro_selante_s)
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
-				resultado_c['data'] = pd.to_datetime(resultado_c['data'])
+				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'], format='%H:%M %d-%m-%Y')
+				resultado_c['data'] = pd.to_datetime(resultado_c['data'], format='%H:%M %d-%m-%Y')
 
 				# organiza pela data de entrada
 				resultado_c = resultado_c.sort_values(by='data_entrada')
@@ -1590,9 +1590,9 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c = resultado_c.drop_duplicates(subset='lote_interno')
 
 				# organiza os dados para exibição
-				#resultado_c['data_saida'] = resultado_c['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d/%m/%Y"))
-				resultado_c['data'] = resultado_c['data'].dt.strftime("%d/%m/%Y")
-				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d/%m/%Y")
+				#resultado_c['data_saida'] = resultado_c['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d-%m-%Y"))
+				resultado_c['data'] = resultado_c['data'].dt.strftime("%d-%m-%Y")
+				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d-%m-%Y")
 				
 				#st.table(resultado_c)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, resultado_c, 0, 0, True)
@@ -1620,18 +1620,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if p_com_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
-			p_com_filtrado['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'])
-			p_com_filtrado['data_gerado'] = pd.to_datetime(p_com_filtrado['data_gerado'])
-			p_com_filtrado['data_estoque'] = pd.to_datetime(p_com_filtrado['data_estoque'])
+			p_com_filtrado['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'], format='%H:%M %d-%m-%Y')
+			p_com_filtrado['data_gerado'] = pd.to_datetime(p_com_filtrado['data_gerado'], format='%H:%M %d-%m-%Y')
+			p_com_filtrado['data_estoque'] = pd.to_datetime(p_com_filtrado['data_estoque'], format='%H:%M %d-%m-%Y')
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_com = p_com_filtrado.loc[(p_com_filtrado['data_consumo'].dt.date == data_filtro)]
 
 			if filtro_pal_com.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				filtro_pal_com['data_gerado'] = filtro_pal_com['data_gerado'].dt.strftime("%d/%m/%Y")
-				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d/%m/%Y")
-				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d/%m/%Y")
+				filtro_pal_com['data_gerado'] = filtro_pal_com['data_gerado'].dt.strftime("%d-%m-%Y")
+				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d-%m-%Y")
+				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d-%m-%Y")
 
 				#st.table(filtro_pal_com)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_com, 0, 0, True)
