@@ -275,6 +275,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
 	# converte string para datetime
 	data['data_estoque'] = pd.to_datetime(data['data_estoque'])
+	data['data_estoque'] = data['data_estoque'].dt.strftime('%d-%m-%Y')
 
 	# sem selante
 	if tipo == 0:
