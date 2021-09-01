@@ -1483,8 +1483,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				st.write(resultado)
 				
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'], format='%H:%M %d-%m-%Y')
-				resultado['data'] = pd.to_datetime(resultado['data'], format='%H:%M %d-%m-%Y')
+				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada']) #, format='%H:%M %d-%m-%Y')
+				resultado['data'] = pd.to_datetime(resultado['data']) #, format='%H:%M %d-%m-%Y')
 
 				# ordena os valores pela data de entrada
 				resultado = resultado.sort_values(by='data_entrada')
@@ -1493,7 +1493,6 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado = resultado.drop_duplicates(subset='numero_OT')
 
 				# organiza os dados para exibição
-				#resultado['data_saida'] = resultado['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d-%m-%Y"))
 				resultado['data'] = resultado['data'].dt.strftime("%d-%m-%Y")
 				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d-%m-%Y")
 
