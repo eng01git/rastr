@@ -879,14 +879,6 @@ if df_bobinas.shape[0] > 0:
 
 		st.write(df_pal_sem['numero_palete'])
 
-		# # Coloca o numero dos paletes
-		# if (df_pal_sem['numero_palete'] != '-').any():
-		# 	maximo_index = int(df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete'].max()) + 1
-		# 	df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + maximo_index
-		# else:
-		# 	# modificar o valor no final para adequar a realidade da linha rodando
-		# 	df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'numero_palete'] = df_pal_sem['documento'] + 1000 
-
 		# Escreve o dataframe dos paletes na bobina para escrita em banco
 		new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
 
@@ -1485,6 +1477,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			if (filtro_bobina.shape[0] > 0) or (filtro_bobina_s.shape[0] > 0):
 				
 				# combina os dados de entrada e os de saida
+				st.write(filtro_bobina)
+				st.write(filtro_bobina_s)
 				resultado = filtro_bobina.append(filtro_bobina_s)
 				st.write(resultado)
 				
