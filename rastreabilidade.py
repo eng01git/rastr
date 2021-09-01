@@ -1477,14 +1477,11 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 			if (filtro_bobina.shape[0] > 0) or (filtro_bobina_s.shape[0] > 0):
 				
 				# combina os dados de entrada e os de saida
-				st.write(filtro_bobina)
-				st.write(filtro_bobina_s)
 				resultado = filtro_bobina.append(filtro_bobina_s)
-				st.write(resultado)
-				
+
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada']) #, format='%H:%M %d-%m-%Y')
-				resultado['data'] = pd.to_datetime(resultado['data']) #, format='%H:%M %d-%m-%Y')
+				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
+				resultado['data'] = pd.to_datetime(resultado['data']) 
 
 				# ordena os valores pela data de entrada
 				resultado = resultado.sort_values(by='data_entrada')
@@ -1574,8 +1571,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c = filtro_selante.append(filtro_selante_s)
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'], format='%H:%M %d-%m-%Y')
-				resultado_c['data'] = pd.to_datetime(resultado_c['data'], format='%H:%M %d-%m-%Y')
+				resultado_c['data_entrada'] = pd.to_datetime(resultado_c['data_entrada'])
+				resultado_c['data'] = pd.to_datetime(resultado_c['data'])
 
 				# organiza pela data de entrada
 				resultado_c = resultado_c.sort_values(by='data_entrada')
