@@ -275,7 +275,6 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
 	# converte string para datetime
 	data['data_estoque'] = pd.to_datetime(data['data_estoque'])
-	#data['data_estoque'] = data['data_estoque'].dt.strftime('%d-%m-%Y')
 
 	# sem selante
 	if tipo == 0:
@@ -306,7 +305,7 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	else:
 		ws['B11'] = 'C'  # 'turno'
 
-	data_atual = datetime.date(data['data_estoque']).strftime("%m/%d/%Y")
+	data_atual = datetime.date(data['data_estoque']) #.strftime("%m/%d/%Y")
 	st.write(data_atual)
 	ws['A11'] = data_atual #data['data_estoque']  # 'data'
 	ws['C11'] = data['data_estoque']  # 'hora'
