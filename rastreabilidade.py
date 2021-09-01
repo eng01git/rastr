@@ -275,16 +275,14 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
 	# converte string para datetime
 	data['data_estoque'] = pd.to_datetime(data['data_estoque'])
-	data['data_estoque'] = data['data_estoque'].dt.strftime('%d-%m-%Y')
+	#data['data_estoque'] = data['data_estoque'].dt.strftime('%d-%m-%Y')
 
 	# sem selante
 	if tipo == 0:
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
 		ws['B7'] = 'Sem selante'  # 'com/sem selante'
-
 		codigo  = str(data['tipo_tampa']) + ' Sem Selante'
-		#ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
 		ws['A9'] = tipos_tampas[codigo]
 		ws['B13'] = str(data['numero_OT'])  # numero da bobina
 	
@@ -292,10 +290,8 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	else:
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
-		ws['B7'] = 'Com selante'  # 'com/sem selante'
-		
+		ws['B7'] = 'Com selante'  # 'com/sem selante'		
 		codigo  = str(data['tipo_tampa']) + ' Com Selante'
-		#ws['A9'] = str(data['codigo_bobina'])  # 'codigo produto'
 		ws['A9'] = tipos_tampas[codigo]
 		ws['B13'] = str(data['numero_OT'])  # numero da bobina
 
@@ -310,7 +306,9 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	else:
 		ws['B11'] = 'C'  # 'turno'
 
-	ws['A11'] = data['data_estoque']  # 'data'
+	data_atual = datetime.date(data['data_estoque']).strftime("%d:%m:%Y")
+	st.write(data_atual)
+	ws['A11'] = data_atual #data['data_estoque']  # 'data'
 	ws['C11'] = data['data_estoque']  # 'hora'
 	ws['C9'] = data['numero_palete']  # numero etiqueta
 
