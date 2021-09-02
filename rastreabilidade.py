@@ -958,7 +958,7 @@ if df_bobinas.shape[0] > 0:
 		elif (ps_fifo_in.shape[0] >= 5):
 			st.error('Há paletes demais na reserva')
 		
-		fifo_in_show = ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+		fifo_in_show = ps_fifo_in.sort_values(by='numero_palete', ascending=True)[['numero_palete', 'tipo_tampa']]
 		fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
 		if fifo_in_show.shape[0] > 0:
