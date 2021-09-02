@@ -1660,10 +1660,11 @@ if telas == 'Apontamento de código SAP':
 	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
 
 	# transforma coluna no tipo datetime
-	st.write(df_pal_sem_filtrado['data_estoque'])
-	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].strftime('%Y-%m-%d %H:%M:%S')
-	st.write(df_pal_sem_filtrado['data_estoque'].dtype)
+	#st.write(df_pal_sem_filtrado['data_estoque'])
+	#df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].strftime('%Y-%m-%d %H:%M:%S')
+	#st.write(df_pal_sem_filtrado['data_estoque'].dtype)
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
+	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None)
 	
 	st.write(df_pal_sem_filtrado['data_estoque'])
 
