@@ -314,13 +314,11 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	else:
 		ws['B11'] = 'C'  # 'turno'
 
-	#data_atual = datetime.date(data['data_estoque']).strftime("%d/%m/%Y")
-	#hora_atual = datetime.time(data['data_estoque']).strftime("%H:%M")
-	#data['data_estoque'] = pd.to_datetime(data['data_estoque'])
+	# ajusta data e hora para etiqueta
 	data_atual = data['data_estoque'].strftime("%d/%m/%Y")
 	hora_atual = data['data_estoque'].strftime("%H:%M")
 
-	st.write(data_atual)
+	#st.write(data_atual)
 	ws['A11'] = data_atual #data['data_estoque']  # 'data'
 	ws['C11'] = hora_atual #data['data_estoque']  # 'hora'
 	ws['C9'] = data['numero_palete']  # numero etiqueta
@@ -332,7 +330,6 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	b64 = base64.b64encode(towrite).decode()  # some strings
 
 	# link para download e nome do arquivo
-	#linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx"><span class="highlight blue">Download etiqueta</span></a>'
 	linko = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download etiqueta</a>'
 	st.markdown(linko, unsafe_allow_html=True)
 
@@ -356,6 +353,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 		if tipo == 0:
 			dicionario[str(index)]['documento'] = doc.id
 		index += 1
+
 	# Transforma o dicionario em dataframe
 	df = pd.DataFrame.from_dict(dicionario)
 
@@ -390,7 +388,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 		# Transforma string em tipo data
 		df['data'] = pd.to_datetime(df['data'])
 		df['lote_interno'] = df['lote_interno'].astype('string')
-		
+
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
 
@@ -579,7 +577,6 @@ def config_grid(height, df, lim_min, lim_max, customizar):
 
 	update_mode = 'VALUE_CHANGED'
 	update_mode_value = GridUpdateMode.__members__[update_mode]
-	# update_mode_value = 'VALUE_CHANGED'
 
 	# enterprise modules
 	enable_enterprise_modules = False
@@ -810,7 +807,6 @@ if df_bobinas.shape[0] > 0:
 
 	# Verifica bobinas disponiveis
 	df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
-	#df_bobinas_disp['data'] = pd.to_datetime(df_bobinas_disp['data'])
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 	# cria selectbox para selecionar bobinas
@@ -868,8 +864,8 @@ if df_bobinas.shape[0] > 0:
 		# Coloca bobina selecionada em uso #
 		####################################
 
-		st.write(numero_bobina)
-		st.write(df_bobinas['numero_OT'])
+		#st.write(numero_bobina)
+		#st.write(df_bobinas['numero_OT'])
 
 		# modifica bobina selecionada para uso
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
@@ -887,7 +883,7 @@ if df_bobinas.shape[0] > 0:
 		# Filtra paletes da bobina em uso e atualiza valores
 		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz)
 
-		st.write(df_pal_sem['numero_palete'])
+		#st.write(df_pal_sem['numero_palete'])
 
 		# Escreve o dataframe dos paletes na bobina para escrita em banco
 		new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
@@ -1066,9 +1062,9 @@ if df_bobinas.shape[0] > 0:
 			# cria selectbox para selecionar selantes
 			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['lote_interno'].astype(str) + ' / ' +  df_selantes_disp['numero_lote'].astype(str)))
 			numero_selante = numero_selante_full.split()[0]
-			st.write(numero_selante)
-			st.write(type(numero_selante))
-			st.write(df_selantes['lote_interno'].dtypes)
+			#st.write(numero_selante)
+			#st.write(type(numero_selante))
+			#st.write(df_selantes['lote_interno'].dtypes)
 
 			# parte do principio que nenhuma selante foi selecionada
 			selecionar_selante = False
@@ -1737,7 +1733,7 @@ if telas == 'Apontamento de código SAP':
 			if rerun:
 				st.experimental_rerun()
 
-			st.write(df_pal_sem)
+			#st.write(df_pal_sem)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
@@ -1814,7 +1810,7 @@ if telas == 'Apontamento de código SAP':
 			if rerun:
 				st.experimental_rerun()
 
-			st.write(df_pal_com)
+			#st.write(df_pal_com)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
