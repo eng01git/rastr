@@ -40,6 +40,17 @@ tz = pytz.timezone('America/Bahia')
 ##############################################################################
 
 
+# botao para teste
+reset = st.button('Reset')
+rerun = False
+
+if reset:
+	rerun = True
+	caching.clear_cache()
+	if rerun:
+				st.experimental_rerun()
+
+
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
@@ -909,7 +920,7 @@ if df_bobinas.shape[0] > 0:
 			if add_palete_sem:
 
 				# identifica o ultimo numero de palete utilizado
-				maximo_index_s = 570
+				maximo_index_s = 670
 				if (df_pal_sem['numero_palete'] != '-').any():
 					maximo_index_aux = df_pal_sem.loc[df_pal_sem['numero_palete'] != '-', 'numero_palete']
 					maximo_index_s = int(maximo_index_aux.astype('int').max()) + 1
@@ -1155,7 +1166,7 @@ if df_bobinas.shape[0] > 0:
 				if add_palete_sem:
 
 					# identifica o ultimo numero de palete utilizado
-					maximo_index = 675
+					maximo_index = 575
 					if (df_pal_com['numero_palete'] != '-').any():
 						maximo_index_aux = df_pal_com.loc[df_pal_com['numero_palete'] != '-', 'numero_palete']
 						maximo_index = int(maximo_index_aux.astype('int').max()) + 1
@@ -1802,14 +1813,4 @@ if telas == 'Apontamento de código SAP':
 			st.write(df_pal_com)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
-
-# botao para teste
-reset = st.button('Reset')
-rerun = False
-
-if reset:
-	rerun = True
-	caching.clear_cache()
-	if rerun:
-				st.experimental_rerun()
 
