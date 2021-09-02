@@ -930,7 +930,7 @@ if df_bobinas.shape[0] > 0:
 				numero_palete = maximo_index_s
 
 				# atualiza data de estoque do palete
-				df_pal_sem.loc[df_pal_sem['numero_palete'] == str(numero_palete), 'data_estoque'] = datetime.today() - timedelta(hours=3)
+				df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.today() - timedelta(hours=3)
 
 				# prepara dados para escrever no banco
 				dic_fifo_in = {}
@@ -1184,9 +1184,9 @@ if df_bobinas.shape[0] > 0:
 					numero_palete = maximo_index
 
 					# atualiza valores de data de estoque e o tipo de tampa
-					df_pal_com.loc[df_pal_com['numero_palete'] == str(numero_palete), 'data_estoque'] = datetime.today() - timedelta(hours=3)
-					df_pal_com.loc[df_pal_com['numero_palete'] == str(numero_palete), 'tipo_tampa'] = tipo_bobina_uso
-					df_pal_com.loc[df_pal_com['numero_palete'] == str(numero_palete), 'numero_OT'] = bobina_em_uso.iloc[0,0]
+					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.today() - timedelta(hours=3)
+					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'tipo_tampa'] = tipo_bobina_uso
+					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'numero_OT'] = bobina_em_uso.iloc[0,0]
 
 					# prepara dados para escrever no banco
 					dic_fifo_s_in = {}
