@@ -1661,7 +1661,7 @@ if telas == 'Apontamento de código SAP':
 
 	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].astype('string')
-	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].str.sp.lit('.')[0]
+	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].str.split('.')[0]
 	st.write(df_pal_sem_filtrado['data_estoque'])
 	st.write(df_pal_sem_filtrado['data_estoque'].dtype)
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
