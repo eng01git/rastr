@@ -941,10 +941,11 @@ if df_bobinas.shape[0] > 0:
 					doc_ref = db.collection("Bobina").document(documento)
 					doc_ref.set(new_fifo_in)
 					flag_rerun = True
-					caching.clear_cache()
+					#caching.clear_cache()
 
 				except:
 					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+					caching.clear_cache()
 
 				if flag_rerun:
 					st.experimental_rerun()
@@ -1006,10 +1007,11 @@ if df_bobinas.shape[0] > 0:
 					doc_ref = db.collection("Bobina").document(documento)
 					doc_ref.set(new_fifo_out)
 					flag_rerun = True
-					caching.clear_cache()
+					#caching.clear_cache()
 
 				except:
 					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+					caching.clear_cache()
 
 				if flag_rerun:
 					st.experimental_rerun()
@@ -1190,9 +1192,10 @@ if df_bobinas.shape[0] > 0:
 						doc_ref = db.collection("Selante").document(documento)
 						doc_ref.set(new_fifo_s_in)
 						flag_rerun = True
-						caching.clear_cache()
+						#caching.clear_cache()
 					except:
 						st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
+						caching.clear_cache()
 
 					if flag_rerun:
 						st.experimental_rerun()
@@ -1253,9 +1256,10 @@ if df_bobinas.shape[0] > 0:
 						doc_ref = db.collection("Selante").document(documento)
 						doc_ref.set(new_fifo_s_out)
 						flag_rerun = True
-						caching.clear_cache()
+						#caching.clear_cache()
 					except:
 						st.error('Falha ao atualizar informações do palete, tente novamente ou entre em contato com suporte!')
+						caching.clear_cache()
 
 					if flag_rerun:
 						st.experimental_rerun()
