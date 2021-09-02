@@ -982,8 +982,8 @@ if df_bobinas.shape[0] > 0:
 		# consome paletes
 		if ps_fifo_in.shape[0] > 0:
 			# download da etiqueta
-			#ps_fifo_in['numero_palete'] = ps_fifo_in['numero_palete'].astype('int64')
-			download_etiqueta(ps_fifo_in.sort_values(by='data_estoque', ascending=False).iloc[0], 0)
+			ps_fifo_in['numero_palete'] = ps_fifo_in['numero_palete'].astype('int64')
+			download_etiqueta(ps_fifo_in.sort_values(by='numero_palete', ascending=False).iloc[0], 0)
 
 			con_palete_sem = col2.button('Consumir palete TP sem Selante')
 			if con_palete_sem:
@@ -1231,8 +1231,8 @@ if df_bobinas.shape[0] > 0:
 			# consome paletes
 			if sel_fifo_in.shape[0] > 0:
 				# download das etiquetas
-				
-				download_etiqueta(sel_fifo_in.sort_values(by='data_estoque', ascending=False).iloc[0], 1)
+				sel_fifo_in['numero_palete'] = sel_fifo_in['numero_palete'].astype('int64')
+				download_etiqueta(sel_fifo_in.sort_values(by='numero_palete', ascending=False).iloc[0], 1)
 
 				con_palete_sem = col4.button('Consumir palete TP com Selante')
 				if con_palete_sem:
