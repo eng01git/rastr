@@ -1480,7 +1480,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
 				st.write(resultado['data_entrada'])
-				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
+				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'], utc=True)
 				resultado['data'] = pd.to_datetime(resultado['data']) 
 
 				# ordena os valores pela data de entrada
