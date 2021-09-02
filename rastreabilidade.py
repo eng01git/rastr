@@ -1376,7 +1376,7 @@ if telas == 'Remover bobinas ou selantes':
 	if selante_em_uso.shape[0] > 0:
 		# coleta os dados relativos a remoção do selante
 		comentario_remover_sel = c3.text_input('Descreva o motivo da retirada do selante')
-		peso_remover_sel = c4.number_input('Peso restante', format='%i', value=3000, step=100)
+		peso_remover_sel = c4.number_input('Peso restante', format='%i', value=500, step=10)
 		remover_selante = c5.button('Remover selante em uso')
 
 		if remover_selante:
