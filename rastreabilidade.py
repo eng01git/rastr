@@ -927,9 +927,9 @@ if df_bobinas.shape[0] > 0:
 
 				# atribuir numero ao palete
 				bobina_atual = df_bobinas[df_bobinas['status'] == 'Em uso']['numero_OT']
-				#df_temp = df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-') & (df_pal_sem['numero_palete'] == '-')]
-				#df_temp.iloc[0, 7] = maximo_index_s
-				df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-') & (df_pal_sem['numero_palete'] == '-'), 'numero_palete'] = maximo_index_s
+				df_temp = df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-') & (df_pal_sem['numero_palete'] == '-')]
+				df_temp.iloc[0, 7] = maximo_index_s
+				df_pal_sem.loc[(df_pal_sem['numero_OT'] == bobina_atual.iloc[0]) & (df_pal_sem['data_estoque'] == '-') & (df_pal_sem['numero_palete'] == '-')] = df_temp
 
 				# verificar selante em uso
 				numero_palete = maximo_index_s
