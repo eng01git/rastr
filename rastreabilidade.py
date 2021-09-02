@@ -689,7 +689,7 @@ tipos_selantes = {'Selante': 50491194}
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 
-df_bobinas['data_entrada'] = pd.to_datetime(df_bobinas['data_entrada'], errors='ignore')
+df_bobinas['data_entrada'] = pd.to_datetime(df_bobinas['data_entrada'], errors='ignore') 
 
 
 # define a bobina em uso
