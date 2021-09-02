@@ -35,8 +35,9 @@ db = firestore.Client(credentials=creds, project="lid-rastr")
 
 # Ajustando fuso
 tz = pytz.timezone('America/Bahia')
+
 ##############################################################################
-# 												  funcoes					
+# 									funcoes									 #
 ##############################################################################
 
 
@@ -55,7 +56,8 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
-		df.data = datetime.now(tz)
+		#df.data = datetime.now(tz)
+		df.data = datetime.today()
 		df.tipo_bobina = df.codigo_bobina.apply(lambda x: tipos_bobinas2[x])
 		df.data_entrada = '-'
 		df.data_saida = '-'
