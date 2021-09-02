@@ -893,6 +893,7 @@ if df_bobinas.shape[0] > 0:
 			doc_ref = db.collection("Bobina").document(documento)
 			doc_ref.set(new_uso)
 			st.success('Formulário armazenado com sucesso!')
+			caching.clear_cache()
 			flag_rerun = True
 		except:
 			st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
@@ -951,6 +952,7 @@ if df_bobinas.shape[0] > 0:
 					doc_ref = db.collection("Bobina").document(documento)
 					doc_ref.set(new_fifo_in)
 					flag_rerun = True
+					caching.clear_cache()
 
 				except:
 					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
@@ -1017,6 +1019,7 @@ if df_bobinas.shape[0] > 0:
 					doc_ref = db.collection("Bobina").document(documento)
 					doc_ref.set(new_fifo_out)
 					flag_rerun = True
+					caching.clear_cache()
 
 				except:
 					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
@@ -1144,6 +1147,7 @@ if df_bobinas.shape[0] > 0:
 					doc_ref.set(new_uso)
 					st.success('Formulário armazenado com sucesso!')
 					flag_rerun = True
+					caching.clear_cache()
 				except:
 					st.error('Falha ao armazenar formulário, tente novamente ou entre em contato com suporte!')
 					caching.clear_cache()
@@ -1203,7 +1207,7 @@ if df_bobinas.shape[0] > 0:
 						doc_ref = db.collection("Selante").document(documento)
 						doc_ref.set(new_fifo_s_in)
 						flag_rerun = True
-
+						caching.clear_cache()
 					except:
 						st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
 
@@ -1266,7 +1270,7 @@ if df_bobinas.shape[0] > 0:
 						doc_ref = db.collection("Selante").document(documento)
 						doc_ref.set(new_fifo_s_out)
 						flag_rerun = True
-
+						caching.clear_cache()
 					except:
 						st.error('Falha ao atualizar informações do palete, tente novamente ou entre em contato com suporte!')
 
