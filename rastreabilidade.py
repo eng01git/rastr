@@ -357,6 +357,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	if (tipo == 0) and (df.shape[0] > 0):
 		# Transforma string em tipo data
 		df['data'] = pd.to_datetime(df['data'])
+		df['data_entrada'] = pd.to_datetime(df['data_entrada'], errors='ignore')
 
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
@@ -1646,7 +1647,7 @@ if telas == 'Apontamento de código SAP':
 	
 	st.subheader('Apontamento de Código SAP')
 
-	data_filtro = st.date_input('Selecione a data que deseja filtrar')
+	data_filtro = st.date_input('Selecione a data que deseja filtrar') 
 	data_time_filtro = datetime.combine(data_filtro, time())
 	data_inicio = data_time_filtro - timedelta(hours=6)
 	data_fim = data_time_filtro + timedelta(hours=18)
