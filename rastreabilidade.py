@@ -1205,7 +1205,8 @@ if df_bobinas.shape[0] > 0:
 
 			elif (sel_fifo_in.shape[0] >= 5):
 				st.error('há paletes demais na reserva')
-
+			
+			sel_fifo_in['numero_palete'] = sel_fifo_in['numero_palete'].astype('int64')
 			fifo_s_in_show = sel_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
 			fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
@@ -1226,7 +1227,7 @@ if df_bobinas.shape[0] > 0:
 			# consome paletes
 			if sel_fifo_in.shape[0] > 0:
 				# download das etiquetas
-				sel_fifo_in['numero_palete'] = sel_fifo_in['numero_palete'].astype('int64')
+				
 				download_etiqueta(sel_fifo_in.sort_values(by='numero_palete', ascending=False).iloc[0], 1)
 
 				con_palete_sem = col4.button('Consumir palete TP com Selante')
