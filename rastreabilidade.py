@@ -1650,10 +1650,10 @@ if telas == 'Apontamento de código SAP':
 	
 	st.subheader('Apontamento de Código SAP')
 	data_filtro = st.date_input('Selecione a data que deseja filtrar')
-	data_time_filtro = datetime.now(tz)
-	#datetime.combine(data_filtro, time())
+	data_time_filtro = datetime.combine(data_filtro, time())
 	data_inicio = data_time_filtro - timedelta(hours=6)
 	data_fim = data_time_filtro + timedelta(hours=18)
+	st.write(data_time_filtro)
 	st.write(data_inicio)
 	st.subheader('Paletes sem selante')
 
