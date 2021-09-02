@@ -64,7 +64,6 @@ def upload_excel_selante(uploaded_file):
 		df.data = datetime.now(tz)
 		df.data_entrada = '-'
 		df.data_saida = '-'
-		#df.lote_interno = '-'
 		df.paletes_gerados = (df['peso_vedante']) * 2857 / 187200
 		df.paletes_gerados = df.paletes_gerados.astype('int')
 		df.status = 'Disponível'
@@ -357,7 +356,6 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	if (tipo == 0) and (df.shape[0] > 0):
 		# Transforma string em tipo data
 		df['data'] = pd.to_datetime(df['data'])
-		#df['data_entrada'] = pd.to_datetime(df['data_entrada'], errors='ignore')
 
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
