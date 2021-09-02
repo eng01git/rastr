@@ -689,9 +689,6 @@ tipos_selantes = {'Selante': 50491194}
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 
-df_bobinas['data_entrada'] = pd.to_datetime(df_bobinas['data_entrada'], errors='ignore') 
-
-
 # define a bobina em uso
 if df_bobinas.shape[0] > 0:
 	if df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina'].shape[0] > 0:
