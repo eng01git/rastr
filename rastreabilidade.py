@@ -35,7 +35,7 @@ db = firestore.Client(credentials=creds, project="lid-rastr")
 
 # Ajustando fuso
 tz = pytz.timezone('America/Bahia')
-
+st.write(datetime.now(tz))
 ##############################################################################
 # 												  funcoes					
 ##############################################################################
