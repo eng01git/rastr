@@ -698,8 +698,6 @@ tipos_selantes = {'Selante': 50491194}
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
 
-df_pal_sem['data_estoque'] = pd.to_datetime(df_pal_sem['data_estoque'], errors='ignore')
-
 # define a bobina em uso
 if df_bobinas.shape[0] > 0:
 	if df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina'].shape[0] > 0:
@@ -868,9 +866,6 @@ if df_bobinas.shape[0] > 0:
 		# Coloca bobina selecionada em uso #
 		####################################
 
-		#st.write(numero_bobina)
-		#st.write(df_bobinas['numero_OT'])
-
 		# modifica bobina selecionada para uso
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.today() - timedelta(hours=3)
@@ -886,8 +881,6 @@ if df_bobinas.shape[0] > 0:
 
 		# Filtra paletes da bobina em uso e atualiza valores
 		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.today() - timedelta(hours=3)
-
-		#st.write(df_pal_sem['numero_palete'])
 
 		# Escreve o dataframe dos paletes na bobina para escrita em banco
 		new_uso['Paletes'] = df_pal_sem[df_pal_sem['numero_OT'] == numero_bobina].to_csv()
@@ -968,8 +961,8 @@ if df_bobinas.shape[0] > 0:
 		#elif (ps_fifo_in.shape[0] >= 5):
 		#	st.error('Há paletes demais na reserva')
 			
-		#ps_fifo_in['numero_palete'] = ps_fifo_in['numero_palete'].astype('int64')
-		fifo_in_show = ps_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+		ps_fifo_in['numero_palete'] = ps_fifo_in['numero_palete'].astype('int64')
+		fifo_in_show = ps_fifo_in.sort_values(by='numero_palete', ascending=True)[['numero_palete', 'tipo_tampa']]
 		fifo_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
 		if fifo_in_show.shape[0] > 0:
@@ -1034,7 +1027,8 @@ if df_bobinas.shape[0] > 0:
 		else:
 			st.error('Não há palete sem selante para consumir')
 
-		fifo_out_show = ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
+		ps_fifo_out['numero_palete'] = ps_fifo_out['numero_palete'].astype('int64')
+		fifo_out_show = ps_fifo_out.sort_values(by='numero_palete', ascending=False)[['numero_palete', 'tipo_tampa']]
 		fifo_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 		
 		if fifo_out_show.shape[0] > 0:
@@ -1216,8 +1210,8 @@ if df_bobinas.shape[0] > 0:
 					if flag_rerun:
 						st.experimental_rerun()
 			
-			#sel_fifo_in['numero_palete'] = sel_fifo_in['numero_palete'].astype('int64')
-			fifo_s_in_show = sel_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
+			sel_fifo_in['numero_palete'] = sel_fifo_in['numero_palete'].astype('int64')
+			fifo_s_in_show = sel_fifo_in.sort_values(by='numero_palete', ascending=True)[['numero_palete', 'tipo_tampa']]
 			fifo_s_in_show.rename(columns={'numero_palete': 'Gerados'}, inplace=True)
 
 			if fifo_s_in_show.shape[0] > 0:
@@ -1281,8 +1275,9 @@ if df_bobinas.shape[0] > 0:
 
 			else:
 				st.error('Não há palete com selante para consumir')
-
-			fifo_s_out_show = sel_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
+			
+			sel_fifo_out['numero_palete'] = sel_fifo_out['numero_palete'].astype('int64')
+			fifo_s_out_show = sel_fifo_out.sort_values(by='numero_palete', ascending=False)[['numero_palete', 'tipo_tampa']]
 			fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 
 			if fifo_s_out_show.shape[0] > 0:
