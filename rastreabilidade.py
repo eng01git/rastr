@@ -45,7 +45,7 @@ def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
-		df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+		df.data = datetime.now(tz)
 		df.tipo_bobina = df.codigo_bobina.apply(lambda x: tipos_bobinas2[x])
 		df.data_entrada = '-'
 		df.data_saida = '-'
@@ -62,7 +62,7 @@ def upload_excel_selante(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		df = pd.read_excel(uploaded_file, sheet_name='Selantes')
-		df.data = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+		df.data = datetime.now(tz)
 		df.data_entrada = '-'
 		df.data_saida = '-'
 		#df.lote_interno = '-'
@@ -352,10 +352,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	# Bobinas
 	if (tipo == 0) and (df.shape[0] > 0):
 		# Transforma string em tipo data
-
-		df['data'] = pd.to_datetime(df['data'], format='%H:%M %d-%m-%Y')
-		#.
-		# df['data'] = df['data'].dt.strftime('%H:%M %d-%m-%Y')
+		df['data'] = pd.to_datetime(df['data'])
 
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
@@ -377,9 +374,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	# selante
 	if (tipo == 1) and (df.shape[0] > 0):
 		# Transforma string em tipo data
-
-		df['data'] = pd.to_datetime(df['data'], format='%H:%M %d-%m-%Y')
-		#df['data'] = df['data'].dt.strftime('%H:%M %d-%m-%Y')
+		df['data'] = pd.to_datetime(df['data'])
 
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
@@ -407,7 +402,7 @@ def adicionar_bobina():
 	# Dados das bobinas
 	with st.form('forms_Bobina'):
 		dic['status'] = 'Disponível'
-		dic['data'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+		dic['data'] = datetime.now(tz)
 		s1, s2, s3, s4, s6 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_OT'] = s1.text_input('Número OT')
 		dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
@@ -485,7 +480,7 @@ def adicionar_selante():
 	# Dados dos selantes
 	with st.form('forms_selante'):
 		dic['status'] = 'Disponível'
-		dic['data'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+		dic['data'] = datetime.now(tz)
 		s1, s2, s3, s4, s5 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
 		dic['codigo_SAP'] = s2.text_input('Código SAP')
@@ -829,7 +824,7 @@ if df_bobinas.shape[0] > 0:
 
 			# modifica bobina selecionada para finalizada
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Finalizada'
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz)
 
 			# prepara dados para escrever no banco
 			dic_fin = {}
@@ -863,7 +858,7 @@ if df_bobinas.shape[0] > 0:
 
 		# modifica bobina selecionada para uso
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
-		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.now(tz)
 
 		# prepara dados para escrever no banco
 		dic_bobina_uso = {}
@@ -875,7 +870,7 @@ if df_bobinas.shape[0] > 0:
 		documento = new_uso['numero_OT']
 
 		# Filtra paletes da bobina em uso e atualiza valores
-		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz)
 
 		st.write(df_pal_sem['numero_palete'])
 
@@ -926,7 +921,7 @@ if df_bobinas.shape[0] > 0:
 				numero_palete = maximo_index_s
 
 				# atualiza data de estoque do palete
-				df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz)
 
 				# prepara dados para escrever no banco
 				dic_fifo_in = {}
@@ -987,7 +982,7 @@ if df_bobinas.shape[0] > 0:
 				numero_palete = numero_palete_aux.iloc[7]
 
 				# atualiza a data de consumo do palete consumido
-				df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz)
 
 				#identifica o numero da bobina do palete
 				bobina_consumo = df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'numero_OT']
@@ -1077,8 +1072,8 @@ if df_bobinas.shape[0] > 0:
 
 					# modifica selante selecionada para finalizada
 					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'status'] = 'Finalizada'
-					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
-					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_entrada'] = datetime.now(tz)
+					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_saida'] = datetime.now(tz)
 
 					# prepara dados para escrever no banco
 					dic_fin = {}
@@ -1109,7 +1104,7 @@ if df_bobinas.shape[0] > 0:
 
 				# modifica selante selecionada para uso
 				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'status'] = 'Em uso'
-				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'data_entrada'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'data_entrada'] = datetime.now(tz)
 
 				# prepara dados para escrever no banco
 				dic_selante_uso = {}
@@ -1121,7 +1116,7 @@ if df_bobinas.shape[0] > 0:
 				documento = new_uso['lote_interno']
 
 				# Filtra paletes da selante em uso e atualiza valores
-				df_pal_com.loc[df_pal_com['lote_interno'] == numero_selante, 'data_gerado'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+				df_pal_com.loc[df_pal_com['lote_interno'] == numero_selante, 'data_gerado'] = datetime.now(tz)
 
 				# Escreve o dataframe dos paletes na selante para escrita em banco
 				new_uso['Paletes'] = df_pal_com[df_pal_com['lote_interno'] == numero_selante].to_csv()
@@ -1170,7 +1165,7 @@ if df_bobinas.shape[0] > 0:
 					numero_palete = maximo_index
 
 					# atualiza valores de data de estoque e o tipo de tampa
-					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz)
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'tipo_tampa'] = tipo_bobina_uso
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'numero_OT'] = bobina_em_uso.iloc[0,0]
 
@@ -1233,7 +1228,7 @@ if df_bobinas.shape[0] > 0:
 					numero_palete = numero_palete_aux.iloc[9]
 
 					# atualiza a data de consumo do palete consumido
-					df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+					df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz)
 
 					#identifica o numero da selante do palete
 					selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'lote_interno']
@@ -1311,7 +1306,7 @@ if telas == 'Remover bobinas ou selantes':
 
 			# modifica bobina selecionada para removida
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz)
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'comentario'] = comentario_peso
 
 			# peso incial da bobinaa
@@ -1376,7 +1371,7 @@ if telas == 'Remover bobinas ou selantes':
 
 			# modifica bobina selecionada para removida
 			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'status'] = 'Removida'
-			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'data_saida'] = datetime.now(tz).strftime("%H:%M %d-%m-%Y")
+			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'data_saida'] = datetime.now(tz)
 			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'comentario'] = comentario_peso_sel
 
 			# peso incial da bobinaa
@@ -1467,8 +1462,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (bobinas_filtradas.shape[0] > 0) or (bobinas_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'], format='%H:%M %d-%m-%Y')
-			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'], format='%H:%M %d-%m-%Y')
+			bobinas_filtradas['data_entrada'] = pd.to_datetime(bobinas_filtradas['data_entrada'])
+			bobinas_filtradas_s['data_saida'] = pd.to_datetime(bobinas_filtradas_s['data_saida'])
 
 			# filtra as bobinas de acordo com a data
 			filtro_bobina = bobinas_filtradas.loc[(bobinas_filtradas['data_entrada'].dt.date <= data_filtro) & (bobinas_filtradas['data_saida'] == '-')]
@@ -1490,8 +1485,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado = resultado.drop_duplicates(subset='numero_OT')
 
 				# organiza os dados para exibição
-				resultado['data'] = resultado['data'].dt.strftime("%d-%m-%Y")
-				resultado['data_entrada'] = resultado['data_entrada'].dt.strftime("%H:%M %d-%m-%Y")
+				resultado['data'] = resultado['data']
+				resultado['data_entrada'] = resultado['data_entrada']
 
 				#st.table(resultado)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, resultado, 0, 0, True)
@@ -1519,18 +1514,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if p_sem_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
-			p_sem_filtrado['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'], format='%H:%M %d-%m-%Y')
-			p_sem_filtrado['data_gerado'] = pd.to_datetime(p_sem_filtrado['data_gerado'], format='%H:%M %d-%m-%Y')
-			p_sem_filtrado['data_estoque'] = pd.to_datetime(p_sem_filtrado['data_estoque'], format='%H:%M %d-%m-%Y')
+			p_sem_filtrado['data_consumo'] = pd.to_datetime(p_sem_filtrado['data_consumo'])
+			p_sem_filtrado['data_gerado'] = pd.to_datetime(p_sem_filtrado['data_gerado'])
+			p_sem_filtrado['data_estoque'] = pd.to_datetime(p_sem_filtrado['data_estoque'])
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_sem = p_sem_filtrado.loc[(p_sem_filtrado['data_consumo'].dt.date == data_filtro)]
 
 			if filtro_pal_sem.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				filtro_pal_sem['data_gerado'] = filtro_pal_sem['data_gerado'].dt.strftime("%d-%m-%Y")
-				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque'].dt.strftime("%H:%M %d-%m-%Y")
-				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo'].dt.strftime("%H:%M %d-%m-%Y")
+				filtro_pal_sem['data_gerado'] = filtro_pal_sem['data_gerado']
+				filtro_pal_sem['data_estoque'] = filtro_pal_sem['data_estoque']
+				filtro_pal_sem['data_consumo'] = filtro_pal_sem['data_consumo']
 
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_sem, 0, 0, True)
 				response = AgGrid(
@@ -1558,8 +1553,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if (selantes_filtradas.shape[0] > 0) or (selantes_filtradas_s.shape[0] > 0):
 			# converte os valores de string para datetime
-			selantes_filtradas['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'], format='%H:%M %d-%m-%Y')
-			selantes_filtradas_s['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'], format='%H:%M %d-%m-%Y')
+			selantes_filtradas['data_entrada'] = pd.to_datetime(selantes_filtradas['data_entrada'])
+			selantes_filtradas_s['data_saida'] = pd.to_datetime(selantes_filtradas_s['data_saida'])
 
 			# filtra as selantes de acordo com a data
 			filtro_selante = selantes_filtradas.loc[(selantes_filtradas['data_entrada'].dt.date <= data_filtro) & (selantes_filtradas['data_saida'] == '-')]
@@ -1581,9 +1576,8 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado_c = resultado_c.drop_duplicates(subset='lote_interno')
 
 				# organiza os dados para exibição
-				#resultado_c['data_saida'] = resultado_c['data_saida'].apply(lambda x: '-' if x == '-' else x.dt.strftime("%H:%M %d-%m-%Y"))
-				resultado_c['data'] = resultado_c['data'].dt.strftime("%d-%m-%Y")
-				resultado_c['data_entrada'] = resultado_c['data_entrada'].dt.strftime("%H:%M %d-%m-%Y")
+				resultado_c['data'] = resultado_c['data']
+				resultado_c['data_entrada'] = resultado_c['data_entrada']
 				
 				#st.table(resultado_c)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, resultado_c, 0, 0, True)
@@ -1611,18 +1605,18 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 
 		if p_com_filtrado.shape[0] > 0:
 			# converte os valores de string para datetime
-			p_com_filtrado['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'], format='%H:%M %d-%m-%Y')
-			p_com_filtrado['data_gerado'] = pd.to_datetime(p_com_filtrado['data_gerado'], format='%H:%M %d-%m-%Y')
-			p_com_filtrado['data_estoque'] = pd.to_datetime(p_com_filtrado['data_estoque'], format='%H:%M %d-%m-%Y')
+			p_com_filtrado['data_consumo'] = pd.to_datetime(p_com_filtrado['data_consumo'])
+			p_com_filtrado['data_gerado'] = pd.to_datetime(p_com_filtrado['data_gerado'])
+			p_com_filtrado['data_estoque'] = pd.to_datetime(p_com_filtrado['data_estoque'])
 
 			# filtra as bobinas de acordo com a data
 			filtro_pal_com = p_com_filtrado.loc[(p_com_filtrado['data_consumo'].dt.date == data_filtro)]
 
 			if filtro_pal_com.shape[0] > 0:
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				filtro_pal_com['data_gerado'] = filtro_pal_com['data_gerado'].dt.strftime("%d-%m-%Y")
-				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque'].dt.strftime("%H:%M %d-%m-%Y")
-				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo'].dt.strftime("%H:%M %d-%m-%Y")
+				filtro_pal_com['data_gerado'] = filtro_pal_com['data_gerado']
+				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque']
+				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo']
 
 				#st.table(filtro_pal_com)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_com, 0, 0, True)
@@ -1656,7 +1650,7 @@ if telas == 'Apontamento de código SAP':
 	df_pal_sem_filtrado = df_pal_sem[df_pal_sem['data_estoque'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'], format='%H:%M %d-%m-%Y')
+	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 
 	# filtra pela data selecionada
 	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
@@ -1731,7 +1725,7 @@ if telas == 'Apontamento de código SAP':
 	df_pal_com_filtrado = df_pal_com[df_pal_com['data_estoque'] != '-']
 
 	# transforma coluna no tipo datetime
-	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'], format='%H:%M %d-%m-%Y')
+	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
 	
 
 	# filtra pela data selecionada
