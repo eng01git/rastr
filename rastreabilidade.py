@@ -57,7 +57,7 @@ def upload_excel(uploaded_file):
 	try:
 		df = pd.read_excel(uploaded_file, sheet_name='Bobinas')
 		#df.data = datetime.now(tz)
-		df.data = datetime.today(tz)
+		df.data = datetime.today() - timedelta(hours=3)
 		df.tipo_bobina = df.codigo_bobina.apply(lambda x: tipos_bobinas2[x])
 		df.data_entrada = '-'
 		df.data_saida = '-'
@@ -74,7 +74,7 @@ def upload_excel_selante(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
 		df = pd.read_excel(uploaded_file, sheet_name='Selantes')
-		df.data = datetime.now(tz)
+		df.data = datetime.today() - timedelta(hours=3)
 		df.data_entrada = '-'
 		df.data_saida = '-'
 		df.paletes_gerados = (df['peso_vedante']) * 2857 / 187200
@@ -417,7 +417,7 @@ def adicionar_bobina():
 	# Dados das bobinas
 	with st.form('forms_Bobina'):
 		dic['status'] = 'Disponível'
-		dic['data'] = datetime.now(tz)
+		dic['data'] = datetime.today() - timedelta(hours=3)
 		s1, s2, s3, s4, s6 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_OT'] = s1.text_input('Número OT')
 		dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
@@ -495,7 +495,7 @@ def adicionar_selante():
 	# Dados dos selantes
 	with st.form('forms_selante'):
 		dic['status'] = 'Disponível'
-		dic['data'] = datetime.now(tz)
+		dic['data'] = datetime.today() - timedelta(hours=3)
 		s1, s2, s3, s4, s5 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
 		dic['codigo_SAP'] = s2.text_input('Código SAP')
@@ -837,7 +837,7 @@ if df_bobinas.shape[0] > 0:
 
 			# modifica bobina selecionada para finalizada
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Finalizada'
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz)
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.today() - timedelta(hours=3)
 
 			# prepara dados para escrever no banco
 			dic_fin = {}
@@ -871,7 +871,7 @@ if df_bobinas.shape[0] > 0:
 
 		# modifica bobina selecionada para uso
 		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'status'] = 'Em uso'
-		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.now(tz)
+		df_bobinas.loc[df_bobinas['numero_OT'] == numero_bobina, 'data_entrada'] = datetime.today() - timedelta(hours=3)
 
 		# prepara dados para escrever no banco
 		dic_bobina_uso = {}
@@ -883,7 +883,7 @@ if df_bobinas.shape[0] > 0:
 		documento = new_uso['numero_OT']
 
 		# Filtra paletes da bobina em uso e atualiza valores
-		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.now(tz)
+		df_pal_sem.loc[df_pal_sem['numero_OT'] == numero_bobina, 'data_gerado'] = datetime.today() - timedelta(hours=3)
 
 		#st.write(df_pal_sem['numero_palete'])
 
@@ -934,7 +934,7 @@ if df_bobinas.shape[0] > 0:
 				numero_palete = maximo_index_s
 
 				# atualiza data de estoque do palete
-				df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz)
+				df_pal_sem.loc[df_pal_sem['numero_palete'] == numero_palete, 'data_estoque'] = datetime.today() - timedelta(hours=3)
 
 				# prepara dados para escrever no banco
 				dic_fifo_in = {}
@@ -997,7 +997,7 @@ if df_bobinas.shape[0] > 0:
 				numero_palete = numero_palete_aux.iloc[7]
 
 				# atualiza a data de consumo do palete consumido
-				df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz)
+				df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'data_consumo'] = datetime.today() - timedelta(hours=3)
 
 				#identifica o numero da bobina do palete
 				bobina_consumo = df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'numero_OT']
@@ -1090,8 +1090,8 @@ if df_bobinas.shape[0] > 0:
 
 					# modifica selante selecionada para finalizada
 					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'status'] = 'Finalizada'
-					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_entrada'] = datetime.now(tz)
-					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_saida'] = datetime.now(tz)
+					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_entrada'] = datetime.today() - timedelta(hours=3)
+					df_selantes.loc[df_selantes['lote_interno'] == val_em_uso, 'data_saida'] = datetime.today() - timedelta(hours=3)
 
 					# prepara dados para escrever no banco
 					dic_fin = {}
@@ -1122,7 +1122,7 @@ if df_bobinas.shape[0] > 0:
 
 				# modifica selante selecionada para uso
 				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'status'] = 'Em uso'
-				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'data_entrada'] = datetime.now(tz)
+				df_selantes.loc[df_selantes['lote_interno'] == numero_selante, 'data_entrada'] = datetime.today() - timedelta(hours=3)
 
 				# prepara dados para escrever no banco
 				dic_selante_uso = {}
@@ -1134,7 +1134,7 @@ if df_bobinas.shape[0] > 0:
 				documento = new_uso['lote_interno']
 
 				# Filtra paletes da selante em uso e atualiza valores
-				df_pal_com.loc[df_pal_com['lote_interno'] == numero_selante, 'data_gerado'] = datetime.now(tz)
+				df_pal_com.loc[df_pal_com['lote_interno'] == numero_selante, 'data_gerado'] = datetime.today() - timedelta(hours=3)
 
 				# Escreve o dataframe dos paletes na selante para escrita em banco
 				new_uso['Paletes'] = df_pal_com[df_pal_com['lote_interno'] == numero_selante].to_csv()
@@ -1183,7 +1183,7 @@ if df_bobinas.shape[0] > 0:
 					numero_palete = maximo_index
 
 					# atualiza valores de data de estoque e o tipo de tampa
-					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.now(tz)
+					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'data_estoque'] = datetime.today() - timedelta(hours=3)
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'tipo_tampa'] = tipo_bobina_uso
 					df_pal_com.loc[df_pal_com['numero_palete'] == numero_palete, 'numero_OT'] = bobina_em_uso.iloc[0,0]
 
@@ -1245,7 +1245,7 @@ if df_bobinas.shape[0] > 0:
 					numero_palete = numero_palete_aux.iloc[9]
 
 					# atualiza a data de consumo do palete consumido
-					df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.now(tz)
+					df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'data_consumo'] = datetime.today() - timedelta(hours=3)
 
 					#identifica o numero da selante do palete
 					selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'] == numero_palete), 'lote_interno']
@@ -1323,7 +1323,7 @@ if telas == 'Remover bobinas ou selantes':
 
 			# modifica bobina selecionada para removida
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'status'] = 'Removida'
-			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.now(tz)
+			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'data_saida'] = datetime.today() - timedelta(hours=3)
 			df_bobinas.loc[df_bobinas['numero_OT'] == val_em_uso, 'comentario'] = comentario_peso
 
 			# peso incial da bobinaa
@@ -1388,7 +1388,7 @@ if telas == 'Remover bobinas ou selantes':
 
 			# modifica bobina selecionada para removida
 			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'status'] = 'Removida'
-			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'data_saida'] = datetime.now(tz)
+			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'data_saida'] = datetime.today() - timedelta(hours=3)
 			df_selantes.loc[df_selantes['lote_interno'] == selante_atual, 'comentario'] = comentario_peso_sel
 
 			# peso incial da bobinaa
