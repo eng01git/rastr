@@ -41,17 +41,6 @@ tz = pytz.timezone('America/Bahia')
 ##############################################################################
 
 
-# botao para teste
-reset = st.button('Reset')
-rerun = False
-
-if reset:
-	rerun = True
-	caching.clear_cache()
-	if rerun:
-				st.experimental_rerun()
-
-
 def upload_excel(uploaded_file):
 	# Leitura dos dados do arquivo excel
 	try:
@@ -746,7 +735,7 @@ with st.beta_expander('Gerenciamento de bobinas'):
 		st1, st2 = st.beta_columns([99, 1])
 
 		st.subheader('Detalhamento das bobinas')
-		#st.write(df_bobinas)
+		
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
 		response = AgGrid(
 			df_bobinas,
@@ -959,9 +948,6 @@ if df_bobinas.shape[0] > 0:
 
 				if flag_rerun:
 					st.experimental_rerun()
-
-		#elif (ps_fifo_in.shape[0] >= 5):
-		#	st.error('Há paletes demais na reserva')
 			
 		ps_fifo_in['numero_palete'] = ps_fifo_in['numero_palete'].astype('int64')
 		fifo_in_show = ps_fifo_in.sort_values(by='numero_palete', ascending=True)[['numero_palete', 'tipo_tampa']]
@@ -1058,15 +1044,11 @@ if df_bobinas.shape[0] > 0:
 		df_selantes_disp = pd.DataFrame()
 		if df_selantes[df_selantes['status'] == 'Disponível'].shape[0] > 0:
 			df_selantes_disp = df_selantes[df_selantes['status'] == 'Disponível']
-			#df_selantes_disp['data'] = pd.to_datetime(df_selantes_disp['data'])
 			df_selantes_disp.sort_values(by=['data'], inplace=True)
 
 			# cria selectbox para selecionar selantes
 			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['lote_interno'].astype(str) + ' / ' +  df_selantes_disp['numero_lote'].astype(str)))
 			numero_selante = numero_selante_full.split()[0]
-			#st.write(numero_selante)
-			#st.write(type(numero_selante))
-			#st.write(df_selantes['lote_interno'].dtypes)
 
 			# parte do principio que nenhuma selante foi selecionada
 			selecionar_selante = False
@@ -1364,6 +1346,7 @@ if telas == 'Remover bobinas ou selantes':
 				doc_ref.set(new_remove)
 				st.success('Modificação armazenada com sucesso!')
 				rerun = True
+				caching.clear_cache()
 			except:
 				st.error('Falha ao armazenar modificação, tente novamente ou entre em contato com suporte!')
 				caching.clear_cache()
@@ -1507,7 +1490,6 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado['data'] = resultado['data']
 				resultado['data_entrada'] = resultado['data_entrada']
 
-				#st.table(resultado)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, resultado, 0, 0, True)
 				response = AgGrid(
 					resultado,
@@ -1637,7 +1619,6 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				filtro_pal_com['data_estoque'] = filtro_pal_com['data_estoque']
 				filtro_pal_com['data_consumo'] = filtro_pal_com['data_consumo']
 
-				#st.table(filtro_pal_com)
 				gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(120, filtro_pal_com, 0, 0, True)
 				response = AgGrid(
 					filtro_pal_com,
@@ -1672,7 +1653,6 @@ if telas == 'Apontamento de código SAP':
 	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 	df_pal_sem_filtrado['data_gerado'] = pd.to_datetime(df_pal_sem_filtrado['data_gerado'])
-	#df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None)
 
 	# filtra pela data selecionada
 	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
@@ -1737,7 +1717,6 @@ if telas == 'Apontamento de código SAP':
 			if rerun:
 				st.experimental_rerun()
 
-			#st.write(df_pal_sem)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
@@ -1749,7 +1728,6 @@ if telas == 'Apontamento de código SAP':
 	# transforma coluna no tipo datetime
 	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
 	df_pal_com_filtrado['data_gerado'] = pd.to_datetime(df_pal_com_filtrado['data_gerado'])
-	#df_pal_com_filtrado['data_estoque'] = df_pal_com_filtrado['data_estoque'].dt.tz_localize(None)
 
 	# filtra pela data selecionada
 	if df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
@@ -1814,7 +1792,16 @@ if telas == 'Apontamento de código SAP':
 			if rerun:
 				st.experimental_rerun()
 
-			#st.write(df_pal_com)
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
+
+# botao para teste
+reset = st.button('Reset')
+rerun = False
+
+if reset:
+	rerun = True
+	caching.clear_cache()
+	if rerun:
+				st.experimental_rerun()
