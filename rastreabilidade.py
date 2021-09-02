@@ -1479,6 +1479,7 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado = filtro_bobina.append(filtro_bobina_s)
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
+				st.write(resultado['data_entrada'])
 				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'])
 				resultado['data'] = pd.to_datetime(resultado['data']) 
 
