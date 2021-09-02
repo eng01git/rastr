@@ -998,6 +998,7 @@ if df_bobinas.shape[0] > 0:
 
 				#identifica o numero da bobina do palete
 				bobina_consumo = df_pal_sem.loc[(df_pal_sem['numero_palete'] == numero_palete), 'numero_OT']
+				st.write(bobina_consumo)
 
 				# prepara dados para escrever no banco
 				dic_fifo_out = {}
