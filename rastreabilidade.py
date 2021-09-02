@@ -35,7 +35,6 @@ db = firestore.Client(credentials=creds, project="lid-rastr")
 
 # Ajustando fuso
 tz = pytz.timezone('America/Bahia')
-st.write(datetime.now(tz))
 ##############################################################################
 # 												  funcoes					
 ##############################################################################
@@ -1202,9 +1201,6 @@ if df_bobinas.shape[0] > 0:
 
 					if flag_rerun:
 						st.experimental_rerun()
-
-			#elif (sel_fifo_in.shape[0] >= 5):
-			#	st.error('há paletes demais na reserva')
 			
 			#sel_fifo_in['numero_palete'] = sel_fifo_in['numero_palete'].astype('int64')
 			fifo_s_in_show = sel_fifo_in.sort_values(by='data_estoque', ascending=True)[['numero_palete', 'tipo_tampa']]
@@ -1662,8 +1658,6 @@ if telas == 'Apontamento de código SAP':
 	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None)
-	
-	st.write(df_pal_sem_filtrado['data_estoque'])
 
 	# filtra pela data selecionada
 	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
