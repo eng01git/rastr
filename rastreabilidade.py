@@ -307,9 +307,9 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
 	#data_atual = datetime.date(data['data_estoque']).strftime("%d/%m/%Y")
 	#hora_atual = datetime.time(data['data_estoque']).strftime("%H:%M")
-	data['data_estoque'] = pd.to_datetime(data['data_estoque'])
-	data_atual = data['data_estoque'].dt.strftime("%d/%m/%Y")
-	hora_atual = data['data_estoque'].dt.strftime("%H:%M")
+	#data['data_estoque'] = pd.to_datetime(data['data_estoque'])
+	data_atual = data['data_estoque'].strftime("%d/%m/%Y")
+	hora_atual = data['data_estoque'].strftime("%H:%M")
 
 	st.write(data_atual)
 	ws['A11'] = data_atual #data['data_estoque']  # 'data'
