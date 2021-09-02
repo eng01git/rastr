@@ -1066,6 +1066,8 @@ if df_bobinas.shape[0] > 0:
 			numero_selante_full = st11.selectbox('Selecione o próximo selante:', list(df_selantes_disp['lote_interno'].astype(str) + ' / ' +  df_selantes_disp['numero_lote'].astype(str)))
 			numero_selante = numero_selante_full.split()[0]
 			st.write(numero_selante)
+			st.write(type(numero_selante))
+			st.write(df_selantes['lote_interno'].dtypes)
 
 			# parte do principio que nenhuma selante foi selecionada
 			selecionar_selante = False
