@@ -1479,7 +1479,6 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 				resultado = filtro_bobina.append(filtro_bobina_s)
 
 				# transforma as datas de volta em strings para facilitar a visualizacao
-				st.write(resultado['data_entrada'])
 				resultado['data_entrada'] = pd.to_datetime(resultado['data_entrada'], utc=True)
 				resultado['data'] = pd.to_datetime(resultado['data']) 
 
@@ -1658,14 +1657,14 @@ if telas == 'Apontamento de código SAP':
 	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 	df_pal_sem_filtrado['data_gerado'] = pd.to_datetime(df_pal_sem_filtrado['data_gerado'])
-	#df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None)
+	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None)
 
 	# filtra pela data selecionada
-	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) >= data_inicio) & (df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) <= data_fim)].shape[0] > 0:
+	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
 		
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
-			df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) >= data_inicio) & (df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) <= data_fim)],
+			df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)],
 			gridOptions=gridOptions,
 			height=grid_height,
 			width='100%',
@@ -1735,14 +1734,14 @@ if telas == 'Apontamento de código SAP':
 	# transforma coluna no tipo datetime
 	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
 	df_pal_com_filtrado['data_gerado'] = pd.to_datetime(df_pal_com_filtrado['data_gerado'])
-	#df_pal_com_filtrado['data_estoque'] = df_pal_com_filtrado['data_estoque'].dt.tz_localize(None)
+	df_pal_com_filtrado['data_estoque'] = df_pal_com_filtrado['data_estoque'].dt.tz_localize(None)
 
 	# filtra pela data selecionada
-	if df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'].dt.tz_localize(None) >= data_inicio) & (df_pal_com_filtrado['data_estoque'].dt.tz_localize(None) <= data_fim)].shape[0] > 0:
+	if df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
-			df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'].dt.tz_localize(None) >= data_inicio) & (df_pal_com_filtrado['data_estoque'].dt.tz_localize(None) <= data_fim)],
+			df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)],
 			gridOptions=gridOptions,
 			height=grid_height,
 			width='100%',
