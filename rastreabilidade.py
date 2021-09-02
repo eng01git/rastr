@@ -1649,12 +1649,11 @@ if telas == 'Detalhamento de bobinas e selantes por data':
 if telas == 'Apontamento de código SAP':
 	
 	st.subheader('Apontamento de Código SAP')
+
 	data_filtro = st.date_input('Selecione a data que deseja filtrar')
 	data_time_filtro = datetime.combine(data_filtro, time())
 	data_inicio = data_time_filtro - timedelta(hours=6)
 	data_fim = data_time_filtro + timedelta(hours=18)
-	st.write(data_time_filtro)
-	st.write(data_inicio)
 	st.subheader('Paletes sem selante')
 
 	# seleciona as linhas que possuem data de estoque
@@ -1662,9 +1661,10 @@ if telas == 'Apontamento de código SAP':
 
 	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
+	st.write(df_pal_sem_filtrado['data_estoque'])
 
 	# filtra pela data selecionada
-	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) >= data_inicio) & (df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) <= data_fim)].shape[0] > 0:
+	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
 		
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
