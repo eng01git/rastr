@@ -1670,7 +1670,7 @@ if telas == 'Apontamento de código SAP':
 	# transforma coluna no tipo datetime
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 	df_pal_sem_filtrado['data_gerado'] = pd.to_datetime(df_pal_sem_filtrado['data_gerado'])
-	df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None)
+	#df_pal_sem_filtrado['data_estoque'] = df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None)
 
 	# filtra pela data selecionada
 	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
@@ -1747,7 +1747,7 @@ if telas == 'Apontamento de código SAP':
 	# transforma coluna no tipo datetime
 	df_pal_com_filtrado['data_estoque'] = pd.to_datetime(df_pal_com_filtrado['data_estoque'])
 	df_pal_com_filtrado['data_gerado'] = pd.to_datetime(df_pal_com_filtrado['data_gerado'])
-	df_pal_com_filtrado['data_estoque'] = df_pal_com_filtrado['data_estoque'].dt.tz_localize(None)
+	#df_pal_com_filtrado['data_estoque'] = df_pal_com_filtrado['data_estoque'].dt.tz_localize(None)
 
 	# filtra pela data selecionada
 	if df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)].shape[0] > 0:
