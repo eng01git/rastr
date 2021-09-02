@@ -735,7 +735,7 @@ with st.beta_expander('Gerenciamento de bobinas'):
 		st1, st2 = st.beta_columns([99, 1])
 
 		st.subheader('Detalhamento das bobinas')
-		
+
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
 		response = AgGrid(
 			df_bobinas,
@@ -1017,8 +1017,8 @@ if df_bobinas.shape[0] > 0:
 		else:
 			st.error('Não há palete sem selante para consumir')
 
-		ps_fifo_out['numero_palete'] = ps_fifo_out['numero_palete'].astype('int64')
-		fifo_out_show = ps_fifo_out.sort_values(by='numero_palete', ascending=False)[['numero_palete', 'tipo_tampa']]
+		ps_fifo_out['data_consumo'] = pd.to_datetime(ps_fifo_out['data_consumo'])
+		fifo_out_show = ps_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 		fifo_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 		
 		if fifo_out_show.shape[0] > 0:
@@ -1263,8 +1263,8 @@ if df_bobinas.shape[0] > 0:
 			else:
 				st.error('Não há palete com selante para consumir')
 			
-			sel_fifo_out['numero_palete'] = sel_fifo_out['numero_palete'].astype('int64')
-			fifo_s_out_show = sel_fifo_out.sort_values(by='numero_palete', ascending=False)[['numero_palete', 'tipo_tampa']]
+			sel_fifo_out['data_consumo'] = pd.to_datetime(sel_fifo_out['data_consumo'])
+			fifo_s_out_show = sel_fifo_out.sort_values(by='data_consumo', ascending=False)[['numero_palete', 'tipo_tampa']]
 			fifo_s_out_show.rename(columns={'numero_palete': 'Consumidos'}, inplace=True)
 
 			if fifo_s_out_show.shape[0] > 0:
