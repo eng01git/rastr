@@ -1662,7 +1662,7 @@ if telas == 'Apontamento de código SAP':
 	df_pal_sem_filtrado['data_estoque'] = pd.to_datetime(df_pal_sem_filtrado['data_estoque'])
 
 	# filtra pela data selecionada
-	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'].dt.date >= data_inicio) & (df_pal_sem_filtrado['data_estoque'].dt.date <= data_fim)].shape[0] > 0:
+	if df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) >= data_inicio) & (df_pal_sem_filtrado['data_estoque'].dt.tz_localize(None) <= data_fim)].shape[0] > 0:
 		
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_sem_filtrado[(df_pal_sem_filtrado['data_estoque'] >= data_inicio) & (df_pal_sem_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
@@ -1738,7 +1738,7 @@ if telas == 'Apontamento de código SAP':
 	
 
 	# filtra pela data selecionada
-	if df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'].dt.date >= data_inicio) & (df_pal_com_filtrado['data_estoque'].dt.date <= data_fim)].shape[0] > 0:
+	if df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'].dt.tz_localize(None) >= data_inicio) & (df_pal_com_filtrado['data_estoque'].dt.tz_localize(None)<= data_fim)].shape[0] > 0:
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(150, df_pal_com_filtrado[(df_pal_com_filtrado['data_estoque'] >= data_inicio) & (df_pal_com_filtrado['data_estoque'] <= data_fim)], 0, 0, True)
 		response = AgGrid(
