@@ -407,7 +407,7 @@ def adicionar_bobina():
 	with st.form('forms_Bobina'):
 		dic['status'] = 'Disponível'
 		dic['data'] = datetime.today() - timedelta(hours=3)
-		s1, s2, s3, s4, s6 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
+		s1, s2, s3, s4, s6 = st.columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_OT'] = s1.text_input('Número OT')
 		dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
 		dic['codigo_bobina'] = tipos_bobinas[dic['tipo_bobina']]
@@ -460,7 +460,7 @@ def adicionar_bobina():
 			rerun = False
 			# Armazena no banco
 			try:
-				doc_ref = db.collection("Bobina").document(new_d['numero_OT'])
+				doc_ref = db.collection('Bobina').document(new_d['numero_OT'])
 				doc_ref.set(new_d)
 				st.success('Bobina adicionada com sucesso!')
 
@@ -485,7 +485,7 @@ def adicionar_selante():
 	with st.form('forms_selante'):
 		dic['status'] = 'Disponível'
 		dic['data'] = datetime.today() - timedelta(hours=3)
-		s1, s2, s3, s4, s5 = st.beta_columns([2.5, 2.5, 2.5, 2.5, 1])
+		s1, s2, s3, s4, s5 = st.columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
 		dic['codigo_SAP'] = s2.text_input('Código SAP')
 		dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
@@ -539,7 +539,7 @@ def adicionar_selante():
 			rerun = False
 			# Armazena no banco
 			try:
-				doc_ref = db.collection("Selante").document(new_d['lote_interno'])
+				doc_ref = db.collection('Selante').document(new_d['lote_interno'])
 				doc_ref.set(new_d)
 				st.success('Selante adicionada com sucesso!')
 
@@ -721,7 +721,7 @@ sel_fifo_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 # organizacao da tela #
 #######################
 
-with st.beta_expander('Gerenciamento de bobinas'):
+with st.expander('Gerenciamento de bobinas'):
 	st.subheader('Inserir Bobinas')
 	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
 	if uploaded_file is not None:
@@ -732,7 +732,7 @@ with st.beta_expander('Gerenciamento de bobinas'):
 	adicionar_bobina()
 	if df_bobinas.shape[0] > 0:
 		st.subheader('Selecionar bobina para uso')
-		st1, st2 = st.beta_columns([99, 1])
+		st1, st2 = st.columns([99, 1])
 
 		st.subheader('Detalhamento das bobinas')
 
@@ -748,7 +748,7 @@ with st.beta_expander('Gerenciamento de bobinas'):
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
 
-with st.beta_expander('Gerenciamento de selantes'):
+with st.expander('Gerenciamento de selantes'):
 
 	st.subheader('Inserir Selante')
 	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload ")
@@ -760,7 +760,7 @@ with st.beta_expander('Gerenciamento de selantes'):
 
 	if df_selantes.shape[0] > 0:
 		st.subheader('Selecionar selante para uso')
-		st11, st22 = st.beta_columns([99, 1])
+		st11, st22 = st.columns([99, 1])
 
 		st.subheader('Detalhamento dos selantes')
 
@@ -777,7 +777,7 @@ with st.beta_expander('Gerenciamento de selantes'):
 			enable_enterprise_modules=enable_enterprise_modules)
 
 # define imagem e barra lateral
-col2, imagem, col4 = st.beta_columns([3, 10, 3])
+col2, imagem, col4 = st.columns([3, 10, 3])
 imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_bobina_uso), unsafe_allow_html=True)
 imagem.image('lid_linha.png')
 
@@ -800,9 +800,13 @@ if df_bobinas.shape[0] > 0:
 	df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
-	# cria selectbox para selecionar bobinas
-	numero_bobina_full = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
-	numero_bobina = numero_bobina_full.split()[0]
+	if df_bobinas[df_bobinas['status'] == 'Disponível'].shape[0] > 0:
+		# cria selectbox para selecionar bobinas
+		numero_bobina_full = st1.selectbox('Selecione a próxima bobina:', list((df_bobinas_disp['numero_OT'].astype(str) + ' / Tipo: ' + df_bobinas_disp['tipo_bobina'].astype(str))))
+		numero_bobina = numero_bobina_full.split()[0]
+		
+	else:
+		numero_bobina = None
 
 	# parte do principio que nenhuma bobina foi selecionada
 	selecionar_bobina = False
@@ -811,7 +815,7 @@ if df_bobinas.shape[0] > 0:
 	if numero_bobina != None:
 		selecionar_bobina = st1.button('Utilizar a bobina selecionada?')
 	else:
-		st1.info('Não há bobinas disponiveis')
+		st1.warning('Não há bobinas disponiveis')
 
 	if selecionar_bobina:
 
@@ -842,7 +846,7 @@ if df_bobinas.shape[0] > 0:
 
 			# Armazena no banco as alteracoes na bobina
 			try:
-				doc_ref = db.collection("Bobina").document(documento)
+				doc_ref = db.collection('Bobina').document(documento)
 				doc_ref.set(new_fin)
 				st.success('Formulário armazenado com sucesso!')
 			except:
@@ -879,7 +883,7 @@ if df_bobinas.shape[0] > 0:
 
 		# Armazena no banco as alteracoes na bobina
 		try:
-			doc_ref = db.collection("Bobina").document(documento)
+			doc_ref = db.collection('Bobina').document(documento)
 			doc_ref.set(new_uso)
 			st.success('Formulário armazenado com sucesso!')
 			caching.clear_cache()
@@ -900,8 +904,41 @@ if df_bobinas.shape[0] > 0:
 		st.subheader('Sem selante')
 
 		if (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
-			add_palete_sem = col2.button('Gerar palete TP sem Selante')
-			if add_palete_sem:
+			
+			# Initialization
+			if 'confirmar_add_sem' not in st.session_state:
+			   	st.session_state['confirmar_add_sem'] = False	
+	
+			# Initialization
+			if 'cancelar_add_sem' not in st.session_state:
+			   	st.session_state['cancelar_add_sem'] = False
+			   	
+			# Initialization
+			if 'add_palete_sem' not in st.session_state:
+			   	st.session_state['add_palete_sem'] = False	
+			
+			if not st.session_state.add_palete_sem:
+				adicionar = col2.button('Gerar palete TP sem Selante')
+				if adicionar:
+					st.session_state.add_palete_sem = True
+					st.experimental_rerun()
+			
+			if st.session_state.add_palete_sem:
+				confirmar = col2.button('Confirmar ação', key='confirmar_sem_add')
+				if confirmar:
+					st.session_state.confirmar_add_sem = True
+				cancelar = col2.button('Cancelar ação', key='cancelar_sem_add')
+				if cancelar:
+					st.session_state.cancelar_add_sem = True
+				
+			if st.session_state.cancelar_add_sem:
+				st.session_state.cancelar_add_sem = False
+				st.session_state.add_palete_sem = False
+				st.experimental_rerun()
+				
+			if st.session_state.confirmar_add_sem:
+				st.session_state.confirmar_add_sem = False
+				st.session_state.add_palete_sem = False
 
 				# identifica o ultimo numero de palete utilizado
 				maximo_index_s = 670
@@ -938,10 +975,9 @@ if df_bobinas.shape[0] > 0:
 
 				# Armazena no banco as alteracoes na bobina
 				try:
-					doc_ref = db.collection("Bobina").document(documento)
+					doc_ref = db.collection('Bobina').document(documento)
 					doc_ref.set(new_fifo_in)
 					flag_rerun = True
-					#caching.clear_cache()
 
 				except:
 					st.error('Falha ao atualizar informacoes do palete, tente novamente ou entre em contato com suporte!')
@@ -975,8 +1011,41 @@ if df_bobinas.shape[0] > 0:
 			ps_fifo_in['data_estoque'] = pd.to_datetime(ps_fifo_in['data_estoque'])
 			download_etiqueta(ps_fifo_in.sort_values(by='numero_palete', ascending=False).iloc[0], 0)
 
-			con_palete_sem = col2.button('Consumir palete TP sem Selante')
-			if con_palete_sem:
+			# Initialization
+			if 'confirmar_rem_sem' not in st.session_state:
+			   	st.session_state['confirmar_rem_sem'] = False	
+	
+			# Initialization
+			if 'cancelar_rem_sem' not in st.session_state:
+			   	st.session_state['cancelar_rem_sem'] = False
+			   	
+			# Initialization
+			if 'rem_palete_sem' not in st.session_state:
+			   	st.session_state['rem_palete_sem'] = False	
+			
+			if not st.session_state.rem_palete_sem:
+				adicionar = col2.button('Consumir palete TP sem Selante')
+				if adicionar:
+					st.session_state.rem_palete_sem = True
+					st.experimental_rerun()
+				
+			if st.session_state.rem_palete_sem:
+				confirmar = col2.button('Confirmar ação', key='confirmar_sem_rem')
+				if confirmar:
+					st.session_state.confirmar_rem_sem = True
+				cancelar = col2.button('Cancelar ação', key='cancelar_sem_rem')
+				if cancelar:
+					st.session_state.cancelar_rem_sem = True
+				
+			if st.session_state.cancelar_rem_sem:
+				st.session_state.cancelar_rem_sem = False
+				st.session_state.rem_palete_sem = False
+				st.experimental_rerun()
+				
+			if st.session_state.confirmar_rem_sem:
+				st.session_state.confirmar_rem_sem = False
+				st.session_state.rem_palete_sem = False
+				
 				# observa o indice do primeiro elemento do fifo
 				numero_palete_aux = ps_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
 				numero_palete = numero_palete_aux.iloc[7]
@@ -986,7 +1055,6 @@ if df_bobinas.shape[0] > 0:
 
 				#identifica o numero da bobina do palete
 				bobina_consumo = df_pal_sem.loc[(df_pal_sem['numero_palete'] == str(numero_palete)), 'numero_OT']
-				st.write(bobina_consumo)
 
 				# prepara dados para escrever no banco
 				dic_fifo_out = {}
@@ -1005,7 +1073,7 @@ if df_bobinas.shape[0] > 0:
 
 				# Armazena no banco as alteracoes na bobina
 				try:
-					doc_ref = db.collection("Bobina").document(documento)
+					doc_ref = db.collection('Bobina').document(documento)
 					doc_ref.set(new_fifo_out)
 					flag_rerun = True
 					#caching.clear_cache()
@@ -1092,7 +1160,7 @@ if df_bobinas.shape[0] > 0:
 
 					# Armazena no banco as alteracoes na selante
 					try:
-						doc_ref = db.collection("Selante").document(documento)
+						doc_ref = db.collection('Selante').document(documento)
 						doc_ref.set(new_fin)
 						st.success('Formulário armazenado com sucesso!')
 					except:
@@ -1129,7 +1197,7 @@ if df_bobinas.shape[0] > 0:
 
 				# Armazena no banco as alteracoes na selante
 				try:
-					doc_ref = db.collection("Selante").document(documento)
+					doc_ref = db.collection('Selante').document(documento)
 					doc_ref.set(new_uso)
 					st.success('Formulário armazenado com sucesso!')
 					flag_rerun = True
@@ -1140,6 +1208,8 @@ if df_bobinas.shape[0] > 0:
 
 				if flag_rerun:
 					st.experimental_rerun()
+		else:
+			st11.warning('Não há selantes disponiveis')
 
 		##############################
 		# fifo_s paletes com selante #
@@ -1150,8 +1220,41 @@ if df_bobinas.shape[0] > 0:
 			st.subheader('Com selante')
 
 			if (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
-				add_palete_sem = col4.button('Gerar palete TP com Selante')
-				if add_palete_sem:
+
+				# Initialization
+				if 'confirmar_add_com' not in st.session_state:
+				   	st.session_state['confirmar_add_com'] = False	
+		
+				# Initialization
+				if 'cancelar_add_com' not in st.session_state:
+				   	st.session_state['cancelar_add_com'] = False
+				   	
+				# Initialization
+				if 'add_palete_com' not in st.session_state:
+				   	st.session_state['add_palete_com'] = False	
+				
+				if not st.session_state.add_palete_com:
+					adicionar = col4.button('Gerar palete TP com Selante')
+					if adicionar:
+						st.session_state.add_palete_com = True
+						st.experimental_rerun()
+				
+				if st.session_state.add_palete_com:
+					confirmar = col4.button('Confirmar ação', key='confirmar_com_add')
+					if confirmar:
+						st.session_state.confirmar_add_com = True
+					cancelar = col4.button('Cancelar ação', key='cancelar_com_add')
+					if cancelar:
+						st.session_state.cancelar_add_com = True
+					
+				if st.session_state.cancelar_add_com:
+					st.session_state.cancelar_add_com = False
+					st.session_state.add_palete_com = False
+					st.experimental_rerun()
+					
+				if st.session_state.confirmar_add_com:
+					st.session_state.confirmar_add_com = False
+					st.session_state.add_palete_com = False
 
 					# identifica o ultimo numero de palete utilizado
 					maximo_index = 575
@@ -1190,7 +1293,7 @@ if df_bobinas.shape[0] > 0:
 
 					# Armazena no banco as alteracoes na selante
 					try:
-						doc_ref = db.collection("Selante").document(documento)
+						doc_ref = db.collection('Selante').document(documento)
 						doc_ref.set(new_fifo_s_in)
 						flag_rerun = True
 						#caching.clear_cache()
@@ -1226,17 +1329,51 @@ if df_bobinas.shape[0] > 0:
 				sel_fifo_in['data_estoque'] = pd.to_datetime(sel_fifo_in['data_estoque'])
 				download_etiqueta(sel_fifo_in.sort_values(by='numero_palete', ascending=False).iloc[0], 1)
 
-				con_palete_sem = col4.button('Consumir palete TP com Selante')
-				if con_palete_sem:
+
+				# Initialization
+				if 'confirmar_rem_com' not in st.session_state:
+				   	st.session_state['confirmar_rem_com'] = False	
+		
+				# Initialization
+				if 'cancelar_rem_com' not in st.session_state:
+				   	st.session_state['cancelar_rem_com'] = False
+				   	
+				# Initialization
+				if 'rem_palete_com' not in st.session_state:
+				   	st.session_state['rem_palete_com'] = False	
+				
+				if not st.session_state.rem_palete_com:
+					adicionar = col4.button('Consumir palete TP com Selante')
+					if adicionar:
+						st.session_state.rem_palete_com = True
+						st.experimental_rerun()
+				
+				if st.session_state.rem_palete_com:
+					confirmar = col4.button('Confirmar ação', key='confirmar_com_rem')
+					if confirmar:
+						st.session_state.confirmar_rem_com = True
+					cancelar = col4.button('Cancelar ação', key='cancelar_com_rem')
+					if cancelar:
+						st.session_state.cancelar_rem_com = True
+					
+				if st.session_state.cancelar_rem_com:
+					st.session_state.cancelar_rem_com = False
+					st.session_state.rem_palete_com = False
+					st.experimental_rerun()
+					
+				if st.session_state.confirmar_rem_com:
+					st.session_state.confirmar_rem_com = False
+					st.session_state.rem_palete_com = False
+					
 					# observa o indice do primeiro elemento do fifo_s
 					numero_palete_aux = sel_fifo_in.sort_values(by='data_estoque', ascending=True).iloc[0]
 					numero_palete = numero_palete_aux.iloc[9]
 
 					# atualiza a data de consumo do palete consumido
-					df_pal_com.loc[(df_pal_com['numero_palete'] == str(numero_palete)), 'data_consumo'] = datetime.today() - timedelta(hours=3)
+					df_pal_com.loc[(df_pal_com['numero_palete'].astype('str') == str(numero_palete)), 'data_consumo'] = datetime.today() - timedelta(hours=3)
 
-					#identifica o numero da selante do palete
-					selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'] == str(numero_palete)), 'lote_interno']
+					#identifica o numero da selante do paletes
+					selante_consumo = df_pal_com.loc[(df_pal_com['numero_palete'].astype('str') == str(numero_palete)), 'lote_interno']
 
 					# prepara dados para escrever no banco
 					dic_fifo_s_out = {}
@@ -1255,7 +1392,7 @@ if df_bobinas.shape[0] > 0:
 
 					# Armazena no banco as alteracoes na selante
 					try:
-						doc_ref = db.collection("Selante").document(documento)
+						doc_ref = db.collection('Selante').document(documento)
 						doc_ref.set(new_fifo_s_out)
 						flag_rerun = True
 						#caching.clear_cache()
@@ -1291,8 +1428,8 @@ if df_bobinas.shape[0] > 0:
 if telas == 'Remover bobinas ou selantes':
 	st.subheader('Remoção de bobinas e selantes da produção')
 	# colunas para remoção de bobinas e colunas
-	t0, space1, t1 = st.beta_columns([12, 0.5, 12])
-	c0, c1, c2, space2, c3, c4, c5 = st.beta_columns([3.5,1.5,1,0.5,3.5,1.5,1])
+	t0, space1, t1 = st.columns([12, 0.5, 12])
+	c0, c1, c2, space2, c3, c4, c5 = st.columns([3.5,1.5,1,0.5,3.5,1.5,1])
 
 	# titulos
 	t0.subheader('Remover bobinas')
@@ -1348,7 +1485,7 @@ if telas == 'Remover bobinas ou selantes':
 
 			# Armazena no banco as alteracoes da bobina
 			try:
-				doc_ref = db.collection("Bobina").document(documento_remove)
+				doc_ref = db.collection('Bobina').document(documento_remove)
 				doc_ref.set(new_remove)
 				st.success('Modificação armazenada com sucesso!')
 				rerun = True
@@ -1414,7 +1551,7 @@ if telas == 'Remover bobinas ou selantes':
 
 			# Armazena no banco as alteracoes da selante
 			try:
-				doc_ref = db.collection("Selante").document(documento_remove_sel)
+				doc_ref = db.collection('Selante').document(documento_remove_sel)
 				doc_ref.set(new_remove_sel)
 				st.success('Modificação armazenada com sucesso!')
 				rerun = True
@@ -1676,7 +1813,7 @@ if telas == 'Apontamento de código SAP':
 			enable_enterprise_modules=enable_enterprise_modules)
 
 		# organiza as colunas
-		valor, botao = st.beta_columns([9,1])
+		valor, botao = st.columns([9,1])
 
 		# campo para incluir o codigo SAP do palete
 		codigo_sap_sem = valor.text_input('Digite o código SAP para apontamento (sem selante)')
@@ -1711,7 +1848,7 @@ if telas == 'Apontamento de código SAP':
 
 				# Armazena no banco as alteracoes da bobina
 				try:
-					doc_ref = db.collection("Bobina").document(documento_sap)
+					doc_ref = db.collection('Bobina').document(documento_sap)
 					doc_ref.set(new_sap)
 					st.success('Modificação armazenada com sucesso!')
 					rerun = True
@@ -1751,7 +1888,7 @@ if telas == 'Apontamento de código SAP':
 			enable_enterprise_modules=enable_enterprise_modules)
 
 		# organiza as colunas
-		valor, botao = st.beta_columns([9,1])
+		valor, botao = st.columns([9,1])
 
 		# campo para incluir o codigo SAP do palete
 		codigo_sap_com = valor.text_input('Digite o código SAP para apontamento (com selante)')
@@ -1786,7 +1923,7 @@ if telas == 'Apontamento de código SAP':
 
 				# Armazena no banco as alteracoes da bobina
 				try:
-					doc_ref = db.collection("Selante").document(documento_sap)
+					doc_ref = db.collection('Selante').document(documento_sap)
 					doc_ref.set(new_sap)
 					st.success('Modificação armazenada com sucesso!')
 					rerun = True
@@ -1810,4 +1947,4 @@ if reset:
 	rerun = True
 	caching.clear_cache()
 	if rerun:
-				st.experimental_rerun()
+		st.experimental_rerun()
