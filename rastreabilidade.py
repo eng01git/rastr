@@ -924,12 +924,13 @@ if df_bobinas.shape[0] > 0:
 					st.experimental_rerun()
 			
 			if st.session_state.add_palete_sem:
-				confirmar = col2.button('Confirmar ação', key='confirmar_sem_add')
-				if confirmar:
-					st.session_state.confirmar_add_sem = True
 				cancelar = col2.button('Cancelar ação', key='cancelar_sem_add')
 				if cancelar:
 					st.session_state.cancelar_add_sem = True
+					
+				confirmar = col2.button('Confirmar ação', key='confirmar_sem_add')
+				if confirmar:
+					st.session_state.confirmar_add_sem = True
 				
 			if st.session_state.cancelar_add_sem:
 				st.session_state.cancelar_add_sem = False
@@ -1030,12 +1031,13 @@ if df_bobinas.shape[0] > 0:
 					st.experimental_rerun()
 				
 			if st.session_state.rem_palete_sem:
-				confirmar = col2.button('Confirmar ação', key='confirmar_sem_rem')
-				if confirmar:
-					st.session_state.confirmar_rem_sem = True
 				cancelar = col2.button('Cancelar ação', key='cancelar_sem_rem')
 				if cancelar:
 					st.session_state.cancelar_rem_sem = True
+					
+				confirmar = col2.button('Confirmar ação', key='confirmar_sem_rem')
+				if confirmar:
+					st.session_state.confirmar_rem_sem = True
 				
 			if st.session_state.cancelar_rem_sem:
 				st.session_state.cancelar_rem_sem = False
@@ -1240,12 +1242,13 @@ if df_bobinas.shape[0] > 0:
 						st.experimental_rerun()
 				
 				if st.session_state.add_palete_com:
-					confirmar = col4.button('Confirmar ação', key='confirmar_com_add')
-					if confirmar:
-						st.session_state.confirmar_add_com = True
 					cancelar = col4.button('Cancelar ação', key='cancelar_com_add')
 					if cancelar:
 						st.session_state.cancelar_add_com = True
+						
+					confirmar = col4.button('Confirmar ação', key='confirmar_com_add')
+					if confirmar:
+						st.session_state.confirmar_add_com = True
 					
 				if st.session_state.cancelar_add_com:
 					st.session_state.cancelar_add_com = False
@@ -1349,12 +1352,13 @@ if df_bobinas.shape[0] > 0:
 						st.experimental_rerun()
 				
 				if st.session_state.rem_palete_com:
-					confirmar = col4.button('Confirmar ação', key='confirmar_com_rem')
-					if confirmar:
-						st.session_state.confirmar_rem_com = True
 					cancelar = col4.button('Cancelar ação', key='cancelar_com_rem')
 					if cancelar:
 						st.session_state.cancelar_rem_com = True
+						
+					confirmar = col4.button('Confirmar ação', key='confirmar_com_rem')
+					if confirmar:
+						st.session_state.confirmar_rem_com = True
 					
 				if st.session_state.cancelar_rem_com:
 					st.session_state.cancelar_rem_com = False
