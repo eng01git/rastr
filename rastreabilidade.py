@@ -411,7 +411,7 @@ def adicionar_bobina():
 		dic['numero_OT'] = s1.text_input('Número OT')
 		dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
 		dic['codigo_bobina'] = tipos_bobinas[dic['tipo_bobina']]
-		dic['peso_bobina'] = s3.number_input('Peso da bobina', step=100, format='%i', value=9000, max_value=18000)
+		dic['peso_bobina'] = s3.number_input('Peso da bobina (em kg)', step=1, format='%i', value=9000, max_value=18000, min_value=4000)
 		dic['codigo_SAP'] = s4.text_input('Código SAP')
 		dic['data_entrada'] = ''
 		dic['comentario'] = '-'
@@ -488,7 +488,7 @@ def adicionar_selante():
 		s1, s2, s3, s4, s5 = st.columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
 		dic['codigo_SAP'] = s2.text_input('Código SAP')
-		dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
+		dic['peso_vedante'] = s3.number_input('Peso do vedante (em kg)', step=1, format='%i', value=1224, max_value=10000, min_value=500)
 		dic['lote_interno'] = s4.text_input('Lote interno')
 		dic['data_entrada'] = '-'
 		dic['comentario'] = '-'
