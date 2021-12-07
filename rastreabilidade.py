@@ -27,7 +27,8 @@ st.set_page_config(page_title="Rastreabilidade",layout="wide")
 ###############################################################################
 
 # Pega as configurações do banco do segredo
-key_dict = json.loads(st.secrets["textkey"])
+textkey = "{\n  \"type\": \"service_account\",\n  \"project_id\": \"lid-rastr\",\n  \"private_key_id\": \"a7c22fdbd57a9b70915020a3075fe968298d9b07\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDGij/1qDDBibyf\\nooQJBsT+afWbqJchuhDgLixrMMrBknCzDKqnMKQGPAq3d3E5A95vf0tyJOQflefW\\ntb89OApzGmx9fDzN4NKIgUPQZJYB1GG/x+JeyQqJCVPzpG3R5t6WtK7XSWxg5WBx\\nQ1JS2KAYKZehZzhp1zDr25w5LeQlNpIbKpAS67yOO4nieA3ft5XGF/YCTPBA5IrV\\nkPusIUE0nbFGPIqHnq6Cj3pnVzpd/iweec9UiGVeUCW3Dw7kCJQom1lHoVYksMhx\\nZSQGzAiIOu6s4OLE/CPXpoa6P8i2erppcQyYIXJ6dL2W4AJ/CKKAt0zRN1N13pgt\\nnhpUIXELAgMBAAECggEAQ8JlR9MKKNN4Y8cUZvw/eVDyeRiV0/Xr0ocPs9moKV5w\\nRjt5dqwcHuCZC7qhEsNmRAle12sNzFXeFSJcTWl174jCJCWlnuIvGFV9rn7Vz3QL\\nlGeEs7LLfK+JTmr87BluOGMcFO/DJGLEgoNmck3qfbScQoK29zBxSt3duIoYBja5\\n6MmkTPPnQhi/gWiI7V/vsAcLvSQH1+PqYP/OzzIsd/Cp9vwNx/u+i50AndsXjDUR\\n2HcfwOIeE3h4H3Zh1Fvzgsznm2fjKEOJAG6wzJtzbe0mBRslld2v+Wuy3QuDM1+N\\nDA1hvSatnxaLNfGCnA70YmDoe+ueoVcGdUl2u0NbYQKBgQD7F/GUeV6Zp/ouh7Ka\\nzmtAtJDk5nWy43ujHH/E+0v5jqz/W0RbvAYuK321IyN1wBA/LHqHMit3Z+XxEw9Z\\ndKGEASNY1Lv7HEgoks6Chn02+k9HJLYD0sdQgIzhMKrIP5UOmwDQT+BNv+nWKXhn\\nyrmwyPnNZ8M2e2+hJBt6dceg2wKBgQDKa2pebKAq7DT0XeU6x6vX/kGtBCycgvzn\\nKb7R9Z7QnUk0IAfAUtQ0wwclhi1R08XpZwzL3BEO6EAo5fzJa/6ObEv9SUwsx7YP\\nriekUDkGqxacGFIe7QqVEHxQgDQ0eUrGd6SOELGNOmi5etVZJlsMZKp6GmvyQL8n\\nbMQUqS+PkQKBgQCnRZUnLw+JV3EATF/8ZyTmDyQziR/Bk3ALAnJPvIUpdBXla1yH\\nrCOF4G03HXiC+fcYzr21kQOJ4Uo6plLkaiErOkLc66NrLrUXam1uYL/Lv0bPAzLK\\nK0GibHDtl6k+C7V17GbHX17zDLVveWL/6fp4PfrEDqrqgaKk+9PeadYaXwKBgG6m\\nczn0pUVxY60lWrZcCesDeQFMI9rWm8r9fesmGk+teyO8UqBmZswExHZVt5ZgbnKd\\nO1iBDu4YNWJl/l5Y44kVWCC4HaTo8vP1XoQqulGT2sMvZEy1hTBhF6OlwWPh3edJ\\n5bEnHPe3syGZLOET33eR28LtiI6fqB60DSfCKFaRAoGAR74hITKw+PbTdUWql/uT\\nuVHE1JaxhnvNRc+/khoNp903fGAHiVJ5hjnFKRVRUB8uMUtTSfKsS9Y5a4BatvB+\\nAdAY/BHdXad2Xwom8kH9Oirph8exXro3x+FmFzBbwcRwggCGXPX0p1vPPzcZLWnp\\nEXk80T6vA2vVQxYvIrG1yqw=\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"firebase-adminsdk-i3gy3@lid-rastr.iam.gserviceaccount.com\",\n  \"client_id\": \"105084896569014155165\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-i3gy3%40lid-rastr.iam.gserviceaccount.com\"\n}\n"
+key_dict = json.loads(textkey)
 creds = service_account.Credentials.from_service_account_info(key_dict)
 
 # Seleciona o projeto
@@ -39,6 +40,60 @@ tz = pytz.timezone('America/Bahia')
 ##############################################################################
 # 									funcoes									 #
 ##############################################################################
+
+
+@st.cache(allow_output_mutation=True)
+def load_setup():
+	# dicionario vazio
+	dicionario = {}
+	
+	doc_ref = db.collection('setup').document('setup')
+	doc = doc_ref.get()
+
+	if doc.exists:
+
+		# Transforma o dicionario em dataframe
+		dicionario = doc.to_dict()
+		csv = dicionario['Dataframe']
+
+		csv_string = StringIO(csv)
+		df_lc = pd.read_table(csv_string, sep=',')
+
+		# Transforma string em tipo data
+		df_lc['data'] = pd.to_datetime(df_lc['data'])
+		df_lc['data_setup'] = pd.to_datetime(df_lc['data_setup'])
+
+		# Ordena os dados pela data
+		df_lc = df_lc.sort_values(by=['data'], ascending=False)
+
+		# Remove o index
+		df_lc = df_lc.reset_index(drop=True)
+
+		return df_lc
+	else:
+		return pd.DataFrame()
+
+
+def write_setup(df):
+	rerun = False
+	# Armazena no banco
+	try:
+		doc_ref = db.collection('setup').document('setup')
+		dados = {}
+		dados['Dataframe'] = df.to_csv(index=False)
+		doc_ref.set(dados)
+		st.success('Setup configurado com sucesso!')
+
+		# Limpa cache
+		caching.clear_cache()
+
+		# flag para rodar novamente o script
+		rerun = True
+	except:
+		st.error('Falha ao configurar Setup!')
+	if rerun:
+		st.experimental_rerun()
+
 
 
 def upload_excel(uploaded_file):
@@ -58,6 +113,7 @@ def upload_excel(uploaded_file):
 	except:
 		st.error('Arquivo não compatível')
 	return None
+
 
 def upload_excel_selante(uploaded_file):
 	# Leitura dos dados do arquivo excel
@@ -411,7 +467,7 @@ def adicionar_bobina():
 		dic['numero_OT'] = s1.text_input('Número OT')
 		dic['tipo_bobina'] = s2.selectbox('Tipo da bobina', list(tipos_bobinas.keys()))
 		dic['codigo_bobina'] = tipos_bobinas[dic['tipo_bobina']]
-		dic['peso_bobina'] = s3.number_input('Peso da bobina (em kg)', step=1, format='%i', value=9000, max_value=18000, min_value=4000)
+		dic['peso_bobina'] = s3.number_input('Peso da bobina', step=100, format='%i', value=9000, max_value=18000)
 		dic['codigo_SAP'] = s4.text_input('Código SAP')
 		dic['data_entrada'] = ''
 		dic['comentario'] = '-'
@@ -488,7 +544,7 @@ def adicionar_selante():
 		s1, s2, s3, s4, s5 = st.columns([2.5, 2.5, 2.5, 2.5, 1])
 		dic['numero_lote'] = s1.text_input('Número do lote')
 		dic['codigo_SAP'] = s2.text_input('Código SAP')
-		dic['peso_vedante'] = s3.number_input('Peso do vedante (em kg)', step=1, format='%i', value=1224, max_value=10000, min_value=500)
+		dic['peso_vedante'] = s3.number_input('Peso do vedante', step=100, format='%i', value=5000, max_value=10000)
 		dic['lote_interno'] = s4.text_input('Lote interno')
 		dic['data_entrada'] = '-'
 		dic['comentario'] = '-'
@@ -683,6 +739,8 @@ tipos_bobinas2 = {50490760: 'Tampa Prata',
 
 tipos_selantes = {'Selante': 50491194}
 
+limite_setup = 3
+
 # leitura e exibicao dos dados das bobinas
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
@@ -781,23 +839,45 @@ col2, imagem, col4 = st.columns([3, 10, 3])
 imagem.markdown("<h1 style='text-align: center; color: gray;'>Tipo de tampa em produção: {}</h1>".format(tipo_bobina_uso), unsafe_allow_html=True)
 imagem.image('lid_linha.png')
 
+# data do próximo setup
+df_data_setup = load_setup()
+
+# carrega informacoes do setup
+if df_data_setup.shape[0] > 0:
+	data_setup_db =  df_data_setup.iloc[0,1]
+	limite_setup = df_data_setup.iloc[0,2]
+	setup_atual = df_data_setup.iloc[0,3]
+	setup_próximo = df_data_setup.iloc[0,4]
+else:
+	data_setup_db = datetime.today() - timedelta(hours=3)
+
 recursos = ['Remover bobinas ou selantes', 
 'Histórico de paletes sem selante',
 'Histórico de paletes com selante',
 'Apontamento de código SAP',
-'Detalhamento de bobinas e selantes por data'
+'Detalhamento de bobinas e selantes por data',
+'Configuração de setup'
 ]
 telas = imagem.radio('Selecione o recurso que deseja utilizar', recursos)
 
 # verifica se há bobinas no sistema para habilitar as demais funcionalidades do sistema
 if df_bobinas.shape[0] > 0:
 
-	###########################################
+	########################################### 
 	# Selecionar bobinas disponiveis para uso #
 	###########################################
 
 	# Verifica bobinas disponiveis
-	df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
+	if datetime.today().date() != data_setup_db.date():
+		df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
+	else:
+		#st1.warning('Chegamos aqui!!')
+		if ps_fifo_in.shape[0] == 0:
+			df_bobinas_disp = df_bobinas[df_bobinas['status'] == 'Disponível']
+			st1.success('Setup Liberado!')
+		else:
+			df_bobinas_disp = df_bobinas[(df_bobinas['status'] == 'Disponível') & (df_bobinas['tipo_bobina'] == tipo_bobina_uso)]
+			st1.error('Setup bloqueado!')
 	df_bobinas_disp.sort_values(by=['data'], inplace=True)
 
 	if df_bobinas[df_bobinas['status'] == 'Disponível'].shape[0] > 0:
@@ -901,7 +981,7 @@ if df_bobinas.shape[0] > 0:
 
 	# Adiciona paletes
 	with col2:
-		st.subheader('Sem selante')
+		st.subheader('Sem selante' + ' (' + str(ps_fifo_in.shape[0]) + ' paletes)')
 
 		if (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
 			
@@ -1055,7 +1135,7 @@ if df_bobinas.shape[0] > 0:
 				# atualiza a data de consumo do palete consumido
 				df_pal_sem.loc[(df_pal_sem['numero_palete'].astype('str') == str(numero_palete)), 'data_consumo'] = datetime.today() - timedelta(hours=3)
 
-				#identifica o numero da bobina do palete
+				# identifica o numero da bobina do palete
 				bobina_consumo = df_pal_sem.loc[(df_pal_sem['numero_palete'].astype('str') == str(numero_palete)), 'numero_OT']
 
 				# prepara dados para escrever no banco
@@ -1219,7 +1299,7 @@ if df_bobinas.shape[0] > 0:
 
 		# Adiciona paletes
 		with col4:
-			st.subheader('Com selante')
+			st.subheader('Com selante' + ' (' + str(sel_fifo_in.shape[0]) + ' paletes)')
 
 			if (df_selantes[df_selantes['status'] == 'Em uso'].shape[0] > 0) & (df_bobinas[df_bobinas['status'] == 'Em uso'].shape[0] > 0):
 
@@ -1345,11 +1425,14 @@ if df_bobinas.shape[0] > 0:
 				if 'rem_palete_com' not in st.session_state:
 				   	st.session_state['rem_palete_com'] = False	
 				
-				if not st.session_state.rem_palete_com:
-					adicionar = col4.button('Consumir palete TP com Selante')
-					if adicionar:
-						st.session_state.rem_palete_com = True
-						st.experimental_rerun()
+				if not st.session_state.rem_palete_com: 
+					if (datetime.today().date() == data_setup_db.date()) and sel_fifo_in.shape[0] <= limite_setup:
+						col4.error('Não podem ser consumidos paletes devido ao setup agendado para hoje')
+					else:
+						adicionar = col4.button('Consumir palete TP com Selante')
+						if adicionar:
+							st.session_state.rem_palete_com = True
+							st.experimental_rerun()
 				
 				if st.session_state.rem_palete_com:
 					cancelar = col4.button('Cancelar ação', key='cancelar_com_rem')
@@ -1399,7 +1482,7 @@ if df_bobinas.shape[0] > 0:
 						doc_ref = db.collection('Selante').document(documento)
 						doc_ref.set(new_fifo_s_out)
 						flag_rerun = True
-						#caching.clear_cache()
+						caching.clear_cache()
 					except:
 						st.error('Falha ao atualizar informações do palete, tente novamente ou entre em contato com suporte!')
 						caching.clear_cache()
@@ -1942,13 +2025,75 @@ if telas == 'Apontamento de código SAP':
 	else:
 		st.error('Não há paletes para serem apontados para data selecionada')
 
+if telas == 'Configuração de setup':
+	#config_setup()
+	st.subheader('Configurar próximo setup')
+	bobinas_lista = ['Tampa Prata', 'Tampa Dourada', 'Tampa Branca','Tampa Lacre Azul']
+
+	if tipo_bobina_uso != 'Não há bobina em uso':
+		bobinas_lista.remove(tipo_bobina_uso)
+	próxima_tampa = st.selectbox('Tipo da próxima bobina', bobinas_lista)
+	data_setup = st.date_input('Próximo setup')
+	quantidade_pal_setup = st.number_input('Quantidade de paletes reservados', step=1, value=5)
+
+	# Initialization
+	if 'confirmar_setup' not in st.session_state:
+		st.session_state['confirmar_setup'] = False	
+
+	# Initialization
+	if 'cancelar_setup' not in st.session_state:
+		st.session_state['cancelar_setup'] = False
+		
+	# Initialization
+	if 'definir_setup' not in st.session_state:
+		st.session_state['definir_setup'] = False	
+
+	if not st.session_state.definir_setup:
+		definir_setup_ = st.button('Definir data de setup')
+		if definir_setup_:
+			st.session_state.definir_setup = True
+			st.experimental_rerun()
+
+	if st.session_state.definir_setup:
+		cancelar_setup_ = st.button('Cancelar ação', key='cancelar_sem_add2')
+		if cancelar_setup_:
+			st.session_state.cancelar_setup = True
+			
+		confirmar_setup_ = st.button('Confirmar ação', key='confirmar_sem_add2')
+		if confirmar_setup_:
+			st.session_state.confirmar_setup = True
+		
+	if st.session_state.cancelar_setup:
+		st.session_state.cancelar_setup = False
+		st.session_state.definir_setup = False
+		st.experimental_rerun()
+		
+	if st.session_state.confirmar_setup:
+		st.session_state.confirmar_setup = False
+		st.session_state.definir_setup = False
+		data_atual = datetime.today() - timedelta(hours=3)
+		df_data_setup_new= pd.DataFrame([[data_atual, data_setup, quantidade_pal_setup, tipo_bobina_uso, próxima_tampa ]], columns=['data', 'data_setup', 'quantidade_paletes', 'tipo_atual', 'proximo_tipo'])
+		df_data_setup = df_data_setup.append(df_data_setup_new)
+		write_setup(df_data_setup)
+
+	st.subheader('Ultimo/próximo setup configurado')
+	# carrega informacoes do setup
+	if df_data_setup.shape[0] > 0:
+		st.write('Data do setup: **' + str(data_setup_db) + '**')
+		st.write('Quantidade de paletes com selante reservados para setup: **' + str(limite_setup) + '**')
+		st.write('Tipo de bobina anterior ao setup **' + str(setup_atual) + '**')
+		st.write('Tipo de bobina apos setup: **' + str(setup_próximo) + '**')
+	else:
+		st.warning('Nao houve setup configurado')
+
 
 # botao para teste
-reset = st.button('Reset')
+#reset = st.button('Reset')
 rerun = False
 
-if reset:
-	rerun = True
-	caching.clear_cache()
-	if rerun:
-		st.experimental_rerun()
+
+# if reset:
+# 	rerun = True
+# 	caching.clear_cache()
+# 	if rerun:
+# 		st.experimental_rerun()
