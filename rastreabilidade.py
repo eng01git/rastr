@@ -653,7 +653,7 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 	dic = {}
 
 	dic['Conversion'] = st.selectbox('Selecione a Conversion', ['1', '2'])
-
+	stroke_min = 0
 	if df_bobinas_conversion.shape[0] > 0:
 		if dic['Conversion'] == '1':
 			if df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '1'].shape[0] > 0:
