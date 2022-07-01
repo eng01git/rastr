@@ -934,11 +934,11 @@ with st.expander('Gerenciamento de selantes'):
 			enable_enterprise_modules=enable_enterprise_modules)
 
 with st.expander('Gerenciamento de bobinas da Conversion'):
+	df = load_conversion()
 	st.subheader('Inserir Bobinas da Conversion')
-	adicionar_bobina_conversion()
+	adicionar_bobina_conversion(df)
 
 	st.subheader('Bobinas em uso nas Conversions')
-	df = pd.DataFrame()
 
 	st.subheader('Histórico das bobinas da Conversion')
 	mostrar_bobinas_conversion(df)
