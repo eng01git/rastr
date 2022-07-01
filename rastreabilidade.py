@@ -958,7 +958,7 @@ with st.expander('Gerenciamento de bobinas da Conversion'):
 
 	st.subheader('Bobinas em uso nas Conversions')
 	if df_bobinas.shape[0] > 0:
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(50, df, 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(60, df, 0, 0, True)
 		
 		response = AgGrid(
 			df[df['Conversion'] == '1'].head(1),
