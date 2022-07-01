@@ -666,7 +666,7 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 			stroke_min = 2
 
 	# Dados dos selantes
-	with st.form('forms_selante'):
+	with st.form('forms_bobina_conversion'):
 		dic['data_entrada'] = datetime.today() - timedelta(hours=3)
 		s1, s2, s3, s5 = st.columns([2.5, 2.5, 2.5, 1])
 		dic['Numero_ot'] = s1.text_input('Número OT')
