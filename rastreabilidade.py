@@ -676,9 +676,9 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 		submitted = s5.form_submit_button('Adicionar bobina ao sistema')
 
 	if submitted:
-		lista_numero_ot = list(df_bobinas_conversion['Numero_ot'])
+		#lista_numero_ot = list(df_bobinas_conversion['Numero_ot'])
 		# if df_bobinas_conversion[(df_bobinas_conversion['Numero_ot'] == (dic['Numero_ot'])).any()].shape[0] == 0:
-		if dic['Numero_ot'] not in lista_numero_ot:
+		if dic['Numero_ot'] not in df_bobinas_conversion['Numero_ot'].unique():
 
 			df_data_setup_new = pd.DataFrame([[dic['Conversion'], dic['data_entrada'], dic['Numero_ot'], dic['strokes'], dic['peso_bobina'], dic['data_saida']]], 
 											columns=['Conversion', 'data_entrada', 'Numero_ot', 'strokes', 'peso_bobina', 'data_saida'])
