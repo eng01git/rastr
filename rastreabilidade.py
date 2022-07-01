@@ -96,6 +96,9 @@ def load_conversion():
 		df_lc['Numero_ot'] = df_lc['Numero_ot'].astype(str)
 		df_lc['Conversion'] = df_lc['Conversion'].astype(str)
 
+		if 'data_saida' in df_lc.columns:
+			df_lc.drop('data_saida', axis=1, inplace=True)
+
 		# Ordena os dados pela data
 		df_lc = df_lc.sort_values(by=['data_entrada'], ascending=False)
 
@@ -678,15 +681,15 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 		dic['Numero_ot'] = s1.text_input('Número OT')
 		dic['strokes'] = s2.number_input('Quantidade de strokes', min_value=stroke_min, value=stroke_min)
 		dic['peso_bobina'] = s3.number_input('Peso da bobina', step=100, format='%i', value=5000, max_value=10000)
-		dic['data_saida'] = '-'
+		#dic['data_saida'] = '-'
 		submitted = s5.form_submit_button('Adicionar bobina ao sistema')
 
 	if submitted:
 		if str(dic['Numero_ot']) in df_bobinas_conversion['Numero_ot'].unique():
 			st.error('Já existe bobina com o número OT informado')
 		else:
-			df_data_setup_new = pd.DataFrame([[dic['Conversion'], dic['data_entrada'], dic['Numero_ot'], dic['strokes'], dic['peso_bobina'], dic['data_saida']]], 
-											columns=['Conversion', 'data_entrada', 'Numero_ot', 'strokes', 'peso_bobina', 'data_saida'])
+			df_data_setup_new = pd.DataFrame([[dic['Conversion'], dic['data_entrada'], dic['Numero_ot'], dic['strokes'], dic['peso_bobina']]],#, dic['data_saida']]], 
+											columns=['Conversion', 'data_entrada', 'Numero_ot', 'strokes', 'peso_bobina',]) # 'data_saida'])
 
 			df_bobinas_conversion = df_bobinas_conversion.append(df_data_setup_new)
 			rerun = False
@@ -984,7 +987,7 @@ with st.expander('Gerenciamento de bobinas da Conversion'):
 			enable_enterprise_modules=enable_enterprise_modules)
 	else:
 		st.write('Nenhuma bobina em uso na Conversion 2')
-		
+
 	st.subheader('Histórico das bobinas da Conversion')
 	mostrar_bobinas_conversion(df)
 
