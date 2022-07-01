@@ -955,9 +955,9 @@ with st.expander('Gerenciamento de bobinas da Conversion'):
 	adicionar_bobina_conversion(df)
 
 	st.subheader('Bobinas em uso nas Conversions')
-	if df_bobinas.shape[0] > 0:
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(65, df, 0, 0, True)
-		
+	gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(65, df, 0, 0, True)
+
+	if df[df['Conversion'] == '1'].shape[0] > 0:
 		response = AgGrid(
 			df[df['Conversion'] == '1'].head(1),
 			gridOptions=gridOptions,
@@ -968,7 +968,10 @@ with st.expander('Gerenciamento de bobinas da Conversion'):
 			fit_columns_on_grid_load=fit_columns_on_grid_load,
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
+	else:
+		st.write('Nenhuma bobina em uso na Conversion 1')
 
+	if df[df['Conversion'] == '1'].shape[0] > 0:
 		response = AgGrid(
 			df[df['Conversion'] == '2'].head(1),
 			gridOptions=gridOptions,
@@ -979,7 +982,9 @@ with st.expander('Gerenciamento de bobinas da Conversion'):
 			fit_columns_on_grid_load=fit_columns_on_grid_load,
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
-
+	else:
+		st.write('Nenhuma bobina em uso na Conversion 2')
+		
 	st.subheader('Histórico das bobinas da Conversion')
 	mostrar_bobinas_conversion(df)
 
