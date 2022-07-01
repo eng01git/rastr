@@ -674,7 +674,7 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 	# Dados dos selantes
 	with st.form('forms_bobina_conversion'):
 		dic['data_entrada'] = datetime.today() - timedelta(hours=3)
-		s1, s2, s3, s5 = st.columns([2.5, 2.5, 2.5, 2.5])
+		s1, s2, s3, s5 = st.columns([3.33, 3.33, 3.33, 1])
 		dic['Numero_ot'] = s1.text_input('Número OT')
 		dic['strokes'] = s2.number_input('Quantidade de strokes', min_value=stroke_min, value=stroke_min)
 		dic['peso_bobina'] = s3.number_input('Peso da bobina', step=100, format='%i', value=5000, max_value=10000)
