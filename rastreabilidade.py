@@ -958,7 +958,7 @@ with st.expander('Gerenciamento de bobinas da Conversion'):
 
 	st.subheader('Bobinas em uso nas Conversions')
 	if df_bobinas.shape[0] > 0:
-		st.write(df[df['Conversion'] == '1'].head(1))
+		st.dataframe(df[df['Conversion'] == '1'].head(1))
 		st.write(df[df['Conversion'] == '2'].head(1))
 
 	st.subheader('Histórico das bobinas da Conversion')
