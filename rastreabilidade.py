@@ -678,8 +678,9 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 	if submitted:
 		#lista_numero_ot = list(df_bobinas_conversion['Numero_ot'])
 		# if df_bobinas_conversion[(df_bobinas_conversion['Numero_ot'] == (dic['Numero_ot'])).any()].shape[0] == 0:
-		if dic['Numero_ot'] not in df_bobinas_conversion['Numero_ot'].unique():
-
+		if dic['Numero_ot'] in df_bobinas_conversion['Numero_ot'].unique():
+			st.error('Já existe bobina com o número OT informado')
+		else:
 			df_data_setup_new = pd.DataFrame([[dic['Conversion'], dic['data_entrada'], dic['Numero_ot'], dic['strokes'], dic['peso_bobina'], dic['data_saida']]], 
 											columns=['Conversion', 'data_entrada', 'Numero_ot', 'strokes', 'peso_bobina', 'data_saida'])
 
@@ -703,8 +704,7 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 				st.error('Falha ao adicionar bobina.')
 			if rerun:
 				st.experimental_rerun()
-		else:
-			st.error('Já existe bobina com o número OT informado')
+
 
 def mostrar_bobinas_conversion(df: pd.DataFrame):
 	if df.shape[0] > 0:
