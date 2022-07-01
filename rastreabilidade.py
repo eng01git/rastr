@@ -682,8 +682,6 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 		submitted = s5.form_submit_button('Adicionar bobina ao sistema')
 
 	if submitted:
-		#lista_numero_ot = list(df_bobinas_conversion['Numero_ot'])
-		# if df_bobinas_conversion[(df_bobinas_conversion['Numero_ot'] == (dic['Numero_ot'])).any()].shape[0] == 0:
 		if str(dic['Numero_ot']) in df_bobinas_conversion['Numero_ot'].unique():
 			st.error('Já existe bobina com o número OT informado')
 		else:
@@ -958,7 +956,7 @@ with st.expander('Gerenciamento de bobinas da Conversion'):
 
 	st.subheader('Bobinas em uso nas Conversions')
 	if df_bobinas.shape[0] > 0:
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(60, df, 0, 0, True)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(65, df, 0, 0, True)
 		
 		response = AgGrid(
 			df[df['Conversion'] == '1'].head(1),
