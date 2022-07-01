@@ -709,7 +709,17 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 
 def mostrar_bobinas_conversion(df: pd.DataFrame):
 	if df.shape[0] > 0:
-		st.write(df)
+		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df, 0, 0, True)
+		response = AgGrid(
+			df,
+			gridOptions=gridOptions,
+			height=grid_height,
+			width='100%',
+			data_return_mode=return_mode_value,
+			update_mode=update_mode_value,
+			fit_columns_on_grid_load=fit_columns_on_grid_load,
+			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+			enable_enterprise_modules=enable_enterprise_modules)
 	else: 
 		st.warning('Não há bobinas cadastradas')
 
