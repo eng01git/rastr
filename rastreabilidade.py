@@ -670,7 +670,7 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 		dic['data_entrada'] = datetime.today() - timedelta(hours=3)
 		s1, s2, s3, s5 = st.columns([2.5, 2.5, 2.5, 1])
 		dic['Numero_ot'] = s1.text_input('Número OT')
-		dic['Strokes'] = s2.number_input('Quantidade de strokes', min_value=stroke_min)
+		dic['strokes'] = s2.number_input('Quantidade de strokes', min_value=stroke_min)
 		dic['peso_bobina'] = s3.number_input('Peso da bobina', step=100, format='%i', value=5000, max_value=10000)
 		dic['data_saida'] = '-'
 		submitted = s5.form_submit_button('Adicionar bobina ao sistema')
