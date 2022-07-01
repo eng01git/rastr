@@ -659,7 +659,7 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 		else:
 			stroke_min = 20		
 	else:
-		df_bobinas_conversion = pd.DataFrame(columns=['Conversion', 'data_entrada', 'Numero_OT', 'strokes', 'peso_bobina', 'data_saida'])
+		df_bobinas_conversion = pd.DataFrame(columns=['Conversion', 'data_entrada', 'Numero_ot', 'strokes', 'peso_bobina', 'data_saida'])
 		if dic['Conversion'] == '1':
 			stroke_min = 0
 		else:
