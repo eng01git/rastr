@@ -659,16 +659,16 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 			if df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '1'].shape[0] > 0:
 				stroke_min = df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '1', 'strokes'].max()
 			else:
-				stroke_min = 0
+				stroke_min = 1
 
 		if dic['Conversion'] == '2':
 			if df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '2'].shape[0] > 0:
 				stroke_min = df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '2', 'strokes'].max()
 			else:
-				stroke_min = 0		
+				stroke_min = 1		
 	else:
 		df_bobinas_conversion = pd.DataFrame(columns=['Conversion', 'data_entrada', 'Numero_ot', 'strokes', 'peso_bobina', 'data_saida'])
-		stroke_min = 0
+		stroke_min = 2
 
 	# Dados dos selantes
 	with st.form('forms_bobina_conversion'):
