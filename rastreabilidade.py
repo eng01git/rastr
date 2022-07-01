@@ -74,6 +74,37 @@ def load_setup():
 		return pd.DataFrame()
 
 
+@st.cache(allow_output_mutation=True)
+def load_conversion():
+	# dicionario vazio
+	dicionario = {}
+	
+	doc_ref = db.collection('conversion').document('conversion')
+	doc = doc_ref.get()
+
+	if doc.exists:
+
+		# Transforma o dicionario em dataframe
+		dicionario = doc.to_dict()
+		csv = dicionario['Dataframe']
+
+		csv_string = StringIO(csv)
+		df_lc = pd.read_table(csv_string, sep=',')
+
+		# Transforma string em tipo data
+		df_lc['data_entrada'] = pd.to_datetime(df_lc['data_entrada'])
+
+		# Ordena os dados pela data
+		df_lc = df_lc.sort_values(by=['data_entrada'], ascending=False)
+
+		# Remove o index
+		df_lc = df_lc.reset_index(drop=True)
+
+		return df_lc
+	else:
+		return pd.DataFrame()
+
+
 def write_setup(df):
 	rerun = False
 	# Armazena no banco
@@ -611,6 +642,74 @@ def adicionar_selante():
 				st.experimental_rerun()
 		else:
 			st.error('Já existe selante com o número do lote informado')
+
+
+def adicionar_bobina_conversion(df: pd.DataFrame):
+	# leitura dos dados das bobinas da conversion
+	df_bobinas_conversion = df
+
+	# Formulario para inclusao de bobina
+	dic = {}
+
+	dic['Conversion'] = st.selectbox('Selecione a Conversion', ['1', '2'])
+
+	if df_bobinas_conversion.shape[0] > 0:
+		if dic['Conversion'] == '1':
+			stroke_min = 10
+		else:
+			stroke_min = 20		
+	else:
+		df_bobinas_conversion = pd.DataFrame(columns=['Conversion', 'data_entrada', 'Numero_OT', 'strokes', 'peso_bobina', 'data_saida'])
+		if dic['Conversion'] == '1':
+			stroke_min = 0
+		else:
+			stroke_min = 2
+
+	# Dados dos selantes
+	with st.form('forms_selante'):
+		dic['data_entrada'] = datetime.today() - timedelta(hours=3)
+		s1, s2, s3, s5 = st.columns([2.5, 2.5, 2.5, 1])
+		dic['Numero_ot'] = s1.text_input('Número OT')
+		dic['Strokes'] = s2.number_input('Quantidade de strokes', min_value=stroke_min)
+		dic['peso_bobina'] = s3.number_input('Peso da bobina', step=100, format='%i', value=5000, max_value=10000)
+		dic['data_saida'] = '-'
+		submitted = s5.form_submit_button('Adicionar selante ao sistema')
+
+	if submitted:
+		if df_bobinas_conversion[df_bobinas_conversion['Numero_ot'] == (dic['Numero_ot'])].shape[0] == 0:
+
+			df_data_setup_new = pd.DataFrame([[dic['Conversion'], dic['data_entrada'], dic['Numero_OT'], dic['strokes'], dic['peso_bobina'], dic['data_saida']]], 
+											columns=['Conversion', 'data_entrada', 'Numero_OT', 'strokes', 'peso_bobina', 'data_saida'])
+
+			df_bobinas_conversion = df_bobinas_conversion.append(df_data_setup_new)
+			rerun = False
+
+			# Armazena no banco
+			try:
+				doc_ref = db.collection('conversion').document('conversion')
+				dados = {}
+				dados['Dataframe'] = df_bobinas_conversion.to_csv(index=False)
+				doc_ref.set(dados)
+				st.success('Bobina adicionada com sucesso!')
+
+				# Limpa cache
+				caching.clear_cache()
+
+				# flag para rodar novamente o script
+				rerun = True
+			except:
+				st.error('Falha ao adicionar bobina.')
+			if rerun:
+				st.experimental_rerun()
+		else:
+			st.error('Já existe bobina com o número OT informado')
+
+def mostrar_bobinas_conversion(df: pd.DataFrame):
+	if df.shape[0] > 0:
+		st.write(df)
+	else: 
+		st.warning('Não há bobinas cadastradas')
+
 ###########################################################################################################################################
 #####								cofiguracoes aggrid											#######
 ###########################################################################################################################################
@@ -833,6 +932,16 @@ with st.expander('Gerenciamento de selantes'):
 			fit_columns_on_grid_load=fit_columns_on_grid_load,
 			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
 			enable_enterprise_modules=enable_enterprise_modules)
+
+with st.expander('Gerenciamento de bobinas da Conversion'):
+	st.subheader('Inserir Bobinas da Conversion')
+	adicionar_bobina_conversion()
+
+	st.subheader('Bobinas em uso nas Conversions')
+	df = pd.DataFrame()
+
+	st.subheader('Histórico das bobinas da Conversion')
+	mostrar_bobinas_conversion(df)
 
 # define imagem e barra lateral
 col2, imagem, col4 = st.columns([3, 10, 3])
