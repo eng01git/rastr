@@ -94,6 +94,7 @@ def load_conversion():
 		# Transforma string em tipo data
 		df_lc['data_entrada'] = pd.to_datetime(df_lc['data_entrada'])
 		df_lc['Numero_ot'] = df_lc['Numero_ot'].astype(str)
+		df_lc['Conversion'] = df_lc['Conversion'].astype(str)
 
 		# Ordena os dados pela data
 		df_lc = df_lc.sort_values(by=['data_entrada'], ascending=False)
