@@ -656,13 +656,13 @@ def adicionar_bobina_conversion(df: pd.DataFrame):
 
 	if df_bobinas_conversion.shape[0] > 0:
 		if dic['Conversion'] == '1':
-			if df_bobinas_conversion[df_bobinas_conversion['Conversion'] == '1'].shape[0] > 0:
+			if df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '1'].shape[0] > 0:
 				stroke_min = df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '1', 'strokes'].max()
 			else:
 				stroke_min = 0
 
 		if dic['Conversion'] == '2':
-			if df_bobinas_conversion[df_bobinas_conversion['Conversion'] == '2'].shape[0] > 0:
+			if df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '2'].shape[0] > 0:
 				stroke_min = df_bobinas_conversion.loc[df_bobinas_conversion['Conversion'] == '2', 'strokes'].max()
 			else:
 				stroke_min = 0		
