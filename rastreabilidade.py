@@ -372,30 +372,30 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 	if tipo == 0:
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
-		ws['B7'] = 'Sem selante'  # 'com/sem selante'
+		ws['D7'] = 'Sem selante'  # 'com/sem selante'
 		codigo  = str(data['tipo_tampa']) + ' Sem Selante'
 		ws['A9'] = tipos_tampas[codigo]
-		ws['B13'] = str(data['numero_OT'])  # numero da bobina
+		ws['D13'] = str(data['numero_OT'])  # numero da bobina
 	
 	# com selante
 	else:
 		# Preenchimento dos valores
 		ws['A7'] = str(data['tipo_tampa'])  # 'tipo produto'
-		ws['B7'] = 'Com selante'  # 'com/sem selante'		
+		ws['D7'] = 'Com selante'  # 'com/sem selante'		
 		codigo  = str(data['tipo_tampa']) + ' Com Selante'
 		ws['A9'] = tipos_tampas[codigo]
-		ws['B13'] = str(data['numero_OT'])  # numero da bobina
+		ws['D13'] = str(data['numero_OT'])  # numero da bobina
 
 	# pega a hora que o palete foi para o estoque
 	horario = datetime.time(data['data_estoque'])
 
 	# Adequa os valores dos turnos
 	if (horario >= time(23, 0, 0)) and (horario < time(7, 0, 0)):
-		ws['B11'] = 'A'  # 'turno'
+		ws['C11'] = 'A'  # 'turno'
 	elif (horario >= time(7, 0, 0)) and (horario < time(15, 0, 0)):
-		ws['B11'] = 'B'  # 'turno'
+		ws['C11'] = 'B'  # 'turno'
 	else:
-		ws['B11'] = 'C'  # 'turno'
+		ws['C11'] = 'C'  # 'turno'
 
 	# ajusta data e hora para etiqueta
 	data_atual = data['data_estoque'].strftime("%d/%m/%Y")
@@ -403,8 +403,8 @@ def download_etiqueta(data, tipo): # 0 sem selante e 1 com selante
 
 	#st.write(data_atual)
 	ws['A11'] = data_atual #data['data_estoque']  # 'data'
-	ws['C11'] = hora_atual #data['data_estoque']  # 'hora'
-	ws['C9'] = data['numero_palete']  # numero etiqueta
+	ws['E11'] = hora_atual #data['data_estoque']  # 'hora'
+	ws['D9'] = data['numero_palete']  # numero etiqueta
 
 	wb.save('teste.xlsx')
 	stream = BytesIO()
