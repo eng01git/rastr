@@ -910,7 +910,7 @@ with st.expander('Gerenciamento de bobinas'):
 		st.subheader('Selecionar bobina para uso')
 		st1, st2 = st.columns([99, 1])
 
-		st.subheader('Detalhamento das bobinas')
+		st.subheader('_Detalhamento das bobinas')
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
 		response = AgGrid(
