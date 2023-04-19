@@ -913,8 +913,8 @@ with st.expander('Gerenciamento de bobinas'):
 		st.subheader('Detalhamento das bobinas')
 		
 		# here
-		# capacidade = df_bobinas[(df_bobinas['status']=='Em uso') | (df_bobinas['status']=='Disponível')]['peso_bobina'].astype(float).sum()/2.41
-		# st.text(f'Capacidade: {capacidade} milheiros')
+		capacidade = df_bobinas[(df_bobinas['status']=='Em uso') | (df_bobinas['status']=='Disponível')]['peso_bobina'].astype(float).sum()/2.41
+		st.text(f'Capacidade: {capacidade} milheiros')
 
 		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
 		response = AgGrid(
