@@ -897,32 +897,35 @@ sel_fifo_out = df_pal_com[df_pal_com['data_consumo'] != '-']
 # organizacao da tela #
 #######################
 
-with st.expander('Gerenciamento de bobinas'):
-	st.subheader('Inserir Bobinas')
-	uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
-	if uploaded_file is not None:
-		data_excel = upload_excel(uploaded_file)
-		df_excel = insert_excel(data_excel)
-		df_bobinas = df_bobinas.append(df_excel)
+col_detalhamento, col_capacidade = st.columns([95, 5])
 
-	adicionar_bobina()
-	if df_bobinas.shape[0] > 0:
-		st.subheader('Selecionar bobina para uso')
-		st1, st2 = st.columns([99, 1])
+with col_detalhamento:
+	with st.expander('Gerenciamento de bobinas'):
+		st.subheader('Inserir Bobinas')
+		uploaded_file = st.file_uploader("Selecione o arquivo Excel para upload")
+		if uploaded_file is not None:
+			data_excel = upload_excel(uploaded_file)
+			df_excel = insert_excel(data_excel)
+			df_bobinas = df_bobinas.append(df_excel)
 
-		st.subheader('Detalhamento das bobinas')
+		adicionar_bobina()
+		if df_bobinas.shape[0] > 0:
+			st.subheader('Selecionar bobina para uso')
+			st1, st2 = st.columns([99, 1])
 
-		gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
-		response = AgGrid(
-			df_bobinas,
-			gridOptions=gridOptions,
-			height=grid_height,
-			width='100%',
-			data_return_mode=return_mode_value,
-			update_mode=update_mode_value,
-			fit_columns_on_grid_load=fit_columns_on_grid_load,
-			allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
-			enable_enterprise_modules=enable_enterprise_modules)
+			st.subheader('Detalhamento das bobinas')
+
+			gridOptions, grid_height, return_mode_value, update_mode_value, fit_columns_on_grid_load, enable_enterprise_modules = config_grid(198, df_bobinas, 0, 0, True)
+			response = AgGrid(
+				df_bobinas,
+				gridOptions=gridOptions,
+				height=grid_height,
+				width='100%',
+				data_return_mode=return_mode_value,
+				update_mode=update_mode_value,
+				fit_columns_on_grid_load=fit_columns_on_grid_load,
+				allow_unsafe_jscode=False,  # Set it to True to allow jsfunction to be injected
+				enable_enterprise_modules=enable_enterprise_modules)
 
 with st.expander('Gerenciamento de selantes'):
 
