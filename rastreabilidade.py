@@ -42,7 +42,7 @@ tz = pytz.timezone('America/Bahia')
 ##############################################################################
 
 
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def load_setup():
 	# dicionario vazio
 	dicionario = {}
