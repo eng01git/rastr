@@ -911,6 +911,7 @@ with st.expander('Gerenciamento de bobinas'):
 		st1, st2 = st.columns([99, 1])
 		
 		capacidade = int(df_bobinas[(df_bobinas['status']=='Em uso') | (df_bobinas['status']=='Disponível')]['peso_bobina'].astype(float).sum()/2.41)
+		capacidade = '{0:,}'.format(capacidade).replace(',','.')
 		
 		st.subheader(f'Detalhamento das bobinas (capacidade: {capacidade} milheiros)')
 
