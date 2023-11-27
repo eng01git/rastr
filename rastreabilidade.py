@@ -425,12 +425,11 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	index = 0
 
 	# Define o caminho da coleção do firebase
-	st.write("Modificacao colecao")
 	posts_ref = db.collection(colecao)
-	st.write("Resposta st write: " + posts_ref.astype('string'))
 
 	# Busca todos os documentos presentes na coleção e salva num dataframe
 	for doc in posts_ref.stream():
+		st.write(doc)
 		dic_auxiliar = doc.to_dict()
 		dicionario[str(index)] = dic_auxiliar
 		if tipo == 1:
