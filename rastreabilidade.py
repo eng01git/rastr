@@ -425,6 +425,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	index = 0
 
 	# Define o caminho da coleção do firebase
+	st.write("Modificacao colecao")
 	posts_ref = db.collection(colecao)
 	st.write(posts_ref)
 
