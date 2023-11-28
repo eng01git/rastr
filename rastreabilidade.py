@@ -861,9 +861,9 @@ tipos_selantes = {'Selante': 50491194}
 limite_setup = 3
 
 # leitura e exibicao dos dados das bobinas
+st.write(st.logger._loggers)
 df_bobinas, df_pal_sem = load_colecoes('Bobina', col_bobinas, col_pal_sem, 0)
 df_selantes, df_pal_com = load_colecoes('Selante', col_selante, col_pal_sel, 1)
-st.write(st.logger._loggers)
 # define a bobina em uso
 if df_bobinas.shape[0] > 0:
 	if df_bobinas.loc[df_bobinas['status'] == 'Em uso', 'tipo_bobina'].shape[0] > 0:
