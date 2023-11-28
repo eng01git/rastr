@@ -429,7 +429,6 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 
 	# Busca todos os documentos presentes na coleção e salva num dataframe
 	for doc in posts_ref.stream():
-		st.write(doc)
 		dic_auxiliar = doc.to_dict()
 		dicionario[str(index)] = dic_auxiliar
 		if tipo == 1:
