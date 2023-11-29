@@ -448,7 +448,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	# Bobinas
 	if (tipo == 0) and (df.shape[0] > 0):
 		# Transforma string em tipo data
-		df['data'] = pd.to_datetime(df['data'])
+		df['data'] = pd.to_datetime(str(df['data']))
 
 		# Ordena os dados pela data
 		df = df.sort_values(by=['data'], ascending=False)
@@ -470,7 +470,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	# selante
 	if (tipo == 1) and (df.shape[0] > 0):
 		# Transforma string em tipo data
-		df['data'] = pd.to_datetime(df['data'])
+		df['data'] = pd.to_datetime(str(df['data']))
 		df['lote_interno'] = df['lote_interno'].astype('string')
 
 		# Ordena os dados pela data
