@@ -15,7 +15,6 @@ from io import BytesIO
 from openpyxl import load_workbook, Workbook
 from google.cloud import firestore
 from google.oauth2 import service_account
-import logging
 
 ###############################################################################
 # Configurações da página
