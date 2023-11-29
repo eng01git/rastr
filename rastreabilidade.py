@@ -447,6 +447,7 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 	# Bobinas
 	if (tipo == 0) and (df.shape[0] > 0):
 		# Transforma string em tipo data
+		st.write(df)
 		df['data'] = pd.to_datetime(df['data'])
 
 		# Ordena os dados pela data
