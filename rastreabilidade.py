@@ -461,8 +461,6 @@ def load_colecoes(colecao, colunas, colunas_pal, tipo):
 			csv = str(row['Paletes'])
 			csv_string = StringIO(csv)
 			df_aux = pd.read_table(csv_string, sep=',')
-			st.write(df_aux)
-			st.write(df2)
 			df2 = df2.append(df_aux, ignore_index=True)
 
 		# Ordena as colunas
