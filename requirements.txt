@@ -1,8 +1,8 @@
-streamlit==0.88.0
-plotly==4.14.3
+streamlit==1.21.0
+plotly==5.16.0
 google-cloud-firestore
 matplotlib
-openpyxl==3.0.9
+openpyxl==2.5.11
 xlsxwriter
 streamlit-aggrid
 pytz
